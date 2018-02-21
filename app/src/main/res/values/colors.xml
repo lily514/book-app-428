@@ -1,42 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--?xml version="1.0" encoding="UTF-8"?-->
 <resources>
-    <color name="colorPrimary">#5737BC</color>
-    <color name="colorPrimaryDark">#4D4B45</color>
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="windowBackground">#FFFFFF</color>
-    <color name="navigationBarColor">#6D51C7</color>
-    <color name="colorAccent">#FFE991</color>
+    <color name="primaryColor">#3797e3</color>
+    <color name="primaryDarkColor">#1246a6</color>
+    <color name="secondaryColor">#dfce34</color>
+    <color name="secondaryLightColor">#f7ed7d</color>
+    <color name="secondaryDarkColor">#998f08</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#a0a0a0</color>
+    <color name="toolbarBackground">#e1e1e1</color>
 </resources>
-
-    <!--
-       Color Palette by Paletton.com
-     -->
-<!--<colorset id="primary" title="Primary color">-->
-    <!--<color id="primary-0" nr="0" rgb="5737BC" r="87" g="55" b="188" r0="0.341" g0="0.216" b0="0.737"/>-->
-    <!--<color id="primary-1" nr="1" rgb="8A73D5" r="138" g="115" b="213" r0="0.541" g0="0.451" b0="0.835"/>-->
-    <!--<color id="primary-2" nr="2" rgb="6D51C7" r="109" g="81" b="199" r0="0.427" g0="0.318" b0="0.78"/>-->
-    <!--<color id="primary-3" nr="3" rgb="3E18B7" r="62" g="24" b="183" r0="0.243" g0="0.094" b0="0.718"/>-->
-    <!--<color id="primary-4" nr="4" rgb="2E0F93" r="46" g="15" b="147" r0="0.18" g0="0.059" b0="0.576"/>-->
-<!--</colorset>-->
-<!--<colorset id="secondary-1" title="Secondary color (1)">-->
-    <!--<color id="secondary-1-0" nr="0" rgb="FDEDAE" r="253" g="237" b="174" r0="0.992" g0="0.929" b0="0.682"/>-->
-    <!--<color id="secondary-1-1" nr="1" rgb="FFE57E" r="255" g="229" b="126" r0="1" g0="0.898" b0="0.494"/>-->
-    <!--<color id="secondary-1-2" nr="2" rgb="FFE991" r="255" g="233" b="145" r0="1" g0="0.914" b0="0.569"/>-->
-    <!--<color id="secondary-1-3" nr="3" rgb="CDBF8B" r="205" g="191" b="139" r0="0.804" g0="0.749" b0="0.545"/>-->
-    <!--<color id="secondary-1-4" nr="4" rgb="ABA27C" r="171" g="162" b="124" r0="0.671" g0="0.635" b0="0.486"/>-->
-<!--</colorset>-->
-<!--<colorset id="secondary-2" title="Secondary color (2)">-->
-    <!--<color id="secondary-2-0" nr="0" rgb="7F7A5C" r="127" g="122" b="92" r0="0.498" g0="0.478" b0="0.361"/>-->
-    <!--<color id="secondary-2-1" nr="1" rgb="F7F1D0" r="247" g="241" b="208" r0="0.969" g0="0.945" b0="0.816"/>-->
-    <!--<color id="secondary-2-2" nr="2" rgb="B4AE88" r="180" g="174" b="136" r0="0.706" g0="0.682" b0="0.533"/>-->
-    <!--<color id="secondary-2-3" nr="3" rgb="44412B" r="68" g="65" b="43" r0="0.267" g0="0.255" b0="0.169"/>-->
-    <!--<color id="secondary-2-4" nr="4" rgb="353116" r="53" g="49" b="22" r0="0.208" g0="0.192" b0="0.086"/>-->
-<!--</colorset>-->
-<!--<colorset id="complement" title="Complement color">-->
-    <!--<color id="complement-0" nr="0" rgb="4D4B45" r="77" g="75" b="69" r0="0.302" g0="0.294" b0="0.271"/>-->
-    <!--<color id="complement-1" nr="1" rgb="ACA890" r="172" g="168" b="144" r0="0.675" g0="0.659" b0="0.565"/>-->
-    <!--<color id="complement-2" nr="2" rgb="868372" r="134" g="131" b="114" r0="0.525" g0="0.514" b0="0.447"/>-->
-    <!--<color id="complement-3" nr="3" rgb="7E7A66" r="126" g="122" b="102" r0="0.494" g0="0.478" b0="0.4"/>-->
-    <!--<color id="complement-4" nr="4" rgb="958E6B" r="149" g="142" b="107" r0="0.584" g0="0.557" b0="0.42"/>-->
-<!--</colorset>-->
-<!--</palette>-->
