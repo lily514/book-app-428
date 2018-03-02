@@ -17,6 +17,17 @@ import com.cs428.app.bookapp.activity.fragments.HomeFragment;
 import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
 
+/*
+getUser()
+getCurrentUser()
+register() / login() / logout()
+postRecommendation()
+addToReadinglist()
+follow() / unfollow()
+getBook()
+searchBook()
+ */
+
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private Toolbar toolbar;
