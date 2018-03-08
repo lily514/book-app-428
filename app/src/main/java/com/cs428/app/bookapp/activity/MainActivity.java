@@ -1,5 +1,6 @@
 package com.cs428.app.bookapp.activity;
 
+import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
@@ -47,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragmentDrawer.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         fragmentDrawer.setDrawerListener(this);
+
+        setCardViewClickListeners();
+        setActionBarClickListeners();
     }
 
 
@@ -80,6 +87,98 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private void showSnackbarMessage(View view, String msg) {
         Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
         snackbar.show();
+    }
+
+    private void setActionBarClickListeners() {
+        View actionBar = findViewById(R.id.action_bar);
+
+        ImageButton friendsButton = (ImageButton) actionBar.findViewById(R.id.friends_nav_button);
+        friendsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doFriendsNavButtonAction();
+            }
+        });
+
+        ImageButton homeButton = (ImageButton) actionBar.findViewById(R.id.home_nav_button);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doHomeNavButtonAction();
+            }
+        });
+
+        ImageButton booksButton = (ImageButton) actionBar.findViewById(R.id.books_nav_button);
+        booksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doBooksNavButtonAction();
+            }
+        });
+    }
+
+    private void doFriendsNavButtonAction() {
+        // the following code is for testing purposes, will be changed
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Friends clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void doHomeNavButtonAction() {
+        // the following code is for testing purposes, will be changed
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Home clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void doBooksNavButtonAction() {
+        // the following code is for testing purposes, will be changed
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Books clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setCardViewClickListeners() {
+        View cardView = findViewById(R.id.card_view);
+
+        Button rateButton = (Button) cardView.findViewById(R.id.rate_button);
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doRateButtonAction();
+            }
+        });
+
+        Button shareButton = (Button) cardView.findViewById(R.id.share_button);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doShareButtonAction();
+            }
+        });
+
+        Button reviewButton = (Button) cardView.findViewById(R.id.review_button);
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doReviewButtonAction();
+            }
+        });
+    }
+
+    private void doRateButtonAction() {
+        // the following code is for testing purposes, will be changed
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Rate clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void doShareButtonAction() {
+        // the following code is for testing purposes, will be changed
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Share clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void doReviewButtonAction() {
+        // the following code is for testing purposes, will be changed
+        Context context = getApplicationContext();
+        Toast.makeText(context, "Review clicked", Toast.LENGTH_SHORT).show();
     }
 
     private void displayFragment(View view, int position) {
