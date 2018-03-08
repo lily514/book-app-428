@@ -24,8 +24,12 @@
     <string name="rate">Rate</string>
     <string name="recommend">Recommend</string>
     <string name="review">Review</string>
-
     <string name="book">Book</string>
+
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="reading">Reading</string>
+    <string name="reviewed">Reviewed</string>
 
     <string name="hello_blank_fragment">This is a blank fragment</string>
 </resources>

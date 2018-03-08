@@ -13,13 +13,12 @@
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
 
-        <ImageView
-            android:id="@+id/book_cover"
+        <include
             android:layout_width="115dp"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/book_placeholder" />
+            layout="@layout/book_cover_view"/>
 
         <TextView
             android:id="@+id/book_title"
@@ -87,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/rate"
-                style="?android:attr/buttonBarButtonStyle"/>
+                style="?buttonBarButtonStyle"/>
 
             <Button
                 android:id="@+id/review_button"
@@ -95,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/review"
-                style="?android:attr/buttonBarButtonStyle"/>
+                style="?buttonBarButtonStyle"/>
 
             <Button
                 android:id="@+id/recommend_button"
@@ -103,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/recommend"
-                style="?android:attr/buttonBarButtonStyle"/>
+                style="?buttonBarButtonStyle"/>
         </LinearLayout>
 
     </LinearLayout>
