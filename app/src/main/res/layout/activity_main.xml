@@ -30,6 +30,12 @@
             layout="@layout/action_bar" />
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/container_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
     <fragment
         android:id="@+id/fragment_navigation_drawer"
         android:name="com.cs428.app.bookapp.activity.FragmentDrawer"
