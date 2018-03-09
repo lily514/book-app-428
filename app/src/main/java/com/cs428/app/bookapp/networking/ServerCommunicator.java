@@ -3,7 +3,13 @@ package com.cs428.app.bookapp.networking;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -148,12 +154,46 @@ public class ServerCommunicator {
         return false;
     }
 
-    private String sendGetRequest(String requestBody, String uri) {
-       return null;
+    private String sendGetRequest(String requestBody, String uri) throws IOException {
+        URL url = new URL(BASE_URL + uri);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        int responseCode = connection.getResponseCode();
+        if(responseCode == HttpURLConnection.HTTP_OK) {
+            return readResponse(connection);
+        } else {
+            return null;
+        }
     }
 
-    private String sendPostRequest(String requestBody, String uri) {
-        return null;
+    private String sendPostRequest(String requestBody, String uri) throws IOException {
+        URL url = new URL(BASE_URL + uri);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+
+        connection.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+        out.writeBytes(requestBody);
+        out.flush();
+        out.close();
+
+        int responseCode = connection.getResponseCode();
+        if(responseCode == HttpURLConnection.HTTP_OK) {
+            return readResponse(connection);
+        } else {
+            return null;
+        }
+    }
+
+    private String readResponse(HttpURLConnection connection) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuilder builder = new StringBuilder();
+        while((inputLine = reader.readLine()) != null) {
+            builder.append(inputLine);
+        }
+
+        return builder.toString();
     }
 
 }
