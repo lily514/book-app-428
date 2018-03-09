@@ -31,7 +31,12 @@ public class ServerProxy implements IServerProxy{
 
     @Override
     public boolean followFriend(User user, String followUsername) {
-        List<User> allUsers
+        List<User> allUsers = this.serverCommunicator.getUsers();
+        for(User otherUser : allUsers) {
+            if(otherUser.getName().equals(followUsername)){
+                return this.serverCommunicator.followUser(user.getId(), otherUser.getId());
+            }
+        }
         return false;
     }
 

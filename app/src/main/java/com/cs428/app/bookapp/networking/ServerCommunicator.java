@@ -3,6 +3,7 @@ package com.cs428.app.bookapp.networking;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -12,6 +13,7 @@ import java.util.List;
 public class ServerCommunicator {
 
     private Serializer serializer;
+    private final String BASE_URL = "http://www.test.com/";
 
     public ServerCommunicator(Serializer serializer) {
         this.serializer = serializer;
@@ -21,7 +23,10 @@ public class ServerCommunicator {
      * @return the list of all users. Null if no users exist
      */
     public List<User> getUsers(){
-        return null;
+        String usersUrl = "/users";
+        String requestBody = "";
+        String jsonResponse = this.sendGetRequest(requestBody, usersUrl);
+        return this.serializer.deserializeListOfUsers(jsonResponse);
     }
 
     /** Method to return user info for a specific user given an id.
@@ -30,7 +35,9 @@ public class ServerCommunicator {
      * @return the information for the given user, null if does not exist.
      */
     public User getUser(int id) {
-        return null;
+        String userUrl = "/users/" + id;
+        String jsonResponse = this.sendGetRequest("", userUrl);
+        return this.serializer.deserializeUser(jsonResponse);
     }
 
     /** Method to return the friends list of a given user.
@@ -38,15 +45,19 @@ public class ServerCommunicator {
      * @return the list of friends for a given user, null if does not exist.
      */
     public List<User> getFriends(int id) {
-        return null;
+        String friendsUrl = "/users/" + id + "/friends";
+        String jsonResponse = this.sendGetRequest("", friendsUrl);
+        return this.serializer.deserializeListOfUsers(jsonResponse);
     }
 
     /** Method to return user's friend's reading list.
      * @param id id of user with friend list to search.
      * @return list of books read by all the given user's friends.
      */
-    public List<Object> getUsersFriendsReadingList(int id) {
-        return null;
+    public List<Book> getUsersFriendsReadingList(int id) {
+        String listUrl = "/users/" + id + "/friends/books";
+        String jsonResponse = this.sendGetRequest("", listUrl);
+        return this.serializer.deserializeListOfBooks(jsonResponse);
     }
 
     /** Method to log a user in
@@ -72,7 +83,17 @@ public class ServerCommunicator {
      * @return boolean indicating success.
      */
     public boolean addRecommendation(int id, Book book) {
-        return false;
+        String recUrl = "/users/" + id + "/recommendation";
+        String reqeustBody = this.serializer.serializeBook(book);
+        try {
+            this.sendPostRequest(reqeustBody, recUrl);
+            //TODO: Change exception type
+        } catch (Exception e) {
+            System.out.println("Error****");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     /** Method to add a book to a given user's reading list
@@ -81,7 +102,11 @@ public class ServerCommunicator {
      * @return boolean indicating success
      */
     public boolean addToReadingList(int id, Book book) {
-        return false;
+        String listUrl = "/users/" + id + "/readingList";
+        String requestBody = this.serializer.serializeBook(book);
+        this.sendPostRequest(requestBody, listUrl);
+        //TODO: Check for error
+        return true;
     }
 
     /** Method to add another user to a certain user's friend's list.
@@ -90,8 +115,11 @@ public class ServerCommunicator {
      * @return boolean indicating success
      */
     public boolean followUser(int myId, int otherId) {
+        String followUrl = "/users/" + myId + "/follow";
+        //TODO: Finish this with id or with user depending on what makes sense.
         return false;
     }
+
 
     /** Method to search for a book with a given search term.
      * @param searchString
@@ -118,6 +146,14 @@ public class ServerCommunicator {
      */
     public boolean rateBook(int userId, int bookId, int rating) {
         return false;
+    }
+
+    private String sendGetRequest(String requestBody, String uri) {
+       return null;
+    }
+
+    private String sendPostRequest(String requestBody, String uri) {
+        return null;
     }
 
 }
