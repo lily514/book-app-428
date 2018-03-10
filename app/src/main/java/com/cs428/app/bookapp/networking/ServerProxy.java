@@ -46,10 +46,12 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public boolean recommendBook(User user, int bookId) {
+    public boolean recommendBook(User user, String bookId) {
         boolean success = true;
-        for(User friend : user.getFollowing()){
-            success = this.serverCommunicator.addRecommendation(user.getId(), bookId);
+        //for(User friend : user.getFollowing()){
+        for(String friendId : user.getFollowing()){
+            Book book = this.serverCommunicator.getBookById(bookId);
+            success = this.serverCommunicator.addRecommendation(friendId, book);
         }
         return success;
     }

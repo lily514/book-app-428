@@ -48,7 +48,7 @@ public interface IServerProxy {
      * @param bookId the book being recommended
      * @return a boolean indicating success
      */
-    public boolean recommendBook(User user, int bookId);
+    public boolean recommendBook(User user, String bookId);
 
     /**
      * Method to submit a rating for a given book by a given user
