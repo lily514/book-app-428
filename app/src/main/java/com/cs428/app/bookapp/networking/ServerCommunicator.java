@@ -31,7 +31,13 @@ public class ServerCommunicator {
     public List<User> getUsers(){
         String usersUrl = "/users";
         String requestBody = "";
-        String jsonResponse = this.sendGetRequest(requestBody, usersUrl);
+        String jsonResponse = null;
+        try {
+            jsonResponse = this.sendGetRequest(requestBody, usersUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
         return this.serializer.deserializeListOfUsers(jsonResponse);
     }
 
@@ -42,7 +48,13 @@ public class ServerCommunicator {
      */
     public User getUser(int id) {
         String userUrl = "/users/" + id;
-        String jsonResponse = this.sendGetRequest("", userUrl);
+        String jsonResponse = null;
+        try {
+            jsonResponse = this.sendGetRequest("", userUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
         return this.serializer.deserializeUser(jsonResponse);
     }
 
@@ -52,7 +64,13 @@ public class ServerCommunicator {
      */
     public List<User> getFriends(int id) {
         String friendsUrl = "/users/" + id + "/friends";
-        String jsonResponse = this.sendGetRequest("", friendsUrl);
+        String jsonResponse = null;
+        try {
+            jsonResponse = this.sendGetRequest("", friendsUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
         return this.serializer.deserializeListOfUsers(jsonResponse);
     }
 
@@ -62,7 +80,13 @@ public class ServerCommunicator {
      */
     public List<Book> getUsersFriendsReadingList(int id) {
         String listUrl = "/users/" + id + "/friends/books";
-        String jsonResponse = this.sendGetRequest("", listUrl);
+        String jsonResponse = null;
+        try {
+            jsonResponse = this.sendGetRequest("", listUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
         return this.serializer.deserializeListOfBooks(jsonResponse);
     }
 
@@ -88,7 +112,7 @@ public class ServerCommunicator {
      * @param book the book to be added to the recommendation list
      * @return boolean indicating success.
      */
-    public boolean addRecommendation(int id, Book book) {
+    public boolean addRecommendation(String id, Book book) {
         String recUrl = "/users/" + id + "/recommendation";
         String reqeustBody = this.serializer.serializeBook(book);
         try {
@@ -110,8 +134,12 @@ public class ServerCommunicator {
     public boolean addToReadingList(int id, Book book) {
         String listUrl = "/users/" + id + "/readingList";
         String requestBody = this.serializer.serializeBook(book);
-        this.sendPostRequest(requestBody, listUrl);
-        //TODO: Check for error
+        try {
+            this.sendPostRequest(requestBody, listUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
@@ -120,10 +148,16 @@ public class ServerCommunicator {
      * @param otherId the id of the friend that they will be adding.
      * @return boolean indicating success
      */
-    public boolean followUser(int myId, int otherId) {
+    public boolean followUser(String myId, String otherId) {
         String followUrl = "/users/" + myId + "/follow";
-        //TODO: Finish this with id or with user depending on what makes sense.
-        return false;
+        String requestBody = otherId;
+        try {
+            this.sendPostRequest(requestBody, followUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 
@@ -139,7 +173,7 @@ public class ServerCommunicator {
      * @param id id of book to be fetched
      * @return the book associated with the input id. Null if none found.
      */
-    public Book getBookById(int id) {
+    public Book getBookById(String id) {
         return null;
     }
 
