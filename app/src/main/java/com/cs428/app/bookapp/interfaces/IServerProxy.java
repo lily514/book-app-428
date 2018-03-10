@@ -2,7 +2,7 @@ package com.cs428.app.bookapp.interfaces;
 
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
-import com.cs428.app.bookapp.networking.ServerCommunicator;
+//import com.cs428.app.bookapp.networking.ServerCommunicator;
 
 import java.util.List;
 
