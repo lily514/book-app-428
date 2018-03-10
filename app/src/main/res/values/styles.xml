@@ -8,12 +8,9 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
-    </style>
-    <style name="MaterialTheme.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonPrimary">@color/primaryColor</item>
-        <item name="colorButtonDark">@color/primaryDarkColor</item>
-        <item name="colorButtonAccent">@color/secondaryColor</item>
-        <item name="colorButtonText">@color/white</item>
-
+        <!--<item name="colorButtonPrimary">@color/primaryColor</item>-->
+        <!--<item name="colorButtonDark">@color/primaryDarkColor</item>-->
+        <!--<item name="colorButtonAccent">@color/secondaryColor</item>-->
+        <!--<item name="colorButtonText">@color/white</item>-->
     </style>
 </resources>

@@ -31,8 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/follow"
-            style="@style/MaterialTheme.Button"/>
+            android:text="@string/follow" />
 
         <ImageView
             android:id="@+id/horizontal_divider"
