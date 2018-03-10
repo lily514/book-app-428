@@ -2,6 +2,7 @@ package com.cs428.app.bookapp.networking;
 
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
+import com.cs428.app.bookapp.interfaces.IServerCommunicator;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by mgard on 3/2/2018.
  */
 
-public class ServerCommunicator {
+public class ServerCommunicator implements IServerCommunicator {
 
     private Serializer serializer;
     private final String BASE_URL = "http://www.test.com/";
@@ -28,6 +29,7 @@ public class ServerCommunicator {
     /** Method to fetch a list of all users from the server
      * @return the list of all users. Null if no users exist
      */
+    @Override
     public List<User> getUsers(){
         String usersUrl = "/users";
         String requestBody = "";
@@ -46,7 +48,8 @@ public class ServerCommunicator {
      * @param id the id of the user to be fetched
      * @return the information for the given user, null if does not exist.
      */
-    public User getUser(int id) {
+    @Override
+    public User getUser(String id) {
         String userUrl = "/users/" + id;
         String jsonResponse = null;
         try {
@@ -62,7 +65,8 @@ public class ServerCommunicator {
      * @param id the id of the user associated with the desired friends list
      * @return the list of friends for a given user, null if does not exist.
      */
-    public List<User> getFriends(int id) {
+    @Override
+    public List<User> getFriends(String id) {
         String friendsUrl = "/users/" + id + "/friends";
         String jsonResponse = null;
         try {
@@ -78,7 +82,8 @@ public class ServerCommunicator {
      * @param id id of user with friend list to search.
      * @return list of books read by all the given user's friends.
      */
-    public List<Book> getUsersFriendsReadingList(int id) {
+    @Override
+    public List<Book> getUsersFriendsReadingList(String id) {
         String listUrl = "/users/" + id + "/friends/books";
         String jsonResponse = null;
         try {
@@ -95,6 +100,7 @@ public class ServerCommunicator {
      * @param password user's password
      * @return a user if successful, null otherwise.
      */
+    @Override
     public User login(String username, String password) {
         return null;
     }
@@ -103,6 +109,7 @@ public class ServerCommunicator {
      * @param user the new User object to be registered
      * @return a boolean indicating if the action was successful
      */
+    @Override
     public boolean registerUser(User user) {
         return false;
     }
@@ -112,6 +119,7 @@ public class ServerCommunicator {
      * @param book the book to be added to the recommendation list
      * @return boolean indicating success.
      */
+    @Override
     public boolean addRecommendation(String id, Book book) {
         String recUrl = "/users/" + id + "/recommendation";
         String reqeustBody = this.serializer.serializeBook(book);
@@ -131,7 +139,8 @@ public class ServerCommunicator {
      * @param book the book to be added to the reading list.
      * @return boolean indicating success
      */
-    public boolean addToReadingList(int id, Book book) {
+    @Override
+    public boolean addToReadingList(String id, Book book) {
         String listUrl = "/users/" + id + "/readingList";
         String requestBody = this.serializer.serializeBook(book);
         try {
@@ -148,6 +157,7 @@ public class ServerCommunicator {
      * @param otherId the id of the friend that they will be adding.
      * @return boolean indicating success
      */
+    @Override
     public boolean followUser(String myId, String otherId) {
         String followUrl = "/users/" + myId + "/follow";
         String requestBody = otherId;
@@ -165,6 +175,7 @@ public class ServerCommunicator {
      * @param searchString
      * @return a list of books (or ids) associated with the search term. Null if none exist.
      */
+    @Override
     public List<Book> searchForBook(String searchString) {
         return null;
     }
@@ -173,6 +184,7 @@ public class ServerCommunicator {
      * @param id id of book to be fetched
      * @return the book associated with the input id. Null if none found.
      */
+    @Override
     public Book getBookById(String id) {
         return null;
     }
@@ -184,7 +196,8 @@ public class ServerCommunicator {
      * @param rating the rating given to the book
      * @return a value indicating success.
      */
-    public boolean rateBook(int userId, int bookId, int rating) {
+    @Override
+    public boolean rateBook(String userId, String bookId, int rating) {
         return false;
     }
 

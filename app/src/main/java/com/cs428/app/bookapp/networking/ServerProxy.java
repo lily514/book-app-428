@@ -1,5 +1,6 @@
 package com.cs428.app.bookapp.networking;
 
+import com.cs428.app.bookapp.interfaces.IServerCommunicator;
 import com.cs428.app.bookapp.interfaces.IServerProxy;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
@@ -12,9 +13,9 @@ import java.util.List;
 
 public class ServerProxy implements IServerProxy{
 
-    private ServerCommunicator serverCommunicator;
+    private IServerCommunicator serverCommunicator;
 
-    public ServerProxy(ServerCommunicator serverCommunicator) {
+    public ServerProxy(IServerCommunicator serverCommunicator) {
         this.serverCommunicator = serverCommunicator;
     }
 
@@ -63,6 +64,7 @@ public class ServerProxy implements IServerProxy{
 
     @Override
     public List<Book> getRecommendationFor(User user) {
+        //TODO: Will a user have a list of recommendations? What is the api endpoint for that??
         return null;
     }
 }
