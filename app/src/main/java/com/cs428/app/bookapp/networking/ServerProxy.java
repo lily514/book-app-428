@@ -48,8 +48,8 @@ public class ServerProxy implements IServerProxy{
     @Override
     public boolean recommendBook(User user, int bookId) {
         boolean success = true;
-        for(User friend : user.getFriends()){
-            success = this.serverCommunicator.addRecommendation(this.user.getId(), bookId);
+        for(User friend : user.getFollowing()){
+            success = this.serverCommunicator.addRecommendation(user.getId(), bookId);
         }
         return success;
     }
