@@ -20,8 +20,13 @@ class Error():
 def lambda_handler(event, context):
     
     dynamodb = boto3.resource('dynamodb')
-    resource = event["path"]
+    resource = event["resource"]
+    print(resource)
     http_method = event["httpMethod"]
+    check_if_user_has_list(dynamodb, 2)
+    
+    return
+    
     
     if http_method == 'GET':
         if resource =="/users":
@@ -96,10 +101,15 @@ def get_all_users(dynamodb):
     json_string = format_dynamo_items_to_json(items, 'users')
     return response(json_string, 200) 
     
-def get_user(dynamodb, id):
-    item = get_item(dynamodb, 'users', {"id":id})
+def get_user(dynamodb, string_id):
+    item = get_item(dynamodb, 'users', {"id": int(string_id)})
     json_string = json.dumps(item, cls=DecimalEncoder)
     return response(json_string, 200)
+
+def check_if_user_has_list(dynamodb, user_id, list_name):
+    user = get_item(dynamodb, 'users', {"id": user_id})
+    if list_name not in user:
+        # add empty list to user
 
 def post_list_value_for_user(dynamodb, user_id, list_name, value):
     table = dynamodb.Table('users')
