@@ -5,8 +5,12 @@ package com.cs428.app.bookapp.model;
  */
 
 public class Model {
-    public static final Model SINGLETON = new Model();
-    public User currentUser = null;
+    private static final Model SINGLETON = new Model();
+    protected User currentUser = null;
 
     private Model() {}
+
+    public static Model getSINGLETON() {return SINGLETON;}
+
+    public void setCurrentUser(User user){currentUser = user;}
 }
