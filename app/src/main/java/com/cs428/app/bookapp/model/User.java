@@ -16,20 +16,20 @@ public class User extends Person {
         isUser = true;
     }
 
-    public void addToReadingList(Book book) {
-        if (readingList != null) readingList.add(book);
+    public void addToReadingList(String bookID) {
+        if (readingList != null) readingList.add(bookID);
     }
 
-    public void addToReviewedBooks(Book book) {
-        if (reviewedBooks != null) reviewedBooks.add(book);
+    public void addToReviewedBooks(String bookID) {
+        if (reviewedBooks != null) reviewedBooks.add(bookID);
     }
 
-    public void removeFromReadingList(Book book) {
-        if (readingList != null) readingList.remove(book);
+    public void removeFromReadingList(String bookID) {
+        if (readingList != null) readingList.remove(bookID);
     }
 
-    public void removeFromReviewedBooks(Book book) {
-        if (reviewedBooks != null) reviewedBooks.remove(book);
+    public void removeFromReviewedBooks(String bookID) {
+        if (reviewedBooks != null) reviewedBooks.remove(bookID);
     }
 
     public void followUser(String id) {
