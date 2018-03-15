@@ -9,8 +9,8 @@ import java.util.List;
 public class Person {
     protected String name;
     protected String id;
-    protected List<Book> readingList = null;
-    protected List<Book> reviewedBooks = null;
+    protected List<String> readingList = null;
+    protected List<String> reviewedBooks = null;
     protected boolean isUser = false;
 
     public Person(String name, String id) {
@@ -24,19 +24,19 @@ public class Person {
 
     public String getId() { return id; }
 
-    public List<Book> getReadingList() {
+    public List<String> getReadingList() {
         return readingList;
     }
 
-    public List<Book> getReviewedBooks() {
+    public List<String> getReviewedBooks() {
         return reviewedBooks;
     }
 
-    public void setReadingList(List<Book> readingList) {
+    public void setReadingList(List<String> readingList) {
         this.readingList = readingList;
     }
 
-    public void setReviewedBooks(List<Book> reviewedBooks) {
+    public void setReviewedBooks(List<String> reviewedBooks) {
         this.reviewedBooks = reviewedBooks;
     }
 }
