@@ -1,5 +1,7 @@
 package com.cs428.app.bookapp.activity.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,9 @@ import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.Person;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -112,7 +117,16 @@ public class ProfileFragment extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             // - get element from dataset at this position
             // - replace the contents of the view with that element
-            holder.imageView.setImageBitmap(books.get(position).getCover());
+
+            //TODO: make sure this works, getCover now returns a url so this was changed to adapt to that
+            String url = books.get(position).getCover();
+            Bitmap bitmap = null;
+            try { bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
+            } catch (IOException e) {e.printStackTrace();}
+            holder.imageView.setImageBitmap(bitmap);
+
+            //original code:
+            //holder.imageView.setImageBitmap(books.get(position).getCover());
         }
 
         // Return the size of your dataset (invoked by the layout manager)
