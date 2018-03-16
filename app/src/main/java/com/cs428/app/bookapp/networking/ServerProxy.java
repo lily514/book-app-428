@@ -58,13 +58,21 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public boolean rateBook(User user, Book book, int rating) {
+    public boolean rateBook(User user, String bookID, int rating) {
+        //TODO: implement rateBook
         return false;
     }
 
     @Override
     public List<Book> getRecommendationFor(User user) {
         //TODO: Will a user have a list of recommendations? What is the api endpoint for that??
+        return null;
+    }
+
+    @Override
+    public Book getBookById(String bookId)
+    {
+        //TODO: implement GetBookById
         return null;
     }
 }
