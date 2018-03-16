@@ -1,6 +1,7 @@
 package com.cs428.app.bookapp.interfaces;
 
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
 
 import java.util.List;
@@ -25,5 +26,7 @@ public interface IClientFacade {
     boolean rateBook(String book_id, int rating);
     boolean recomendBook(String book_id);
 
-
+    /*profile page*/
+    List<Book> getPersonsReadingList(Person person);
+    List<Book> getPersonsReviewedList(Person person);
 }

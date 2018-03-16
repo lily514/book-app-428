@@ -56,11 +56,11 @@ public interface IServerProxy {
      *  depending on what we want to support in the application.
      *
      * @param user the user submitting the rating
-     * @param book the book being rated
+     * @param bookID the id of the book being rated
      * @param rating the rating to be submitted
      * @return a boolean indicating success
      */
-    public boolean rateBook(User user, Book book, int rating);
+    public boolean rateBook(User user, String bookID, int rating);
 
     /**
      * Mehtod to get the recommendations for a given user
@@ -69,5 +69,10 @@ public interface IServerProxy {
      */
     public List<Book> getRecommendationFor(User user);
 
-
+    /*
+     *Method to get a book object by the bookID
+     * @param bookId the id of the book in the database
+     * @return a book object
+     */
+    public Book getBookById(String bookId);
 }

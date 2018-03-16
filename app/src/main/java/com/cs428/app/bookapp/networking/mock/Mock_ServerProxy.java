@@ -45,7 +45,7 @@ public class Mock_ServerProxy implements IServerProxy {
     }
 
     @Override
-    public boolean rateBook(User user, Book book, int rating) {
+    public boolean rateBook(User user, String bookID, int rating) {
         return true;
     }
 
@@ -58,4 +58,9 @@ public class Mock_ServerProxy implements IServerProxy {
         }
         return testBooks;
     }
+
+    @Override
+    public Book getBookById(String bookId){
+        //todo: needs to be implemented
+        return null;}
 }
