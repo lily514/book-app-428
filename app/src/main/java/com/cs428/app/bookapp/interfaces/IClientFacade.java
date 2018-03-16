@@ -23,7 +23,7 @@ public interface IClientFacade {
     /*book page*/
     Book get_book(String bookId);
     boolean rateBook(String book_id, int rating);
-    boolean reccomendBook(String book_id);
+    boolean recomendBook(String book_id);
 
 
 }
