@@ -13,4 +13,6 @@ public class Model {
     public static Model getSINGLETON() {return SINGLETON;}
 
     public void setCurrentUser(User user){currentUser = user;}
+
+    public User getCurrentUser() {return currentUser;}
 }

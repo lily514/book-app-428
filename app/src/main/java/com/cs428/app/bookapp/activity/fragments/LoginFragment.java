@@ -1,6 +1,21 @@
 package com.cs428.app.bookapp.activity.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+
+import com.cs428.app.bookapp.R;
+
+/**
+ * Written by Taetem
+ * Edited by Lily
+ */
 public class LoginFragment extends Fragment {
 
     public LoginFragment() {
@@ -17,7 +32,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.login, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
 
         // Inflate the layout for this fragment
@@ -29,8 +44,9 @@ public class LoginFragment extends Fragment {
 
             public void onClick(View v) {
                 // Switching to Register screen
-                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(i);
+                //TODO: Register Activity??
+                //Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                //startActivity(i);
             }
         });
 
