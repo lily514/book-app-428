@@ -1,7 +1,5 @@
 package com.cs428.app.bookapp.adapter;
 
-import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +12,16 @@ import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.model.Book;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by chees on 2/26/2018.
  */
 // http://android.xsoftlab.net/training/tv/playback/card.html
 // https://www.learnhowtoprogram.com/android/web-service-backends-and-custom-fragments/custom-adapters-with-recyclerview
-public class HomeViewListAdapter extends RecyclerView.Adapter<HomeViewListAdapter.CardViewHolder> {
+public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapter.CardViewHolder> {
     private ArrayList<Book> recommendedBooks;
 
-    public HomeViewListAdapter(ArrayList<Book> recommendedBooks) {
+    public BookCardListAdapter(ArrayList<Book> recommendedBooks) {
         this.recommendedBooks = recommendedBooks;
     }
 
