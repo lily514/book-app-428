@@ -37,7 +37,7 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
         Book book = recommendedBooks.get(position);
         holder.bookTitle.setText(book.getName());
         holder.bookDescription.setText(book.getSummary());
-//        holder.bookCover.setImageBitmap(book.getCover()); TODO: make return type of getCover to bitmap
+        holder.bookCover.setImageBitmap(book.getCover());
 
         holder.rateButton.setOnClickListener(new View.OnClickListener() {
             @Override

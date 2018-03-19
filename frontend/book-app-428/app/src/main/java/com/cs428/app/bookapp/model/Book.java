@@ -2,7 +2,13 @@ package com.cs428.app.bookapp.model;
 
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -50,8 +56,18 @@ public class Book{// implements Serializable{
     }
 
 
-    public String getCover() {
-        return coverURL;
+    public Bitmap getCover() {
+        try {
+            URL url = new URL(this.coverURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap cover = BitmapFactory.decodeStream(input);
+            return cover;
+        } catch (IOException e) {
+            return null;
+        }
     }
     public void setCover(String URL) {
         this.coverURL = URL;

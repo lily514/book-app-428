@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
+import com.cs428.app.bookapp.model.ClientFacade;
 import com.cs428.app.bookapp.model.Model;
 
 /**
@@ -41,8 +42,7 @@ public class HomeFragment extends Fragment {
         homeNavButton = (ImageButton) rootView.findViewById(R.id.home_nav_button);
         booksNavButton = (ImageButton) rootView.findViewById(R.id.books_nav_button);
 
-        BookCardListAdapter adapter = new BookCardListAdapter(Model.getSINGLETON()
-                .getCurrentUser().getRecommendedBooks()); // TODO: make method in user class
+        BookCardListAdapter adapter = new BookCardListAdapter(); // TODO: make method in user class
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);
