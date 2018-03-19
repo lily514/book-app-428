@@ -1,9 +1,13 @@
 package com.cs428.app.bookapp.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
@@ -19,36 +23,65 @@ import java.util.List;
 // https://www.learnhowtoprogram.com/android/web-service-backends-and-custom-fragments/custom-adapters-with-recyclerview
 public class HomeViewListAdapter extends RecyclerView.Adapter<HomeViewListAdapter.CardViewHolder> {
     private ArrayList<Book> recommendedBooks;
-    private Context context;
 
-    public HomeViewListAdapter(Context context, ArrayList<Book> recommendedBooks) {
-        this.context = context;
+    public HomeViewListAdapter(ArrayList<Book> recommendedBooks) {
         this.recommendedBooks = recommendedBooks;
     }
 
     @Override
-    public void onBindViewHolder(CardViewHolder holder, int position, List<Object> payloads) {
-        super.onBindViewHolder(holder, position, payloads);
-    }
-
-    @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View bookCardView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_view_layout, parent, false);
+        return new CardViewHolder(bookCardView);
     }
 
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
+        Book book = recommendedBooks.get(position);
+        holder.bookTitle.setText(book.getName());
+        holder.bookDescription.setText(book.getSummary());
+//        holder.bookCover.setImageBitmap(book.getCover()); TODO: make return type of getCover to bitmap
 
+        holder.rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: go to rate page or pull up dialog rate box
+            }
+        });
+
+        holder.recommendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: bring up recommend page
+            }
+        });
+
+        holder.reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: go to book review page
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return recommendedBooks.size();
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
+        public TextView bookDescription, bookTitle;
+        public Button rateButton, recommendButton, reviewButton;
+        public ImageView bookCover;
+
         public CardViewHolder(View v) {
             super(v);
+            bookCover = (ImageView) v.findViewById(R.id.book_cover);
+            bookTitle = (TextView) v.findViewById(R.id.book_card_title);
+            bookDescription = (TextView) v.findViewById(R.id.book_description);
+            rateButton = (Button) v.findViewById(R.id.rate_button);
+            recommendButton = (Button) v.findViewById(R.id.recommend_button);
+            reviewButton = (Button) v.findViewById(R.id.review_button);
         }
     }
 
