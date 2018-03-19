@@ -9,6 +9,8 @@ import java.util.List;
 
 public class User extends Person {
     private List<String> following;
+    private String email;
+    private String password;
 
     public User(String name, String id) {
         super(name, id);
@@ -44,5 +46,21 @@ public class User extends Person {
 
     public boolean isFollowing(String id) {
         return following.contains(id);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -72,7 +72,6 @@ public class ServerProxy implements IServerProxy{
     @Override
     public Book getBookById(String bookId)
     {
-        //TODO: implement GetBookById
-        return null;
+        return this.serverCommunicator.getBookById(bookId);
     }
 }

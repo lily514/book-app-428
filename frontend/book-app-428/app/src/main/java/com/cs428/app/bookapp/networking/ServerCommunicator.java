@@ -186,7 +186,15 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public Book getBookById(String id) {
-        return null;
+        String bookUrl = "/book/" + id;
+        String response;
+        try {
+            response = sendGetRequest("", bookUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return serializer.deserializeBook(response);
     }
 
     /**

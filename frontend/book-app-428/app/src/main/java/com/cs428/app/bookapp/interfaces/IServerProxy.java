@@ -69,8 +69,8 @@ public interface IServerProxy {
      */
     public List<Book> getRecommendationFor(User user);
 
-    /*
-     *Method to get a book object by the bookID
+    /**
+     * Method to get a book object by the bookID
      * @param bookId the id of the book in the database
      * @return a book object
      */

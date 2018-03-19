@@ -84,4 +84,12 @@ public class Book{// implements Serializable{
 
     public String getDate() {return date;}
     public void setDate(String date){this.date = date;}
+
+    public void setReviews(List<String> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<String> getReviews() {
+        return reviews;
+    }
 }
