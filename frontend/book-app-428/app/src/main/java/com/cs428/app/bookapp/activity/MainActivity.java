@@ -16,8 +16,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.amazonaws.mobile.auth.ui.SignInUI;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
+import com.cs428.app.bookapp.activity.fragments.LoginFragment;
 import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
 
@@ -54,6 +59,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         setCardViewClickListeners();
         setActionBarClickListeners();
+
+        // Add a call to initialize AWSMobileClient
+        AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
+            @Override
+            public void onComplete(AWSStartupResult awsStartupResult) {
+                SignInUI signin = (SignInUI) AWSMobileClient.getInstance().getClient(MainActivity.this, SignInUI.class);
+                signin.login(MainActivity.this, MainActivity.class).execute();
+            }
+        }).execute();
     }
 
 
@@ -136,31 +150,32 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     private void setCardViewClickListeners() {
-        View cardView = findViewById(R.id.card_view);
+//        View cardView = findViewById(R.id.card_view);
+//
+//        Button rateButton = (Button) cardView.findViewById(R.id.rate_button);
+//        rateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                doRateButtonAction();
+//            }
+//        });
 
-        Button rateButton = (Button) cardView.findViewById(R.id.rate_button);
-        rateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doRateButtonAction();
-            }
-        });
+//        Button shareButton = (Button) cardView.findViewById(R.id.share_button);
+//        shareButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                doShareButtonAction();
+//            }
+//        });
 
-        Button shareButton = (Button) cardView.findViewById(R.id.share_button);
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doShareButtonAction();
-            }
-        });
+//        Button reviewButton = (Button) cardView.findViewById(R.id.review_button);
+//        reviewButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                doReviewButtonAction();
+//            }
+//        });
 
-        Button reviewButton = (Button) cardView.findViewById(R.id.review_button);
-        reviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doReviewButtonAction();
-            }
-        });
     }
 
     private void doRateButtonAction() {
