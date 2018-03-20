@@ -1,6 +1,7 @@
 package com.cs428.app.bookapp.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,10 +17,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCredentialsProvider;
+import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.amazonaws.mobile.auth.ui.SignInUI;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.AWSStartupHandler;
 import com.amazonaws.mobile.client.AWSStartupResult;
+import com.amazonaws.mobile.config.AWSConfiguration;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
 import com.cs428.app.bookapp.activity.fragments.LoginFragment;
@@ -60,14 +65,25 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         setCardViewClickListeners();
         setActionBarClickListeners();
 
-        // Add a call to initialize AWSMobileClient
-        AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
-            @Override
-            public void onComplete(AWSStartupResult awsStartupResult) {
-                SignInUI signin = (SignInUI) AWSMobileClient.getInstance().getClient(MainActivity.this, SignInUI.class);
-                signin.login(MainActivity.this, MainActivity.class).execute();
-            }
-        }).execute();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        CognitoCredentialsProvider provider = (CognitoCredentialsProvider) AWSMobileClient.getInstance().getCredentialsProvider();
+        provider.withSessionDuration(0);
+        provider.clearCredentials();
+        provider.withLogins(null);
+        AWSStartupResult result = new AWSStartupResult(new IdentityManager(this));
+        AWSMobileClient.getInstance().initialize(this);
+
+        CognitoUserPool pool = new CognitoUserPool(this, new AWSConfiguration(this));
+        pool.getCurrentUser().signOut();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("quit", true);
     }
 
 
