@@ -6,6 +6,7 @@ import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.ClientFacade;
 import com.cs428.app.bookapp.model.Person;
+import com.cs428.app.bookapp.model.User;
 
 import java.util.List;
 
@@ -16,17 +17,30 @@ import java.util.List;
 public class MainPresenter implements IHomePresenter, IProfilePresenter {
 
     private IClientFacade modelFacade;
-    private Person person;
+    private Person person = null;
+    private User currentUser = null;
 
     public MainPresenter() {
         this.modelFacade = new ClientFacade();
     }
 
+    /*home page*/
     @Override
     public List<Book> getHomePageBooks() {
         return modelFacade.getHomePageBooks();
     }
 
+    @Override
+    public User getCurrentUser() {
+        return null;
+    }
+
+    @Override
+    public List<Book> searchBooks(String searchString) {
+        return null;
+    }
+
+    /*profile page*/
     @Override
     public List<Book> getPersonsReadingList() {
         return modelFacade.getPersonsReadingList(person);

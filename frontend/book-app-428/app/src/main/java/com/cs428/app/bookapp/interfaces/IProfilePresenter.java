@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by Lily on 3/21/18.
+ * IProfilePresenter gives the ProfileFragment access to methods on the ClientFacade
  */
 
 public interface IProfilePresenter extends Serializable {
