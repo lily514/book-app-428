@@ -10,8 +10,11 @@ import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.interfaces.IClientFacade;
+import com.cs428.app.bookapp.model.ClientFacade;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by chees on 2/26/2018.
@@ -19,10 +22,11 @@ import java.util.ArrayList;
 // http://android.xsoftlab.net/training/tv/playback/card.html
 // https://www.learnhowtoprogram.com/android/web-service-backends-and-custom-fragments/custom-adapters-with-recyclerview
 public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapter.CardViewHolder> {
-    private ArrayList<Book> recommendedBooks;
+    private List<Book> book_ids;
+    private IClientFacade modelFacade;
 
-    public BookCardListAdapter(ArrayList<Book> recommendedBooks) {
-        this.recommendedBooks = recommendedBooks;
+    public BookCardListAdapter(List<Book> recommendedBooks) {
+        this.book_ids = recommendedBooks;
     }
 
     @Override
@@ -34,7 +38,8 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
 
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
-        Book book = recommendedBooks.get(position);
+        //TODO: access getBook method from iClientFacade
+        Book book = book_ids.get(position);
         holder.bookTitle.setText(book.getName());
         holder.bookDescription.setText(book.getSummary());
         holder.bookCover.setImageBitmap(book.getCover());
@@ -63,7 +68,10 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
 
     @Override
     public int getItemCount() {
-        return recommendedBooks.size();
+        if (book_ids != null)
+            return book_ids.size();
+        else
+            return 0;
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder {

@@ -22,9 +22,9 @@ public interface IClientFacade {
     List<Book> searchBooks(String searchString);
 
     /*book page*/
-    Book get_book(String bookId);
+    Book getBook(String bookId);
     boolean rateBook(String book_id, int rating);
-    boolean recomendBook(String book_id);
+    boolean recommendBook(String book_id);
 
     /*profile page*/
     List<Book> getPersonsReadingList(Person person);

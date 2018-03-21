@@ -1,7 +1,5 @@
 package com.cs428.app.bookapp.activity.fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,19 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.cs428.app.bookapp.R;
-import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.interfaces.IHomePresenter;
+import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.Person;
+import com.cs428.app.bookapp.adapter.BookCardListAdapter;
 
-import com.cs428.app.bookapp.adapter.BookListAdapter;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * Created by Trevor on 2/10/2018.
@@ -35,18 +29,30 @@ public class ProfileFragment extends Fragment {
     private RecyclerView.Adapter reviewedListAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private Button actionButton;
-    private Person person = null;
+
+    private IProfilePresenter presenter;
 
     // Necessary empty constructor
     public ProfileFragment() {}
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public static HomeFragment newInstance(Serializable presenter) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("PRESENTER", presenter);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+    public void setPerson(Person person){
+           presenter.setPerson(person);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = (IProfilePresenter) getArguments().getSerializable(
+                "PRESENTER");
     }
 
     @Override
@@ -57,8 +63,8 @@ public class ProfileFragment extends Fragment {
         readingList = (RecyclerView) v.findViewById(R.id.reading_list);
         reviewedList = (RecyclerView) v.findViewById(R.id.reviewed_list);
 
-        readingListAdapter = new BookListAdapter(person.getReadingList());
-        reviewedListAdapter = new BookListAdapter(person.getReviewedBooks());
+        readingListAdapter = new BookCardListAdapter(presenter.getPersonsReadingList());
+        reviewedListAdapter = new BookCardListAdapter(presenter.getPersonsReadingList());
 
         readingList.setLayoutManager(layoutManager);
         readingList.setAdapter(readingListAdapter);
@@ -69,13 +75,13 @@ public class ProfileFragment extends Fragment {
         actionButton = (Button) v.findViewById(R.id.person_action);
 
         // You can't follow yourself, silly!
-        if (person != null && person.isUser()) {
+        if (presenter.getPerson() != null && presenter.getPerson().isUser()) {
             actionButton.setVisibility(View.INVISIBLE);
         }
 
         // Give the option to unfollow someone
-        else if (person != null && !person.isUser()
-                && Model.getSINGLETON().getCurrentUser().isFollowing(person.getId())) {
+        else if (presenter.getPerson() != null && !presenter.getPerson().isUser()
+                && Model.getSINGLETON().getCurrentUser().isFollowing(presenter.getPerson().getId())) {
             actionButton.setText(R.string.unfollow);
         }
 

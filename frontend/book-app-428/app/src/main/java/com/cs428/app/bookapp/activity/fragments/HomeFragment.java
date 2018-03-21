@@ -1,6 +1,5 @@
 package com.cs428.app.bookapp.activity.fragments;
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +11,9 @@ import android.widget.ImageButton;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
-import com.cs428.app.bookapp.model.ClientFacade;
-import com.cs428.app.bookapp.model.Model;
+import com.cs428.app.bookapp.interfaces.IHomePresenter;
+
+import java.io.Serializable;
 
 /**
  * Created by Trevor on 2/10/2018.
@@ -22,14 +22,26 @@ import com.cs428.app.bookapp.model.Model;
 public class HomeFragment extends Fragment {
     public RecyclerView recommendedList;
     public ImageButton friendsNavButton, homeNavButton, booksNavButton;
+    private IHomePresenter presenter;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
+    public static HomeFragment newInstance(Serializable presenter) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("PRESENTER", presenter);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = (IHomePresenter) getArguments().getSerializable(
+                "PRESENTER");
 
     }
 
@@ -42,7 +54,7 @@ public class HomeFragment extends Fragment {
         homeNavButton = (ImageButton) rootView.findViewById(R.id.home_nav_button);
         booksNavButton = (ImageButton) rootView.findViewById(R.id.books_nav_button);
 
-        BookCardListAdapter adapter = new BookCardListAdapter(); // TODO: make method in user class
+        BookCardListAdapter adapter = new BookCardListAdapter(presenter.getHomePageBooks()); // TODO: make method in user class
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);

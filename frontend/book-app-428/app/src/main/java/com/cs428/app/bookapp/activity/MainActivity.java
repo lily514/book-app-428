@@ -20,6 +20,7 @@ import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
 import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
+import com.cs428.app.bookapp.interfaces.IClientFacade;
 
 /*
 getUser()
@@ -36,11 +37,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     private Toolbar toolbar;
     private FragmentDrawer fragmentDrawer;
+    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_fragment);
+
+        presenter = new MainPresenter();
 
         toolbar = (Toolbar) findViewById(R.id.banner);
 
@@ -136,31 +140,32 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     private void setCardViewClickListeners() {
+        //TODO: Crashes here
         View cardView = findViewById(R.id.card_view);
 
-        Button rateButton = (Button) cardView.findViewById(R.id.rate_button);
-        rateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doRateButtonAction();
-            }
-        });
+//        Button rateButton = (Button) cardView.findViewById(R.id.rate_button);
+//        rateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                doRateButtonAction();
+//            }
+//        });
 
-        Button shareButton = (Button) cardView.findViewById(R.id.share_button);
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doShareButtonAction();
-            }
-        });
+//        Button shareButton = (Button) cardView.findViewById(R.id.share_button);
+//        shareButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                doShareButtonAction();
+//            }
+//        });
 
-        Button reviewButton = (Button) cardView.findViewById(R.id.review_button);
-        reviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doReviewButtonAction();
-            }
-        });
+//        Button reviewButton = (Button) cardView.findViewById(R.id.review_button);
+//        reviewButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                doReviewButtonAction();
+//            }
+//        });
     }
 
     private void doRateButtonAction() {
@@ -186,11 +191,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new HomeFragment();
+                fragment = HomeFragment.newInstance(presenter);
                 title = getString(R.string.title_home);
                 break;
             case 1:
-                fragment = new ProfileFragment();
+                fragment = ProfileFragment.newInstance(presenter);
                 title = getString(R.string.title_profile);
                 break;
             case 2:
