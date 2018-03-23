@@ -1,5 +1,6 @@
 package com.cs428.app.bookapp.networking;
 
+import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
@@ -13,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+
 /**
  * Created by mgard on 3/2/2018.
  */
@@ -24,6 +26,45 @@ public class ServerCommunicator implements IServerCommunicator {
 
     public ServerCommunicator(Serializer serializer) {
         this.serializer = serializer;
+        ApiClientFactory factory = new ApiClientFactory();
+
+//        BookrecommendationappClient appClient = new BookrecommendationappClient() {
+//            com.amazonaws.mobileconnectors.
+//            @Override
+//            public com.amazonaws.mobileconnectors.apigateway.ApiResponse execute(com.amazonaws.mobileconnectors.apigateway.ApiRequest apiRequest) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Empty booksTitleGet(String s) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Empty usersGet() {
+//                return null;
+//            }
+//
+//            @Override
+//            public Empty usersIdGet(String s) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Empty usersIdPost(String s) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Empty usersIdFriendsGet(String s) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Empty usersIdFriendsBooksGet(String s) {
+//                return null;
+//            }
+//        };
     }
 
     /** Method to fetch a list of all users from the server
