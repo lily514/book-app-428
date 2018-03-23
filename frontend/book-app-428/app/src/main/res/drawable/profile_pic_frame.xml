@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/profile_picture"
+        android:drawable="@drawable/ic_person"/>
+
+    <!--I'd like to find some way to make this a circular picture
+        but that's not super pressing-->
+
+</layer-list>

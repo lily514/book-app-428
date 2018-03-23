@@ -1,0 +1,16 @@
+<resources>
+    <style name="MaterialTheme" parent="MaterialTheme.Base">
+    </style>
+
+    <style name="MaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <!--<item name="colorButtonPrimary">@color/primaryColor</item>-->
+        <!--<item name="colorButtonDark">@color/primaryDarkColor</item>-->
+        <!--<item name="colorButtonAccent">@color/secondaryColor</item>-->
+        <!--<item name="colorButtonText">@color/white</item>-->
+    </style>
+</resources>
