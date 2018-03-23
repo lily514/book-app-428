@@ -1,5 +1,6 @@
 package com.cs428.app.bookapp.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,11 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.interfaces.IClientFacade;
+import com.cs428.app.bookapp.model.ClientFacade;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by chees on 2/26/2018.
@@ -19,14 +24,17 @@ import java.util.ArrayList;
 // http://android.xsoftlab.net/training/tv/playback/card.html
 // https://www.learnhowtoprogram.com/android/web-service-backends-and-custom-fragments/custom-adapters-with-recyclerview
 public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapter.CardViewHolder> {
-    private ArrayList<Book> recommendedBooks;
+    private List<Book> book_ids;
+    private ViewGroup parent;
 
-    public BookCardListAdapter(ArrayList<Book> recommendedBooks) {
-        this.recommendedBooks = recommendedBooks;
+    public BookCardListAdapter(List<Book> recommendedBooks) {
+
+        this.book_ids = recommendedBooks;
     }
 
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        this.parent = parent;
         View bookCardView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_layout, parent, false);
         return new CardViewHolder(bookCardView);
@@ -34,7 +42,7 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
 
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
-        Book book = recommendedBooks.get(position);
+        Book book = book_ids.get(position);
         holder.bookTitle.setText(book.getName());
         holder.bookDescription.setText(book.getSummary());
         holder.bookCover.setImageBitmap(book.getCover());
@@ -42,13 +50,16 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
         holder.rateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(parent.getContext(), "Rate clicked", Toast.LENGTH_SHORT).show();
                 // TODO: go to rate page or pull up dialog rate box
+
             }
         });
 
         holder.recommendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(parent.getContext(), "Recommend clicked", Toast.LENGTH_SHORT).show();
                 // TODO: bring up recommend page
             }
         });
@@ -56,6 +67,7 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
         holder.reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(parent.getContext(), "Review clicked", Toast.LENGTH_SHORT).show();
                 // TODO: go to book review page
             }
         });
@@ -63,7 +75,10 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
 
     @Override
     public int getItemCount() {
-        return recommendedBooks.size();
+        if (book_ids != null)
+            return book_ids.size();
+        else
+            return 0;
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
@@ -81,5 +96,7 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
             reviewButton = (Button) v.findViewById(R.id.review_button);
         }
     }
+
+
 
 }

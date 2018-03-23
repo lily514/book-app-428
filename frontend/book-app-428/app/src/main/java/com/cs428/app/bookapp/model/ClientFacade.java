@@ -51,11 +51,11 @@ public class ClientFacade implements IClientFacade {
         return serverProxy.searchBook(searchString);
     }
 
-    public Book get_book(String bookId){return serverProxy.getBookById(bookId);}
+    public Book getBook(String bookId){return serverProxy.getBookById(bookId);}
 
     public boolean rateBook(String book_id, int rating){return serverProxy.rateBook(model.currentUser, book_id, rating);}
 
-    public boolean recomendBook(String book_id){
+    public boolean recommendBook(String book_id){
         model.currentUser.addToReviewedBooks(book_id);
         return serverProxy.recommendBook(model.currentUser, book_id);
     }

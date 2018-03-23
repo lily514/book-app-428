@@ -1,6 +1,7 @@
 package com.cs428.app.bookapp.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,10 +17,20 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCredentialsProvider;
+import com.amazonaws.mobile.auth.core.IdentityManager;
+import com.amazonaws.mobile.auth.ui.SignInUI;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
+import com.amazonaws.mobile.config.AWSConfiguration;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
+import com.cs428.app.bookapp.activity.fragments.LoginFragment;
 import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
+import com.cs428.app.bookapp.interfaces.IClientFacade;
 
 /*
 getUser()
@@ -36,11 +47,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     private Toolbar toolbar;
     private FragmentDrawer fragmentDrawer;
+    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_fragment);
+
+        presenter = new MainPresenter();
 
         toolbar = (Toolbar) findViewById(R.id.banner);
 
@@ -52,8 +66,27 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         fragmentDrawer.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         fragmentDrawer.setDrawerListener(this);
 
-        setCardViewClickListeners();
         setActionBarClickListeners();
+
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        CognitoCredentialsProvider provider = (CognitoCredentialsProvider) AWSMobileClient.getInstance().getCredentialsProvider();
+        provider.withSessionDuration(0);
+        provider.clearCredentials();
+        provider.withLogins(null);
+        AWSStartupResult result = new AWSStartupResult(new IdentityManager(this));
+        AWSMobileClient.getInstance().initialize(this);
+
+        CognitoUserPool pool = new CognitoUserPool(this, new AWSConfiguration(this));
+        pool.getCurrentUser().signOut();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("quit", true);
     }
 
 
@@ -135,62 +168,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         Toast.makeText(context, "Books clicked", Toast.LENGTH_SHORT).show();
     }
 
-    private void setCardViewClickListeners() {
-        View cardView = findViewById(R.id.card_view);
-
-        Button rateButton = (Button) cardView.findViewById(R.id.rate_button);
-        rateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doRateButtonAction();
-            }
-        });
-
-        Button shareButton = (Button) cardView.findViewById(R.id.share_button);
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doShareButtonAction();
-            }
-        });
-
-        Button reviewButton = (Button) cardView.findViewById(R.id.review_button);
-        reviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doReviewButtonAction();
-            }
-        });
-    }
-
-    private void doRateButtonAction() {
-        // the following code is for testing purposes, will be changed
-        Context context = getApplicationContext();
-        Toast.makeText(context, "Rate clicked", Toast.LENGTH_SHORT).show();
-    }
-
-    private void doShareButtonAction() {
-        // the following code is for testing purposes, will be changed
-        Context context = getApplicationContext();
-        Toast.makeText(context, "Share clicked", Toast.LENGTH_SHORT).show();
-    }
-
-    private void doReviewButtonAction() {
-        // the following code is for testing purposes, will be changed
-        Context context = getApplicationContext();
-        Toast.makeText(context, "Review clicked", Toast.LENGTH_SHORT).show();
-    }
-
     private void displayFragment(View view, int position) {
         Fragment fragment = null;
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new HomeFragment();
+                fragment = HomeFragment.newInstance(presenter);
                 title = getString(R.string.title_home);
                 break;
             case 1:
-                fragment = new ProfileFragment();
+                fragment = ProfileFragment.newInstance(presenter);
                 title = getString(R.string.title_profile);
                 break;
             case 2:
