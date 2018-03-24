@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.cs428.app.bookapp.R;
 
+import java.io.Serializable;
+
 /**
  * Created by Trevor on 2/10/2018.
  */
@@ -16,6 +18,15 @@ import com.cs428.app.bookapp.R;
 public class SettingsFragment extends Fragment {
     public SettingsFragment() {
         // Required empty public constructor
+    }
+
+    public static SettingsFragment newInstance(Serializable presenter) {
+        SettingsFragment fragment = new SettingsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("PRESENTER", presenter);
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     @Override

@@ -22,8 +22,8 @@
             android:scaleType="fitCenter"
             android:background="@color/secondaryLightColor"
             android:contentDescription="@string/nav_item_friends"
-            android:src="@drawable/ic_people"
-            android:elevation="8dp"/>
+            android:src="@drawable/ic_person"
+            android:elevation="2dp"/>
 
         <ImageButton
             android:id="@+id/home_nav_button"
@@ -34,7 +34,7 @@
             android:background="@color/secondaryColor"
             android:contentDescription="@string/nav_item_home"
             android:src="@drawable/ic_home"
-            android:elevation="10dp"/>
+            android:elevation="4dp"/>
 
         <ImageButton
             android:id="@+id/books_nav_button"
@@ -45,7 +45,7 @@
             android:background="@color/secondaryLightColor"
             android:contentDescription="@string/nav_item_books"
             android:src="@drawable/ic_bookmark"
-            android:elevation="8dp"/>
+            android:elevation="2dp"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -35,8 +35,8 @@ public class ProfileFragment extends Fragment {
     // Necessary empty constructor
     public ProfileFragment() {}
 
-    public static HomeFragment newInstance(Serializable presenter) {
-        HomeFragment fragment = new HomeFragment();
+    public static ProfileFragment newInstance(Serializable presenter) {
+        ProfileFragment fragment = new ProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("PRESENTER", presenter);
         fragment.setArguments(bundle);

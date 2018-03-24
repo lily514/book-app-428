@@ -20,6 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/container_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <include
             android:id="@+id/action_bar"
             android:layout_width="wrap_content"
@@ -27,12 +34,6 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="15dp"
             layout="@layout/action_bar" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/container_body"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     </FrameLayout>
 
     <fragment

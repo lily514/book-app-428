@@ -13,24 +13,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.mobile.auth.core.IdentityManager;
-import com.amazonaws.mobile.auth.ui.SignInUI;
 import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.mobile.client.AWSStartupHandler;
 import com.amazonaws.mobile.client.AWSStartupResult;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
-import com.cs428.app.bookapp.activity.fragments.LoginFragment;
 import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
-import com.cs428.app.bookapp.interfaces.IClientFacade;
+
+import java.util.logging.Logger;
 
 /*
 getUser()
@@ -59,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         toolbar = (Toolbar) findViewById(R.id.banner);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         fragmentDrawer = (FragmentDrawer)
@@ -129,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         friendsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doFriendsNavButtonAction();
+                doProfileNavButtonAction();
             }
         });
 
@@ -150,10 +148,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         });
     }
 
-    private void doFriendsNavButtonAction() {
+    private void doProfileNavButtonAction() {
         // the following code is for testing purposes, will be changed
         Context context = getApplicationContext();
-        Toast.makeText(context, "Friends clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Profile clicked", Toast.LENGTH_SHORT).show();
     }
 
     private void doHomeNavButtonAction() {
@@ -173,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
+
                 fragment = HomeFragment.newInstance(presenter);
                 title = getString(R.string.title_home);
                 break;
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 title = getString(R.string.title_profile);
                 break;
             case 2:
-                fragment = new SettingsFragment();
+                fragment = SettingsFragment.newInstance(presenter);
                 title = getString(R.string.title_settings);
                 break;
             default:
