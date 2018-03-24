@@ -13,37 +13,63 @@
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
 
-        <include
-            android:layout_width="115dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            layout="@layout/book_cover_view"/>
-
-        <TextView
-            android:id="@+id/book_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="10pt"
-            android:text="Title"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/book_author"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textStyle="italic"
-            android:textSize="8pt"
-            android:text="Author"/>
+            <include
+                android:layout_width="115dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                layout="@layout/book_cover_view"/>
 
-        <TextView
-            android:id="@+id/book_meta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="6pt"
-            android:text="Publish Date | ISBN"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/book_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="10pt"
+                    android:text="Title"/>
+
+                <TextView
+                    android:id="@+id/book_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textStyle="italic"
+                    android:textSize="8pt"
+                    android:text="Author"/>
+
+                <TextView
+                    android:id="@+id/book_meta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="6pt"
+                    android:text="Publish Date | ISBN"/>
+
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    layout="@layout/goodreads_rating_tag"
+                    />
+
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="0.5" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/horizontal_divider"
@@ -106,3 +132,112 @@
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<android.support.constraint.ConstraintLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:paddingStart="20dp"-->
+        <!--android:paddingEnd="20dp">-->
+
+        <!--<include-->
+            <!--android:layout_width="115dp"-->
+            <!--android:layout_height="150dp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_margin="10dp"-->
+            <!--layout="@layout/book_cover_view"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/book_title"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:textSize="10pt"-->
+            <!--android:text="Title"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/book_author"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:textStyle="italic"-->
+            <!--android:textSize="8pt"-->
+            <!--android:text="Author"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/book_meta"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:textSize="6pt"-->
+            <!--android:text="Publish Date | ISBN"/>-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/horizontal_divider"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:src="@color/secondaryTextColor"-->
+            <!--android:layout_marginBottom="3dp"-->
+            <!--android:layout_marginTop="3dp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/book_summary"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="Summary"/>-->
+
+        <!--<ImageView-->
+            <!--android:id="@id/horizontal_divider"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:src="@color/secondaryTextColor"-->
+            <!--android:layout_marginBottom="3dp"-->
+            <!--android:layout_marginTop="3dp" />-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/book_reviews"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_marginTop="10dp">-->
+
+            <!--<Button-->
+                <!--android:id="@+id/rate_button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="@string/rate"-->
+                <!--style="?buttonBarButtonStyle"/>-->
+
+            <!--<Button-->
+                <!--android:id="@+id/review_button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="@string/review"-->
+                <!--style="?buttonBarButtonStyle"/>-->
+
+            <!--<Button-->
+                <!--android:id="@+id/recommend_button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="@string/recommend"-->
+                <!--style="?buttonBarButtonStyle"/>-->
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+<!--</android.support.constraint.ConstraintLayout>-->
