@@ -29,6 +29,7 @@ import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
 import com.cs428.app.bookapp.activity.fragments.LoginFragment;
 import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
+import com.cs428.app.bookapp.activity.fragments.SearchFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
 import com.cs428.app.bookapp.interfaces.IClientFacade;
 
