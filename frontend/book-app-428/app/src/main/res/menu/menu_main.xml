@@ -9,5 +9,6 @@
         android:title="@string/action_search"
         android:orderInCategory="100"
         android:icon="@drawable/ic_search"
+
         app:showAsAction="ifRoom" />
 </menu>

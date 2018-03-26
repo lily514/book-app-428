@@ -12,9 +12,9 @@
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
-        <item>@string/nav_item_home</item>
-        <item>@string/nav_item_friends</item>
-        <item>@string/nav_item_messages</item>
+        <item>@string/title_home</item>
+        <item>@string/title_profile</item>
+        <item>@string/title_settings</item>
     </string-array>
 
     <string name="title_profile">Profile</string>

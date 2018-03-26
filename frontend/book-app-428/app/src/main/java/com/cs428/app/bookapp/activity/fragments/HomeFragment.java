@@ -2,14 +2,18 @@ package com.cs428.app.bookapp.activity.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.cs428.app.bookapp.R;
+import com.cs428.app.bookapp.activity.FragmentDrawer;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
 import com.cs428.app.bookapp.interfaces.IHomePresenter;
 
@@ -80,6 +84,15 @@ public class HomeFragment extends Fragment {
                 // TODO: navigate to books reading list (?)
             }
         });
+
+        Toolbar myToolbar = (Toolbar) rootView.findViewById(R.id.banner);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
+        setHasOptionsMenu(true);
+
+        FragmentDrawer fragmentDrawer = (FragmentDrawer)
+                getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        fragmentDrawer.setUp(R.id.fragment_navigation_drawer,
+                (DrawerLayout) rootView.findViewById(R.id.drawer_layout), myToolbar);
 
         return rootView;
     }
