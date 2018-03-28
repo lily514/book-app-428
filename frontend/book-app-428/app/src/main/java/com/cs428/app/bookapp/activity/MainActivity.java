@@ -13,15 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.mobile.auth.core.IdentityManager;
-import com.amazonaws.mobile.auth.ui.SignInUI;
 import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.mobile.client.AWSStartupHandler;
 import com.amazonaws.mobile.client.AWSStartupResult;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
@@ -34,7 +31,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.tokens.CognitoAccessToken;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
-import com.cs428.app.bookapp.activity.fragments.LoginFragment;
 import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
 import com.cs428.app.bookapp.interfaces.IClientFacade;

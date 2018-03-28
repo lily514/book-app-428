@@ -66,6 +66,6 @@ public class Mock_ServerProxy implements IServerProxy {
 
     @Override
     public void initialize() {
-        
+
     }
 }
