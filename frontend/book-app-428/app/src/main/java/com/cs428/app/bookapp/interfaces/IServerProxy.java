@@ -75,4 +75,11 @@ public interface IServerProxy {
      * @return a book object
      */
     public Book getBookById(String bookId);
+
+    /**
+     * Method called when app first loads. Leads to call to servercommunicator to get information from backend
+     * for the current cognito user. This will then set the correct info in the model which should trigger
+     * the observers.
+     */
+    public void initialize();
 }

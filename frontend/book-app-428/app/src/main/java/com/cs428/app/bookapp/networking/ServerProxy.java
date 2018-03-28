@@ -1,8 +1,18 @@
 package com.cs428.app.bookapp.networking;
 
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.tokens.CognitoIdToken;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
 import com.cs428.app.bookapp.interfaces.IServerProxy;
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.User;
 
 import java.util.List;
@@ -73,5 +83,38 @@ public class ServerProxy implements IServerProxy{
     public Book getBookById(String bookId)
     {
         return this.serverCommunicator.getBookById(bookId);
+    }
+
+    @Override
+    public void initialize() {
+        CognitoUserPool userPool = Model.getSINGLETON().getUserPool();
+        CognitoUser user = userPool.getCurrentUser();
+        user.getSession(new AuthenticationHandler() {
+            @Override
+            public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
+                CognitoIdToken token = userSession.getIdToken();
+                serverCommunicator.setUserToken(token.toString());
+            }
+
+            @Override
+            public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
+
+            }
+
+            @Override
+            public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
+
+            }
+
+            @Override
+            public void authenticationChallenge(ChallengeContinuation continuation) {
+
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+
+            }
+        });
     }
 }

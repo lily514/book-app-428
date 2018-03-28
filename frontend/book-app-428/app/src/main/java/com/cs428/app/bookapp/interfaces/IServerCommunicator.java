@@ -20,6 +20,8 @@ public interface IServerCommunicator {
 
     User login(String username, String password);
 
+    void updateUser(String username);
+
     boolean registerUser(User user);
 
     boolean addRecommendation(String id, Book book);
@@ -33,4 +35,8 @@ public interface IServerCommunicator {
     Book getBookById(String id);
 
     boolean rateBook(String userId, String bookId, int rating);
+
+    void setUserToken(String token);
+
+    String getUserToken();
 }

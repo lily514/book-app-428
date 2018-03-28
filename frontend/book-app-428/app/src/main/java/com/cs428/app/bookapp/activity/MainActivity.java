@@ -24,13 +24,24 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.AWSStartupHandler;
 import com.amazonaws.mobile.client.AWSStartupResult;
 import com.amazonaws.mobile.config.AWSConfiguration;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.tokens.CognitoAccessToken;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.fragments.HomeFragment;
 import com.cs428.app.bookapp.activity.fragments.LoginFragment;
 import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
 import com.cs428.app.bookapp.interfaces.IClientFacade;
+import com.cs428.app.bookapp.model.Model;
+import com.cs428.app.bookapp.networking.Serializer;
+import com.cs428.app.bookapp.networking.ServerCommunicator;
+import com.cs428.app.bookapp.networking.ServerProxy;
 
 /*
 getUser()
@@ -66,9 +77,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         fragmentDrawer.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         fragmentDrawer.setDrawerListener(this);
 
-        setActionBarClickListeners();
+        /******* This is for passing the correct user information to AWS Cognito and initilizing the model *********/
 
+        // Pass this info to server communicator, login, update model with the user, let observer update ui.
+        setActionBarClickListeners();
+        CognitoUserPool pool = new CognitoUserPool(this, new AWSConfiguration(this));
+        Model.getSINGLETON().setUserPool(pool);
+        new ServerProxy(new ServerCommunicator(new Serializer())).initialize();
+
+        /**************************************** END **************************************************************/
     }
+
 
     @Override
     protected void onDestroy(){

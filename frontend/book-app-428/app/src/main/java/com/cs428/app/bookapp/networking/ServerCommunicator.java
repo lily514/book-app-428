@@ -1,9 +1,13 @@
 package com.cs428.app.bookapp.networking;
 
+import android.os.AsyncTask;
+
 import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
+import com.cs428.clientsdk.model.Empty;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -22,49 +26,11 @@ import java.util.List;
 public class ServerCommunicator implements IServerCommunicator {
 
     private Serializer serializer;
-    private final String BASE_URL = "http://www.test.com/";
+    private final String BASE_URL = "https://qu2ui0yvcd.execute-api.us-west-2.amazonaws.com/PROD";
+    private String userToken;
 
     public ServerCommunicator(Serializer serializer) {
         this.serializer = serializer;
-        ApiClientFactory factory = new ApiClientFactory();
-
-//        BookrecommendationappClient appClient = new BookrecommendationappClient() {
-//            com.amazonaws.mobileconnectors.
-//            @Override
-//            public com.amazonaws.mobileconnectors.apigateway.ApiResponse execute(com.amazonaws.mobileconnectors.apigateway.ApiRequest apiRequest) {
-//                return null;
-//            }
-//
-//            @Override
-//            public Empty booksTitleGet(String s) {
-//                return null;
-//            }
-//
-//            @Override
-//            public Empty usersGet() {
-//                return null;
-//            }
-//
-//            @Override
-//            public Empty usersIdGet(String s) {
-//                return null;
-//            }
-//
-//            @Override
-//            public Empty usersIdPost(String s) {
-//                return null;
-//            }
-//
-//            @Override
-//            public Empty usersIdFriendsGet(String s) {
-//                return null;
-//            }
-//
-//            @Override
-//            public Empty usersIdFriendsBooksGet(String s) {
-//                return null;
-//            }
-//        };
     }
 
     /** Method to fetch a list of all users from the server
@@ -108,6 +74,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public List<User> getFriends(String id) {
+        //TODO: Change this for a getFriends async task
         String friendsUrl = "/users/" + id + "/friends";
         String jsonResponse = null;
         try {
@@ -125,6 +92,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public List<Book> getUsersFriendsReadingList(String id) {
+        //TODO: Change this for using an async task to handle this.
         String listUrl = "/users/" + id + "/friends/books";
         String jsonResponse = null;
         try {
@@ -162,17 +130,8 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public boolean addRecommendation(String id, Book book) {
-        String recUrl = "/users/" + id + "/recommendation";
-        String reqeustBody = this.serializer.serializeBook(book);
-        try {
-            this.sendPostRequest(reqeustBody, recUrl);
-            //TODO: Change exception type
-        } catch (Exception e) {
-            System.out.println("Error****");
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        //TODO: create and call an addReccommendation async task
+        return false;
     }
 
     /** Method to add a book to a given user's reading list
@@ -182,15 +141,8 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public boolean addToReadingList(String id, Book book) {
-        String listUrl = "/users/" + id + "/readingList";
-        String requestBody = this.serializer.serializeBook(book);
-        try {
-            this.sendPostRequest(requestBody, listUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        //TODO: create and call an addToReadingList async task
+        return false;
     }
 
     /** Method to add another user to a certain user's friend's list.
@@ -200,15 +152,8 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public boolean followUser(String myId, String otherId) {
-        String followUrl = "/users/" + myId + "/follow";
-        String requestBody = otherId;
-        try {
-            this.sendPostRequest(requestBody, followUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        //TODO: Create and call a follow user async task
+        return false;
     }
 
 
@@ -250,19 +195,26 @@ public class ServerCommunicator implements IServerCommunicator {
         return false;
     }
 
-    private String sendGetRequest(String requestBody, String uri) throws IOException {
-        URL url = new URL(BASE_URL + uri);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        int responseCode = connection.getResponseCode();
-        if(responseCode == HttpURLConnection.HTTP_OK) {
-            return readResponse(connection);
-        } else {
-            return null;
-        }
+    @Override
+    public void updateUser(String username) {
+        //TODO: Call async task to get the user with this username using the usertoken which should already be set.
     }
 
-    private String sendPostRequest(String requestBody, String uri) throws IOException {
+    @Override
+    public String getUserToken() {
+        return userToken;
+    }
+
+    @Override
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
+    }
+
+    private String sendGetRequest(String requestBody, String uri) throws IOException {
+        return null;
+    }
+
+   /* private String sendPostRequest(String requestBody, String uri) throws IOException {
         URL url = new URL(BASE_URL + uri);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -279,7 +231,7 @@ public class ServerCommunicator implements IServerCommunicator {
         } else {
             return null;
         }
-    }
+    } */
 
     private String readResponse(HttpURLConnection connection) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -290,6 +242,39 @@ public class ServerCommunicator implements IServerCommunicator {
         }
 
         return builder.toString();
+    }
+
+    /**
+     * This class makes an async call to the backend and then updates the model on the front end.
+     * It is only valid for that use, and returns nothing.
+     */
+    private class GetUserTask extends AsyncTask<String, Void, User> {
+
+        @Override
+        protected User doInBackground(String... strings) {
+            try {
+                URL url = new URL(BASE_URL + strings[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", userToken);
+                int responseCode = connection.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK) {
+                    String response = readResponse(connection);
+                    return serializer.deserializeUser(response);
+                    //TODO: Deserialize this user
+                } else {
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(User result) {
+            Model.getSINGLETON().setCurrentUser(result);
+        }
+
     }
 
 }
