@@ -21,7 +21,6 @@ import com.cs428.app.bookapp.R;
 
 public class LoginActivity extends Activity  {
     private Toolbar toolbar;
-    private FragmentDrawer fragmentDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

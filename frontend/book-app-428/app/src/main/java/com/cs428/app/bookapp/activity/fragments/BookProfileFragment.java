@@ -2,7 +2,6 @@ package com.cs428.app.bookapp.activity.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
-import com.cs428.app.bookapp.activity.FragmentDrawer;
 import com.cs428.app.bookapp.adapter.BookReviewsListAdapter;
 import com.cs428.app.bookapp.interfaces.IBookPresenter;
 import com.cs428.app.bookapp.interfaces.Serializable;
@@ -106,11 +104,6 @@ public class BookProfileFragment extends Fragment {
         Toolbar toolbar = (Toolbar) v.findViewById(R.id.banner);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
-
-        FragmentDrawer fragmentDrawer = (FragmentDrawer)
-                getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        fragmentDrawer.setUp(R.id.fragment_navigation_drawer,
-                (DrawerLayout) v.findViewById(R.id.drawer_layout), toolbar);
 
         return v;
     }
