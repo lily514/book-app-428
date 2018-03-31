@@ -7,16 +7,16 @@ package com.cs428.app.bookapp.model;
 public class BookReview {
     private String reviewer;
     private String review;
-    private String meta;
+    private String rating;
 
     public BookReview(String review){
         this.review = review;
     }
 
-    public BookReview(String reviewer, String review, String meta){
+    public BookReview(String reviewer, String review, String rating){
         this.reviewer = reviewer;
         this.review = review;
-        this.meta = meta;
+        this.rating = rating;
     }
 
     public String getReviewer() {
@@ -27,7 +27,7 @@ public class BookReview {
         return review;
     }
 
-    public String getMeta() {
-        return meta;
+    public String getRating() {
+        return rating;
     }
 }

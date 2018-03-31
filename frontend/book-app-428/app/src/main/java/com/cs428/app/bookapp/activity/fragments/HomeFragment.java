@@ -58,10 +58,10 @@ public class HomeFragment extends Fragment {
         homeNavButton = (ImageButton) rootView.findViewById(R.id.home_nav_button);
         booksNavButton = (ImageButton) rootView.findViewById(R.id.books_nav_button);
 
-        BookCardListAdapter adapter = new BookCardListAdapter(presenter.getHomePageBooks()); // TODO: make method in user class
+        BookCardListAdapter adapter = new BookCardListAdapter(presenter.getHomePageBooks());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recommendedList.setLayoutManager(layoutManager);
-        //recommendedList.setAdapter(adapter);
+        recommendedList.setAdapter(adapter);
 
         friendsNavButton.setOnClickListener(new View.OnClickListener() {
             @Override

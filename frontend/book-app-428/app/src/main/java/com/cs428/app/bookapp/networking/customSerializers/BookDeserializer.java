@@ -51,9 +51,10 @@ public class BookDeserializer extends StdDeserializer<Book> {
             bookReviews.add(new BookReview(reviews.get(i)));
         }
 
-        Book book = new Book(title, author, isbn, coverUrl, bookReviews);
+        Book book = new Book(title, author, isbn, coverUrl);
         book.setRating(upvotes);
         book.setSummary(description);
+        book.setReviews(bookReviews);
 
         return book;
     }

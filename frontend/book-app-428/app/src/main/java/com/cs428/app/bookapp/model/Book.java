@@ -28,12 +28,11 @@ public class Book implements IBookPresenter{
     private String date;
     private List<BookReview> reviews;
 
-    public Book(String title, String author, String isbn, String coverURL, List<BookReview> reviews) {
+    public Book(String title, String author, String isbn, String coverURL) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.coverURL = coverURL;
-        this.reviews = reviews;
     }
 
     public String getTitle() {
@@ -78,7 +77,6 @@ public class Book implements IBookPresenter{
     public void setReviews(List<BookReview> reviews) {
         this.reviews = reviews;
     }
-
     public List<BookReview> getReviews() {
         return reviews;
     }

@@ -16,5 +16,6 @@ public interface IBookPresenter extends Serializable {
     String getTitle();
     String getAuthor();
     String getMeta();
+    String getSummary();
     List<BookReview> getReviews();
 }

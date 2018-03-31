@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.FragmentDrawer;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
+import com.cs428.app.bookapp.interfaces.IBookPresenter;
 import com.cs428.app.bookapp.interfaces.IHomePresenter;
 import com.cs428.app.bookapp.model.Book;
 
@@ -28,7 +29,7 @@ import java.io.Serializable;
  */
 
 public class BookProfileFragment extends Fragment {
-    private Book book;
+    private IBookPresenter book;
     private ImageView bookCover;
     private TextView bookTitle;
     private TextView bookAuthor;
@@ -42,7 +43,7 @@ public class BookProfileFragment extends Fragment {
 
     public BookProfileFragment() {}
 
-    public static BookProfileFragment newInstance(Serializable presenter, Book book) {
+    public static BookProfileFragment newInstance(Serializable presenter, IBookPresenter book) {
         BookProfileFragment fragment = new BookProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("BOOK", book);
@@ -55,9 +56,9 @@ public class BookProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        book = (IBookPresenter) getArguments().getSerializable("BOOK");
         presenter = (IHomePresenter) getArguments().getSerializable(
                 "PRESENTER");
-
     }
 
     public void attachLayoutElements(View v){
@@ -70,6 +71,12 @@ public class BookProfileFragment extends Fragment {
         rateButton = (Button) v.findViewById(R.id.rate_button);
         reviewButton = (Button) v.findViewById(R.id.review_button);
         recommendButton = (Button) v.findViewById(R.id.recommend_button);
+
+        bookCover.setImageBitmap(book.getCover());
+        bookTitle.setText(book.getTitle());
+        bookAuthor.setText(book.getAuthor());
+        bookMeta.setText(book.getMeta());
+        bookSummary.setText(book.getSummary());
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
