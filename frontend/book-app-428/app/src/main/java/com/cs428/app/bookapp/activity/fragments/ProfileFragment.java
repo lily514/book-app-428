@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cs428.app.bookapp.R;
-import com.cs428.app.bookapp.interfaces.IHomePresenter;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.Person;
@@ -29,7 +28,6 @@ public class ProfileFragment extends Fragment {
     private RecyclerView.Adapter reviewedListAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private Button actionButton;
-
     private IProfilePresenter presenter;
 
     // Necessary empty constructor
