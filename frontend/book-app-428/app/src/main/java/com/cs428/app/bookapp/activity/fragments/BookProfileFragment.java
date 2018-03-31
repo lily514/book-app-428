@@ -11,25 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.FragmentDrawer;
-import com.cs428.app.bookapp.adapter.BookCardListAdapter;
+import com.cs428.app.bookapp.adapter.BookReviewsListAdapter;
 import com.cs428.app.bookapp.interfaces.IBookPresenter;
-import com.cs428.app.bookapp.interfaces.IHomePresenter;
-import com.cs428.app.bookapp.model.Book;
-
-import java.io.Serializable;
 
 /**
  * Created by chees on 3/31/2018.
  */
 
 public class BookProfileFragment extends Fragment {
-    private IBookPresenter book;
+    private IBookPresenter bookPresenter;
     private ImageView bookCover;
     private TextView bookTitle;
     private TextView bookAuthor;
@@ -39,15 +34,13 @@ public class BookProfileFragment extends Fragment {
     private Button rateButton;
     private Button reviewButton;
     private Button recommendButton;
-    private IHomePresenter presenter;
 
     public BookProfileFragment() {}
 
-    public static BookProfileFragment newInstance(Serializable presenter, IBookPresenter book) {
+    public static BookProfileFragment newInstance(IBookPresenter book) {
         BookProfileFragment fragment = new BookProfileFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("BOOK", book);
-        bundle.putSerializable("PRESENTER", presenter);
+        bundle.putSerializable("PRESENTER", book);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -56,9 +49,7 @@ public class BookProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        book = (IBookPresenter) getArguments().getSerializable("BOOK");
-        presenter = (IHomePresenter) getArguments().getSerializable(
-                "PRESENTER");
+        bookPresenter = (IBookPresenter) getArguments().getSerializable("PRESENTER");
     }
 
     public void attachLayoutElements(View v){
@@ -72,11 +63,37 @@ public class BookProfileFragment extends Fragment {
         reviewButton = (Button) v.findViewById(R.id.review_button);
         recommendButton = (Button) v.findViewById(R.id.recommend_button);
 
-        bookCover.setImageBitmap(book.getCover());
-        bookTitle.setText(book.getTitle());
-        bookAuthor.setText(book.getAuthor());
-        bookMeta.setText(book.getMeta());
-        bookSummary.setText(book.getSummary());
+        bookCover.setImageBitmap(bookPresenter.getCover());
+        bookTitle.setText(bookPresenter.getTitle());
+        bookAuthor.setText(bookPresenter.getAuthor());
+        bookMeta.setText(bookPresenter.getMeta());
+        bookSummary.setText(bookPresenter.getSummary());
+
+        BookReviewsListAdapter adapter = new BookReviewsListAdapter(bookPresenter.getReviews());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        bookReviews.setLayoutManager(layoutManager);
+        bookReviews.setAdapter(adapter);
+
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: route to new fragment
+            }
+        });
+
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: route to new fragment
+            }
+        });
+
+        recommendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: route to new fragment
+            }
+        });
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
