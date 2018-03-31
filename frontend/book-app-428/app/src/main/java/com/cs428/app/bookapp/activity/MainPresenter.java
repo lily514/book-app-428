@@ -1,7 +1,7 @@
 package com.cs428.app.bookapp.activity;
 
 import com.cs428.app.bookapp.interfaces.IClientFacade;
-import com.cs428.app.bookapp.interfaces.IHomePresenter;
+import com.cs428.app.bookapp.interfaces.Serializable;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.ClientFacade;
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Lily on 3/21/18.
  */
 
-public class MainPresenter implements IHomePresenter, IProfilePresenter {
+public class MainPresenter implements Serializable, IProfilePresenter {
 
     private IClientFacade modelFacade;
     private Person person = null;

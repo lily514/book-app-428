@@ -18,6 +18,7 @@ import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.FragmentDrawer;
 import com.cs428.app.bookapp.adapter.BookReviewsListAdapter;
 import com.cs428.app.bookapp.interfaces.IBookPresenter;
+import com.cs428.app.bookapp.interfaces.Serializable;
 
 /**
  * Created by chees on 3/31/2018.
@@ -37,7 +38,7 @@ public class BookProfileFragment extends Fragment {
 
     public BookProfileFragment() {}
 
-    public static BookProfileFragment newInstance(IBookPresenter book) {
+    public static BookProfileFragment newInstance(Serializable book) {
         BookProfileFragment fragment = new BookProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("PRESENTER", book);

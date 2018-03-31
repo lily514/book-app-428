@@ -14,9 +14,7 @@ import android.widget.ImageButton;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
-import com.cs428.app.bookapp.interfaces.IHomePresenter;
-
-import java.io.Serializable;
+import com.cs428.app.bookapp.interfaces.Serializable;
 
 /**
  * Created by Trevor on 2/10/2018.
@@ -25,7 +23,7 @@ import java.io.Serializable;
 public class HomeFragment extends Fragment {
     public RecyclerView recommendedList;
     public ImageButton profileNavButton, homeNavButton, booksNavButton;
-    private IHomePresenter presenter;
+    private Serializable presenter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -43,7 +41,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = (IHomePresenter) getArguments().getSerializable(
+        presenter = (Serializable) getArguments().getSerializable(
                 "PRESENTER");
     }
 

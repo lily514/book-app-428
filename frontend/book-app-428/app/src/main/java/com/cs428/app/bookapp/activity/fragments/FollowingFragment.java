@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
-import com.cs428.app.bookapp.interfaces.IHomePresenter;
-import com.cs428.app.bookapp.interfaces.IProfilePresenter;
-import com.cs428.app.bookapp.model.Person;
+import com.cs428.app.bookapp.interfaces.Serializable;
 
 import java.util.List;
 
@@ -22,11 +20,11 @@ import java.util.List;
  */
 
 public class FollowingFragment extends Fragment {
-    private IHomePresenter presenter;
+    private Serializable presenter;
 
     public FollowingFragment(){}
 
-    public static FollowingFragment newInstance(IHomePresenter presenter){
+    public static FollowingFragment newInstance(Serializable presenter){
         FollowingFragment fragment = new FollowingFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("PRESENTER", presenter);
@@ -38,7 +36,7 @@ public class FollowingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = (IHomePresenter) getArguments().getSerializable(
+        presenter = (Serializable) getArguments().getSerializable(
                 "PRESENTER");
     }
 
@@ -46,7 +44,7 @@ public class FollowingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.following_page_layout, container, false);
-        
+
         RecyclerView followingList = (RecyclerView) v.findViewById(R.id.following_list);
         FollowingListAdapter adapter = new FollowingListAdapter(presenter.getCurrentUser().getFollowing());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -70,8 +68,6 @@ public class FollowingFragment extends Fragment {
                     .inflate(R.layout.text_view, parent, false);
             return new FollowingViewHolder(followingListView);
         }
-
-
 
         @Override
         public void onBindViewHolder(FollowingViewHolder holder, int position) {
