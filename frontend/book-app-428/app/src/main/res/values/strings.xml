@@ -32,5 +32,7 @@
     <string name="reading">Reading</string>
     <string name="reviewed">Reviewed</string>
 
+    <string name="placeholder">Placeholder</string>
+
     <string name="hello_blank_fragment">This is a blank fragment</string>
 </resources>
