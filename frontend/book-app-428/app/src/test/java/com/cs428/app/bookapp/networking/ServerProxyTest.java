@@ -41,9 +41,9 @@ public class ServerProxyTest {
 
         for(int i = 0; i < 20; i++) {
             Book b = results.get(i);
-            assertEquals("book" + i, b.getName());
+            assertEquals("book" + i, b.getTitle());
             assertEquals("author" + i, b.getAuthor());
-            assertEquals(Integer.toString(i), b.getIsbn());
+            assertEquals(Integer.toString(i), b.getMeta());
         }
 
     }
