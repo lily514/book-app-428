@@ -28,6 +28,7 @@
 
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
+    <string name="following">Following</string>
     <string name="reading">Reading</string>
     <string name="reviewed">Reviewed</string>
 
