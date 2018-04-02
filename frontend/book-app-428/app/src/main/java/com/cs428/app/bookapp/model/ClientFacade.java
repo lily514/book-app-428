@@ -9,6 +9,7 @@ import com.cs428.app.bookapp.networking.ServerProxy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 
 /**
  * Created by rredd on 3/15/2018.
@@ -82,4 +83,7 @@ public class ClientFacade implements IClientFacade {
         return books;
     }
 
+    public void ObserveModel(Observer o) {
+        model.addObserver(o);
+    }
 }

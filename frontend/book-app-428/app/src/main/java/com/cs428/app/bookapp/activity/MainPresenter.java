@@ -9,19 +9,23 @@ import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Lily on 3/21/18.
  */
 
-public class MainPresenter implements IHomePresenter, IProfilePresenter {
+public class MainPresenter implements IHomePresenter, IProfilePresenter, Observer {
 
     private IClientFacade modelFacade;
     private Person person = null;
     private User currentUser = null;
 
     public MainPresenter() {
+
         this.modelFacade = new ClientFacade();
+        this.modelFacade.ObserveModel(this);
     }
 
     /*home page*/
@@ -59,5 +63,11 @@ public class MainPresenter implements IHomePresenter, IProfilePresenter {
     @Override
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(arg instanceof User)
+        {currentUser  = (User)arg;}
     }
 }
