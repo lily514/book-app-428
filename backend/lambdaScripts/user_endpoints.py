@@ -16,6 +16,16 @@ class DecimalEncoder(json.JSONEncoder):
 class Error():
     def __init__(self,message):
         self.message = message
+        
+# Constants
+USER_NAME = "username"
+RECOMMENDATIONS = "recommendations"
+READING_LIST = "reading_list"
+USERS_FOLLOWING = "users_following"
+USERS = "users"
+BOOKS = "books"
+FRIENDS = "friends"
+ID = "id"
 
 # Handler
 def lambda_handler(event, context):
@@ -30,21 +40,21 @@ def lambda_handler(event, context):
             return get_all_users(dynamodb)
             
         elif resource == "/users/{username}":
-            path_parameter = get_path_parameter(event, "username")
+            path_parameter = get_path_parameter(event, USER_NAME)
             if path_parameter is Error:
                 return response(path_parameter.message, 400)
             else:
                 return get_user(dynamodb, path_parameter)
         
         elif resource == "/users/{username}/friends":
-            path_parameter = get_path_parameter(event, "username")
+            path_parameter = get_path_parameter(event, USER_NAME)
             if path_parameter is Error:
                 return response(path_parameter.message, 400)
             else:    
                 return get_friends_of_user(dynamodb, path_parameter)
                 
         elif resource == "/users/{username}/friends/books":
-            path_parameter = get_path_parameter(event, "id")
+            path_parameter = get_path_parameter(event, USER_NAME)
             if path_parameter is Error:
                 return response(path_parameter.message, 400)
             else:    
@@ -54,14 +64,14 @@ def lambda_handler(event, context):
         body = json.loads(event["body"])
         print(body.keys())
         if resource == "/users/{username}":
-            parameter = get_path_parameter(event, "username")
+            parameter = get_path_parameter(event, USER_NAME)
             if parameter is Error:
                 return response(parameter.message, 400)
             else: 
                 if "recommendation_id" in body.keys():
                     
                     recommendation_id = int(body["recommendation_id"])
-                    result = post_list_value_for_user(dynamodb, parameter, "recommendations", recommendation_id)
+                    result = post_list_value_for_user(dynamodb, parameter, RECOMMENDATIONS, recommendation_id)
                     if result is Error:
                         return response(result.message, 500)
                     else:
@@ -69,15 +79,15 @@ def lambda_handler(event, context):
                 
                 elif "book_id" in body.keys():
                     book_id = int(body["book_id"])
-                    result = post_list_value_for_user(dynamodb, parameter, "reading_list", book_id)
+                    result = post_list_value_for_user(dynamodb, parameter, READING_LIST, book_id)
                     if result is Error:
                         return response(result.message, 500)
                     else:
                         return response("OK", 200)
             
                 elif "friend_username" in body.keys():
-                    friend_id = body["friend_username"]
-                    result = post_list_value_for_user(dynamodb, parameter, "users_following", friend_id)
+                    friend_username = body["friend_username"]
+                    result = post_list_value_for_user(dynamodb, parameter, USERS_FOLLOWING, friend_username)
                     if result is Error:
                         return response(result.message, 500)
                     else:
@@ -90,31 +100,70 @@ def lambda_handler(event, context):
     
     
 # API endpoints
-def get_books_of_friends(dynamodb, id):
-    # TODO
-    pass
+def get_books_of_friends(dynamodb, username):
+    user = get_item(dynamodb, USERS, {USER_NAME: username})
+    if USERS_FOLLOWING in user.keys():
+        friend_usernames = list(user[USERS_FOLLOWING])
+        friends =[]
+        for friend_username in friend_usernames:
+            friends.append(get_item(dynamodb, USERS, {USER_NAME: friend_username}))
+    
+        books = []
+        for friend in friends:
+            for book in list(friend["reading_list"]):
+                books.append(get_item(dynamodb, BOOKS, {ID: str(book)}))
+                
+        json_string = format_dynamo_items_to_json(books, BOOKS)
+        print(json_string)
+        return response(json_string, 200)        
+        
+
 
 def get_all_users(dynamodb):
-    items = get_all_items(dynamodb, 'users')
-    json_string = format_dynamo_items_to_json(items, 'users')
+    items = get_all_items(dynamodb, USERS)
+    json_string = format_dynamo_items_to_json(items, USERS)
     return response(json_string, 200) 
     
 def get_user(dynamodb, username):
-    item = get_item(dynamodb, 'users', {"username": username})
+    item = get_item(dynamodb, USERS, {USER_NAME: username})
     json_string = json.dumps(item, cls=DecimalEncoder)
     return response(json_string, 200)
 
-def check_if_user_has_list(dynamodb, user_id, list_name):
-    user = get_item(dynamodb, 'users', {"id": user_id})
-    if list_name not in user:
-        # add empty list to user
-        pass
+def check_if_user_has_list(dynamodb, username, list_name):
+    user = get_item(dynamodb, USERS, {USER_NAME: username})
+    
+    if list_name not in user.keys():
+        table = dynamodb.Table(USERS)
+
+        result = table.update_item(
+        Key = {
+            USER_NAME: user[USER_NAME]
+        },
+        UpdateExpression = "set {} = :i".format(list_name),
+        ExpressionAttributeValues = {
+            ':i': []
+        },
+        ReturnValues = "UPDATED_NEW"
+        )
+        if result['ResponseMetadata']['HTTPStatusCode'] == 200 and 'Attributes' in result:
+            return True    
+        else:
+            return Error("Internal error, unable to create list.")
+    else:
+        print("list found")
+        return
+
 
 def post_list_value_for_user(dynamodb, username, list_name, value):
-    table = dynamodb.Table('users')
+    
+    result = check_if_user_has_list(dynamodb, username, list_name)
+    if result is Error:
+        return result 
+        
+    table = dynamodb.Table(USERS)    
     result = table.update_item(
         Key = {
-            'username': username
+            USER_NAME: username
         },
         UpdateExpression = "SET {} = list_append({}, :i)".format(list_name, list_name),
         ExpressionAttributeValues = {
@@ -128,19 +177,17 @@ def post_list_value_for_user(dynamodb, username, list_name, value):
         return Error("Internal error, unable to post value.")
     
 def get_friends_of_user(dynamodb, username):
-    user = get_item(dynamodb, 'users', {"username": username})
-    if 'users_following' in user.keys():
-        friend_usernames = list(user['users_following'])
+    user = get_item(dynamodb, USERS, {USER_NAME: username})
+    if USERS_FOLLOWING in user.keys():
+        friend_usernames = list(user[USERS_FOLLOWING])
         friends =[]
         for friend_username in friend_usernames:
             print(friend_username)
-            friends.append(get_item(dynamodb, 'users', {"username": friend_username}))
+            friends.append(get_item(dynamodb, USERS, {USER_NAME: friend_username}))
     
-        json_string = format_dynamo_items_to_json(friends, 'friends')
+        json_string = format_dynamo_items_to_json(friends, FRIENDS)
         print(json_string)
         return response(json_string, 200)
-    else:
-        return response(json.dumps({"friends": []}), 200)
     
 # helper methods
 def format_dynamo_items_to_json(items, name):
@@ -151,7 +198,6 @@ def format_dynamo_items_to_json(items, name):
             json_string += ","
     json_string += "]}"
     return json_string
-    
         
 def get_path_parameter(event, parameter):
     if parameter in event['pathParameters']:
