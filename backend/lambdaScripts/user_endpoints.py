@@ -17,36 +17,33 @@ class Error():
     def __init__(self,message):
         self.message = message
 
+# Handler
 def lambda_handler(event, context):
     
     dynamodb = boto3.resource('dynamodb')
     resource = event["resource"]
     print(resource)
     http_method = event["httpMethod"]
-    check_if_user_has_list(dynamodb, 2)
-    
-    return
-    
     
     if http_method == 'GET':
         if resource =="/users":
             return get_all_users(dynamodb)
             
-        elif resource == "/users/{id}":
-            path_parameter = get_path_parameter(event, "id")
+        elif resource == "/users/{username}":
+            path_parameter = get_path_parameter(event, "username")
             if path_parameter is Error:
                 return response(path_parameter.message, 400)
             else:
                 return get_user(dynamodb, path_parameter)
         
-        elif resource == "/users/{id}/friends":
-            path_parameter = get_path_parameter(event, "id")
+        elif resource == "/users/{username}/friends":
+            path_parameter = get_path_parameter(event, "username")
             if path_parameter is Error:
                 return response(path_parameter.message, 400)
             else:    
                 return get_friends_of_user(dynamodb, path_parameter)
                 
-        elif resource == "/users/{id}/friends/books":
+        elif resource == "/users/{username}/friends/books":
             path_parameter = get_path_parameter(event, "id")
             if path_parameter is Error:
                 return response(path_parameter.message, 400)
@@ -56,13 +53,14 @@ def lambda_handler(event, context):
     elif http_method == 'POST':
         body = json.loads(event["body"])
         print(body.keys())
-        if resource == "/users/{id}":
-            parameter = get_path_parameter(event, "id")
+        if resource == "/users/{username}":
+            parameter = get_path_parameter(event, "username")
             if parameter is Error:
                 return response(parameter.message, 400)
             else: 
                 if "recommendation_id" in body.keys():
-                    recommendation_id = body["recommendation_id"]
+                    
+                    recommendation_id = int(body["recommendation_id"])
                     result = post_list_value_for_user(dynamodb, parameter, "recommendations", recommendation_id)
                     if result is Error:
                         return response(result.message, 500)
@@ -70,15 +68,15 @@ def lambda_handler(event, context):
                         return response("OK", 200)
                 
                 elif "book_id" in body.keys():
-                    book_id = body["book_id"]
+                    book_id = int(body["book_id"])
                     result = post_list_value_for_user(dynamodb, parameter, "reading_list", book_id)
                     if result is Error:
                         return response(result.message, 500)
                     else:
                         return response("OK", 200)
             
-                elif "friend_id" in body.keys():
-                    friend_id = body["friend_id"]
+                elif "friend_username" in body.keys():
+                    friend_id = body["friend_username"]
                     result = post_list_value_for_user(dynamodb, parameter, "users_following", friend_id)
                     if result is Error:
                         return response(result.message, 500)
@@ -101,8 +99,8 @@ def get_all_users(dynamodb):
     json_string = format_dynamo_items_to_json(items, 'users')
     return response(json_string, 200) 
     
-def get_user(dynamodb, string_id):
-    item = get_item(dynamodb, 'users', {"id": int(string_id)})
+def get_user(dynamodb, username):
+    item = get_item(dynamodb, 'users', {"username": username})
     json_string = json.dumps(item, cls=DecimalEncoder)
     return response(json_string, 200)
 
@@ -110,12 +108,13 @@ def check_if_user_has_list(dynamodb, user_id, list_name):
     user = get_item(dynamodb, 'users', {"id": user_id})
     if list_name not in user:
         # add empty list to user
+        pass
 
-def post_list_value_for_user(dynamodb, user_id, list_name, value):
+def post_list_value_for_user(dynamodb, username, list_name, value):
     table = dynamodb.Table('users')
     result = table.update_item(
         Key = {
-            'id': user_id
+            'username': username
         },
         UpdateExpression = "SET {} = list_append({}, :i)".format(list_name, list_name),
         ExpressionAttributeValues = {
@@ -128,16 +127,20 @@ def post_list_value_for_user(dynamodb, user_id, list_name, value):
     else:
         return Error("Internal error, unable to post value.")
     
-def get_friends_of_user(dynamodb, id):
-    user = get_item(dynamodb, 'users', {"id":id})
-    friend_ids = list(user['users_following'])
-    friends =[]
-    for id in friend_ids:
-        friends.append(get_item(dynamodb, 'users', {"id": id}))
+def get_friends_of_user(dynamodb, username):
+    user = get_item(dynamodb, 'users', {"username": username})
+    if 'users_following' in user.keys():
+        friend_usernames = list(user['users_following'])
+        friends =[]
+        for friend_username in friend_usernames:
+            print(friend_username)
+            friends.append(get_item(dynamodb, 'users', {"username": friend_username}))
     
-    json_string = format_dynamo_items_to_json(friends, 'friends')
-    print(json_string)
-    return response(json_string, 200)
+        json_string = format_dynamo_items_to_json(friends, 'friends')
+        print(json_string)
+        return response(json_string, 200)
+    else:
+        return response(json.dumps({"friends": []}), 200)
     
 # helper methods
 def format_dynamo_items_to_json(items, name):
