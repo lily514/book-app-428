@@ -38,16 +38,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public List<User> getUsers(){
-        String usersUrl = "/users";
-        String requestBody = "";
-        String jsonResponse = null;
-        try {
-            jsonResponse = this.sendGetRequest(requestBody, usersUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return this.serializer.deserializeListOfUsers(jsonResponse);
+        return null;
     }
 
     /** Method to return user info for a specific user given an id.
@@ -66,16 +57,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public List<User> getFriends(String id) {
-        //TODO: Change this for a getFriends async task
-        String friendsUrl = "/users/" + id + "/friends";
-        String jsonResponse = null;
-        try {
-            jsonResponse = this.sendGetRequest("", friendsUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return this.serializer.deserializeListOfUsers(jsonResponse);
+        return null;
     }
 
     /** Method to return user's friend's reading list.
@@ -84,16 +66,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public List<Book> getUsersFriendsReadingList(String id) {
-        //TODO: Change this for using an async task to handle this.
-        String listUrl = "/users/" + id + "/friends/books";
-        String jsonResponse = null;
-        try {
-            jsonResponse = this.sendGetRequest("", listUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return this.serializer.deserializeListOfBooks(jsonResponse);
+        return null;
     }
 
     /** Method to log a user in
@@ -158,21 +131,29 @@ public class ServerCommunicator implements IServerCommunicator {
         return null;
     }
 
-    /** Method to get a book by id.
+    /** Method to get a book by id NOT ISBN. Fetches single book
      * @param id id of book to be fetched
      * @return the book associated with the input id. Null if none found.
      */
     @Override
     public Book getBookById(String id) {
-        String bookUrl = "/book/" + id;
+        String bookUrl = "/book/" + id + "/";
         String response;
-        try {
-            response = sendGetRequest("", bookUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return serializer.deserializeBook(response);
+        new GetBookTask().execute(bookUrl);
+        return null;
+    }
+
+    /**
+     *  Method to get a book by title (i.e. search for books by title). Fetches list of books
+     * @param title the title of the book to be fetched.
+     * @return
+     */
+    @Override
+    public Book getBookByTitle(String title) {
+        String bookUrl = "/books/" + title + "/";
+        String response;
+        new SearchBooksTask().execute(bookUrl);
+        return null;
     }
 
     /**
@@ -200,10 +181,6 @@ public class ServerCommunicator implements IServerCommunicator {
     @Override
     public void setUserToken(String userToken) {
         this.userToken = userToken;
-    }
-
-    private String sendGetRequest(String requestBody, String uri) throws IOException {
-        return null;
     }
 
    /* private String sendPostRequest(String requestBody, String uri) throws IOException {
@@ -242,6 +219,11 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     private class GetUserTask extends AsyncTask<String, Void, User> {
 
+        /**
+         * Method called by thisclass.execute(...). RUNS ON OWN THREAD
+         * @param strings the parameters
+         * @return value returned to onPostExecute method.
+         */
         @Override
         protected User doInBackground(String... strings) {
             try {
@@ -267,14 +249,73 @@ public class ServerCommunicator implements IServerCommunicator {
         }
 
         /**
-         * Method automatically called after completion of background task.
+         * Method automatically called after completion of background task. RUNS ON UI THREAD
          * @param result the value returned from the above method.
          */
         @Override
         protected void onPostExecute(User result) {
             Model.getSINGLETON().setCurrentUser(result);
         }
+    }
 
+    private class GetBookTask extends AsyncTask<String, Void, Book> {
+
+        @Override
+        protected Book doInBackground(String... strings) {
+            try {
+                URL url = new URL(BASE_URL + strings[0]);
+
+                // Make http connections and requests.
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", userToken);
+                int responseCode = connection.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK) {
+                    String response = readResponse(connection);
+                    return serializer.deserializeBook(response);
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Book book) {
+
+        }
+    }
+
+    private class SearchBooksTask extends AsyncTask<String, Void, List<Book>> {
+
+        @Override
+        protected List<Book> doInBackground(String... strings) {
+            try {
+                URL url = new URL(BASE_URL + strings[0]);
+
+                // Make http connections and requests.
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", userToken);
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    String response = readResponse(connection);
+                    return serializer.deserializeListOfBooks(response);
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Book> books) {
+
+        }
     }
 
 }

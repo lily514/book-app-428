@@ -4,10 +4,13 @@ import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.networking.customSerializers.BookDeserializer;
 import com.cs428.app.bookapp.networking.customSerializers.UserDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,7 +58,20 @@ public class Serializer {
     }
 
     public List<Book> deserializeListOfBooks(String jsonList) {
-        return null;
+        List<Book> books = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode root = mapper.readTree(jsonList);
+            Iterator<JsonNode> els = root.elements();
+            while(els.hasNext()) {
+                JsonNode next = els.next();
+                books.add(deserializeBook(next.asText()));
+            }
+            return books;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public List<User> deserializeListOfUsers(String jsonList) {

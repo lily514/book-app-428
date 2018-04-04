@@ -34,6 +34,8 @@ public interface IServerCommunicator {
 
     Book getBookById(String id);
 
+    Book getBookByTitle(String title);
+
     boolean rateBook(String userId, String bookId, int rating);
 
     void setUserToken(String token);
