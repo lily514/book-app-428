@@ -245,16 +245,20 @@ public class ServerCommunicator implements IServerCommunicator {
         @Override
         protected User doInBackground(String... strings) {
             try {
+                // Get the correct url by joining base url with the parameter passed to object on execute call.
                 URL url = new URL(BASE_URL + strings[0]);
+
+                // Make http connections and requests.
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Authorization", userToken);
                 int responseCode = connection.getResponseCode();
+                // Ensure successful connection with backend
                 if(responseCode == HttpURLConnection.HTTP_OK) {
                     String response = readResponse(connection);
                     return serializer.deserializeUser(response);
-                    //TODO: Deserialize this user
                 } else {
+                    //Error
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -262,6 +266,10 @@ public class ServerCommunicator implements IServerCommunicator {
             return null;
         }
 
+        /**
+         * Method automatically called after completion of background task.
+         * @param result the value returned from the above method.
+         */
         @Override
         protected void onPostExecute(User result) {
             Model.getSINGLETON().setCurrentUser(result);
