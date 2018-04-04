@@ -12,7 +12,7 @@ import java.util.List;
 public interface IServerCommunicator {
     List<User> getUsers();
 
-    User getUser(String id);
+    void loadUser(String name);
 
     List<User> getFriends(String id);
 

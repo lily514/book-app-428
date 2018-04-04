@@ -87,13 +87,14 @@ public class ServerProxy implements IServerProxy{
 
     @Override
     public void initialize() {
-        CognitoUserPool userPool = Model.getSINGLETON().getUserPool();
+        final CognitoUserPool userPool = Model.getSINGLETON().getUserPool();
         CognitoUser user = userPool.getCurrentUser();
         user.getSession(new AuthenticationHandler() {
             @Override
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
                 CognitoIdToken token = userSession.getIdToken();
-                serverCommunicator.setUserToken(token.toString());
+                serverCommunicator.setUserToken(token.getJWTToken());
+                serverCommunicator.loadUser(userPool.getCurrentUser().getUserId());
             }
 
             @Override

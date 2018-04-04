@@ -27,16 +27,14 @@ public class UserDeserializer extends StdDeserializer<User> {
     @Override
     public User deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         JsonNode node = jp.getCodec().readTree(jp);
-        int id = (Integer) ((IntNode) node.get("id")).numberValue();
+        //int id = (Integer) ((IntNode) node.get("id")).numberValue();
         String username = node.get("username").textValue();
         String email = node.get("email").textValue();
-        String password = node.get("password").textValue();
 
         //TODO: Handle 3 arrays that are passed back
 
-        User user = new User(username, Integer.toString(id));
+        User user = new User(username, username);
         user.setEmail(email);
-        user.setPassword(password);
 
         return user;
     }

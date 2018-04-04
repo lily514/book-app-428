@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         new ServerProxy(new ServerCommunicator(new Serializer())).initialize();
 
         /**************************************** END **************************************************************/
+        int name = 0;
+        name++;
     }
 
 

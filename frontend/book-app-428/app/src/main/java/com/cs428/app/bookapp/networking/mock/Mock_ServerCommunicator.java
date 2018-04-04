@@ -25,11 +25,9 @@ public class Mock_ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
-    public User getUser(String id) {
-        return null;
+    public void loadUser(String name) {
+
     }
-
-
 
     @Override
     public List<User> getFriends(String id) {

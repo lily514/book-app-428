@@ -52,20 +52,12 @@ public class ServerCommunicator implements IServerCommunicator {
 
     /** Method to return user info for a specific user given an id.
      * TODO: Change return type to User when model supports it.
-     * @param id the id of the user to be fetched
+     * @param name the id of the user to be fetched
      * @return the information for the given user, null if does not exist.
      */
     @Override
-    public User getUser(String id) {
-        String userUrl = "/users/" + id;
-        String jsonResponse = null;
-        try {
-            jsonResponse = this.sendGetRequest("", userUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return this.serializer.deserializeUser(jsonResponse);
+    public void loadUser(String name) {
+        new GetUserTask().execute("/users/" + name + "/");
     }
 
     /** Method to return the friends list of a given user.
