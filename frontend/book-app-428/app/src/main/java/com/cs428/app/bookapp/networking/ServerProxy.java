@@ -30,14 +30,7 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public boolean followFriend(User user, String followUsername) {
-        List<User> allUsers = this.serverCommunicator.getUsers();
-        for(User otherUser : allUsers) {
-            if(otherUser.getName().equals(followUsername)){
-                return this.serverCommunicator.followUser(user.getId(), otherUser.getId());
-            }
-        }
-        return false;
+    public void followFriend(User user, String followUsername) {
     }
 
     @Override
@@ -46,20 +39,17 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public boolean recommendBook(User user, String bookId) {
-        return false;
+    public void recommendBook(User user, String bookId) {
     }
 
     @Override
-    public boolean rateBook(User user, String bookID, int rating) {
+    public void rateBook(User user, String bookID, int rating) {
         //TODO: implement rateBook
-        return false;
     }
 
     @Override
-    public List<Book> getRecommendationFor(User user) {
+    public void getRecommendationFor(User user) {
         //TODO: Will a user have a list of recommendations? What is the api endpoint for that??
-        return null;
     }
 
     @Override

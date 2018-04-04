@@ -1,5 +1,6 @@
 package com.cs428.app.bookapp.networking;
 
+import android.media.midi.MidiOutputPort;
 import android.os.AsyncTask;
 
 import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
@@ -37,8 +38,7 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return the list of all users. Null if no users exist
      */
     @Override
-    public List<User> getUsers(){
-        return null;
+    public void getUsers(){
     }
 
     /** Method to return user info for a specific user given an id.
@@ -48,7 +48,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public void loadUser(String name) {
-        new GetUserTask().execute("/users/" + name + "/");
+        new GetCurrentUserTask().execute("/users/" + name + "/");
     }
 
     /** Method to return the friends list of a given user.
@@ -56,8 +56,7 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return the list of friends for a given user, null if does not exist.
      */
     @Override
-    public List<User> getFriends(String id) {
-        return null;
+    public void getFriends(String id) {
     }
 
     /** Method to return user's friend's reading list.
@@ -65,8 +64,7 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return list of books read by all the given user's friends.
      */
     @Override
-    public List<Book> getUsersFriendsReadingList(String id) {
-        return null;
+    public void getUsersFriendsReadingList(String id) {
     }
 
     /** Method to add a book to a given user's recommendation list
@@ -75,9 +73,8 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return boolean indicating success.
      */
     @Override
-    public boolean addRecommendation(String id, Book book) {
+    public void addRecommendation(String id, Book book) {
         //TODO: create and call an addReccommendation async task
-        return false;
     }
 
     /** Method to add a book to a given user's reading list
@@ -86,9 +83,8 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return boolean indicating success
      */
     @Override
-    public boolean addToReadingList(String id, Book book) {
+    public void addToReadingList(String id, Book book) {
         //TODO: create and call an addToReadingList async task
-        return false;
     }
 
     /** Method to add another user to a certain user's friend's list.
@@ -97,9 +93,8 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return boolean indicating success
      */
     @Override
-    public boolean followUser(String myId, String otherId) {
+    public void followUser(String myId, String otherId) {
         //TODO: Create and call a follow user async task
-        return false;
     }
 
 
@@ -108,8 +103,7 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return a list of books (or ids) associated with the search term. Null if none exist.
      */
     @Override
-    public List<Book> searchForBook(String searchString) {
-        return null;
+    public void searchForBook(String searchString) {
     }
 
     /** Method to get a book by id NOT ISBN. Fetches single book
@@ -117,11 +111,10 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return the book associated with the input id. Null if none found.
      */
     @Override
-    public Book getBookById(String id) {
+    public void getBookById(String id) {
         String bookUrl = "/book/" + id + "/";
         String response;
         new GetBookTask().execute(bookUrl);
-        return null;
     }
 
     /**
@@ -130,11 +123,10 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return
      */
     @Override
-    public Book searchBookByTitle(String title) {
+    public void searchBookByTitle(String title) {
         String bookUrl = "/books/" + title + "/";
         String response;
         new SearchBooksTask().execute(bookUrl);
-        return null;
     }
 
     /**
@@ -145,8 +137,7 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return a value indicating success.
      */
     @Override
-    public boolean rateBook(String userId, String bookId, int rating) {
-        return false;
+    public void rateBook(String userId, String bookId, int rating) {
     }
 
     @Override
@@ -202,7 +193,7 @@ public class ServerCommunicator implements IServerCommunicator {
      * This class makes an async call to the backend and then updates the model on the front end.
      * It is only valid for that use, and returns nothing.
      */
-    private class GetUserTask extends AsyncTask<String, Void, User> {
+    private class GetCurrentUserTask extends AsyncTask<String, Void, User> {
 
         /**
          * Method called by thisclass.execute(...). RUNS ON OWN THREAD
@@ -271,7 +262,7 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(List<User> users){
-            // TODO: Where to put after execution?
+            Model.getSINGLETON().setUserSearchResults(users);
         }
     }
 

@@ -10,29 +10,29 @@ import java.util.List;
  */
 
 public interface IServerCommunicator {
-    List<User> getUsers();
+    void getUsers();
 
     void loadUser(String name);
 
-    List<User> getFriends(String id);
+    void getFriends(String id);
 
-    List<Book> getUsersFriendsReadingList(String id);
+    void getUsersFriendsReadingList(String id);
 
     void updateUser(String username);
 
-    boolean addRecommendation(String id, Book book);
+    void addRecommendation(String id, Book book);
 
-    boolean addToReadingList(String id, Book book);
+    void addToReadingList(String id, Book book);
 
-    boolean followUser(String myId, String otherId);
+    void followUser(String myId, String otherId);
 
-    List<Book> searchForBook(String searchString);
+    void searchForBook(String searchString);
 
-    Book getBookById(String id);
+    void getBookById(String id);
 
-    Book searchBookByTitle(String title);
+    void searchBookByTitle(String title);
 
-    boolean rateBook(String userId, String bookId, int rating);
+    void rateBook(String userId, String bookId, int rating);
 
     void setUserToken(String token);
 
