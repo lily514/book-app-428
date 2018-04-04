@@ -17,6 +17,7 @@ public class Model extends Observable {
 
     private List<Book> bookSearchResults;
     private List<User> userSearchResults;
+    private Book fetchedBook;
 
     private Model() {}
 
@@ -53,5 +54,13 @@ public class Model extends Observable {
 
     public void setBookSearchResults(List<Book> bookSearchResults) {
         this.bookSearchResults = bookSearchResults;
+    }
+
+    public Book getFetchedBook() {
+        return fetchedBook;
+    }
+
+    public void setFetchedBook(Book fetchedBook) {
+        this.fetchedBook = fetchedBook;
     }
 }

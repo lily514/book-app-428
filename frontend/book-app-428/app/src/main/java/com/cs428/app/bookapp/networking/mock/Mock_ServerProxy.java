@@ -52,7 +52,7 @@ public class Mock_ServerProxy implements IServerProxy {
     public void getBookById(String bookId) {
         //todo: needs to be implemented
     }
-    
+
     @Override
     public void initialize() {
 
