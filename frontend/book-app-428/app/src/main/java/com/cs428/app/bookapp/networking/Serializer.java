@@ -39,10 +39,6 @@ public class Serializer {
         }
     }
 
-    public String serializeBook(Book book) {
-        return null;
-    }
-
     public Book deserializeBook(String jsonBook) {
         ObjectMapper mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
@@ -75,7 +71,20 @@ public class Serializer {
     }
 
     public List<User> deserializeListOfUsers(String jsonList) {
-        return null;
+        List<User> users = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode root = mapper.readTree(jsonList);
+            Iterator<JsonNode> els = root.elements();
+            while(els.hasNext()) {
+                JsonNode next = els.next();
+                users.add(deserializeUser(next.asText()));
+            }
+            return users;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

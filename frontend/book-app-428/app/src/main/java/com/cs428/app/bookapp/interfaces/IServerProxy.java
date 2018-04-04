@@ -13,21 +13,6 @@ import java.util.List;
 public interface IServerProxy {
 
     /**
-     * Method to log a user in given a username and password and return that user's info
-     * @param username the given username
-     * @param password the login password
-     * @return a user associated with the credentials. Null if incorrect/none exists.
-     */
-    public User login(String username, String password);
-
-    /**
-     * Method to register a new user
-     * @param user the new user object representing the user to be registered
-     * @return a boolean indicating success
-     */
-    public boolean registerUser(User user);
-
-    /**
      * Method for a given user to follow another user
      * @param user the user who is adding the friend
      * @param followUsername username of friend to be added to user's friend's list
@@ -38,9 +23,8 @@ public interface IServerProxy {
     /**
      * Method to search for a book by a given search term
      * @param searchTerm the term to search for a book by
-     * @return a list of books associated with the given term
      */
-    public List<Book> searchBook(String searchTerm);
+    public void searchBook(String searchTerm);
 
     /**
      * Method for a user to recommend a book.
@@ -74,7 +58,7 @@ public interface IServerProxy {
      * @param bookId the id of the book in the database
      * @return a book object
      */
-    public Book getBookById(String bookId);
+    public void getBookById(String bookId);
 
     /**
      * Method called when app first loads. Leads to call to servercommunicator to get information from backend

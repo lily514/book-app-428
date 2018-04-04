@@ -69,25 +69,6 @@ public class ServerCommunicator implements IServerCommunicator {
         return null;
     }
 
-    /** Method to log a user in
-     * @param username user's username
-     * @param password user's password
-     * @return a user if successful, null otherwise.
-     */
-    @Override
-    public User login(String username, String password) {
-        return null;
-    }
-
-    /** Method to register a user with the server
-     * @param user the new User object to be registered
-     * @return a boolean indicating if the action was successful
-     */
-    @Override
-    public boolean registerUser(User user) {
-        return false;
-    }
-
     /** Method to add a book to a given user's recommendation list
      * @param id the id of the user recommending the book.
      * @param book the book to be added to the recommendation list
@@ -149,7 +130,7 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return
      */
     @Override
-    public Book getBookByTitle(String title) {
+    public Book searchBookByTitle(String title) {
         String bookUrl = "/books/" + title + "/";
         String response;
         new SearchBooksTask().execute(bookUrl);
@@ -183,6 +164,8 @@ public class ServerCommunicator implements IServerCommunicator {
         this.userToken = userToken;
     }
 
+    // Don't delete, need for reference when implementing post requests.
+
    /* private String sendPostRequest(String requestBody, String uri) throws IOException {
         URL url = new URL(BASE_URL + uri);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -212,6 +195,8 @@ public class ServerCommunicator implements IServerCommunicator {
 
         return builder.toString();
     }
+
+    /**************************     Start AsyncTask Classes     *********************************/
 
     /**
      * This class makes an async call to the backend and then updates the model on the front end.
@@ -258,6 +243,38 @@ public class ServerCommunicator implements IServerCommunicator {
         }
     }
 
+    private class GetAllUsersTask extends AsyncTask<String, Void, List<User>> {
+
+        @Override
+        protected List<User> doInBackground(String... strings) {
+            try {
+                // Get the correct url by joining base url with the parameter passed to object on execute call.
+                URL url = new URL(BASE_URL + "/users/");
+
+                // Make http connections and requests.
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", userToken);
+                int responseCode = connection.getResponseCode();
+                // Ensure successful connection with backend
+                if(responseCode == HttpURLConnection.HTTP_OK) {
+                    String response = readResponse(connection);
+                    return serializer.deserializeListOfUsers(response);
+                } else {
+                    //Error
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<User> users){
+            // TODO: Where to put after execution?
+        }
+    }
+
     private class GetBookTask extends AsyncTask<String, Void, Book> {
 
         @Override
@@ -273,6 +290,11 @@ public class ServerCommunicator implements IServerCommunicator {
                 if(responseCode == HttpURLConnection.HTTP_OK) {
                     String response = readResponse(connection);
                     return serializer.deserializeBook(response);
+
+                } else if(responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    // Book not found
+                    System.out.println("Book with that id could not be found.");
+                    return null;
                 } else {
                     return null;
                 }
@@ -317,5 +339,7 @@ public class ServerCommunicator implements IServerCommunicator {
             Model.getSINGLETON().setBookSearchResults(books);
         }
     }
+
+    /********************************************************************************************/
 
 }

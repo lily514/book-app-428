@@ -15,28 +15,17 @@ import java.util.List;
 
 public class Mock_ServerProxy implements IServerProxy {
     @Override
-    public User login(String username, String password) {
-        return new User(username, "testId");
-    }
-
-    @Override
-    public boolean registerUser(User user) {
-        return true;
-    }
-
-    @Override
     public boolean followFriend(User user, String followUsername) {
         return true;
     }
 
     @Override
-    public List<Book> searchBook(String searchTerm) {
+    public void searchBook(String searchTerm) {
         List<Book> testBooks = new ArrayList<>();
         for(int i = 0; i < 100; i++) {
             Book b = new Book("test" + i, "author" + i, Integer.toString(i), null);
             testBooks.add(b);
         }
-        return testBooks;
     }
 
     @Override
@@ -60,10 +49,10 @@ public class Mock_ServerProxy implements IServerProxy {
     }
 
     @Override
-    public Book getBookById(String bookId){
+    public void getBookById(String bookId) {
         //todo: needs to be implemented
-        return null;}
-
+    }
+    
     @Override
     public void initialize() {
 

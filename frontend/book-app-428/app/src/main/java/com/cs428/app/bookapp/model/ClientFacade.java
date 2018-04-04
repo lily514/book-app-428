@@ -22,22 +22,6 @@ public class ClientFacade implements IClientFacade {
     private ServerProxy serverProxy = new ServerProxy(serverCom);
 
 
-    //register will automatically login the user
-    public boolean register(User user, String password){
-        boolean successful = serverProxy.registerUser(user);
-        if(successful)
-        {
-            login(user.getName(), password);
-        }
-        return successful;
-    }
-
-    public void login(String username, String password) {
-        User currentUser = serverProxy.login(username, password);
-        model.setCurrentUser(currentUser);
-        //should we call get homepageBooks here?
-    }
-
     public User getCurrentUser(){ return model.currentUser;}
 
     public List<Book> getHomePageBooks(){
@@ -49,10 +33,14 @@ public class ClientFacade implements IClientFacade {
     }
 
     public List<Book> searchBooks(String searchString){
-        return serverProxy.searchBook(searchString);
+        //return serverProxy.searchBook(searchString);
+        return null;
     }
 
-    public Book getBook(String bookId){return serverProxy.getBookById(bookId);}
+    public Book getBook(String bookId){
+        //return serverProxy.getBookById(bookId);
+        return null;
+    }
 
     public boolean rateBook(String book_id, int rating){return serverProxy.rateBook(model.currentUser, book_id, rating);}
 
@@ -61,7 +49,9 @@ public class ClientFacade implements IClientFacade {
         return serverProxy.recommendBook(model.currentUser, book_id);
     }
 
+
     public List<Book>getPersonsReadingList(Person person){
+        /*
         List<String> bookIds = person.getReadingList();
         List<Book> books = new ArrayList<>();
         for (int i = 0; i < bookIds.size(); i++)
@@ -70,9 +60,12 @@ public class ClientFacade implements IClientFacade {
            books.add(book);
         }
         return books;
+        */
+        return null;
     }
 
     public List<Book> getPersonsReviewedList(Person person){
+        /*
         List<String> bookIds = person.getReviewedBooks();
         List<Book> books = new ArrayList<>();
         for (int i = 0; i < bookIds.size(); i++)
@@ -81,8 +74,9 @@ public class ClientFacade implements IClientFacade {
             books.add(book);
         }
         return books;
+        */
+        return null;
     }
-
     public void ObserveModel(Observer o) {
         model.addObserver(o);
     }

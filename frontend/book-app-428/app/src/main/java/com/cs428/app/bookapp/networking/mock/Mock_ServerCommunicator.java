@@ -50,18 +50,8 @@ public class Mock_ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
-    public User login(String username, String password) {
-        return new User(username, username);
-    }
-
-    @Override
     public void updateUser(String username) {
 
-    }
-
-    @Override
-    public boolean registerUser(User user) {
-        return true;
     }
 
     @Override
@@ -92,6 +82,11 @@ public class Mock_ServerCommunicator implements IServerCommunicator {
     @Override
     public Book getBookById(String id) {
         return new Book("book", "author", id, null);
+    }
+
+    @Override
+    public Book searchBookByTitle(String title) {
+        return null;
     }
 
     @Override

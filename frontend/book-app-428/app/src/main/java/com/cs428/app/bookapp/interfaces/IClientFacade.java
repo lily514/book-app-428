@@ -13,9 +13,6 @@ import java.util.Observer;
 
 public interface IClientFacade {
 
-    /*login view*/
-    boolean register(User user, String password);
-    void login(String username, String password);
 
     /*homepage view*/
     User getCurrentUser();

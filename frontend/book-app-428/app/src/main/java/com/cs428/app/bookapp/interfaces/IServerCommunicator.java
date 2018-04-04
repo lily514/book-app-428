@@ -18,11 +18,7 @@ public interface IServerCommunicator {
 
     List<Book> getUsersFriendsReadingList(String id);
 
-    User login(String username, String password);
-
     void updateUser(String username);
-
-    boolean registerUser(User user);
 
     boolean addRecommendation(String id, Book book);
 
@@ -34,7 +30,7 @@ public interface IServerCommunicator {
 
     Book getBookById(String id);
 
-    Book getBookByTitle(String title);
+    Book searchBookByTitle(String title);
 
     boolean rateBook(String userId, String bookId, int rating);
 

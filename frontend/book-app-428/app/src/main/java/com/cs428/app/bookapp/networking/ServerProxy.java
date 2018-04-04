@@ -29,17 +29,6 @@ public class ServerProxy implements IServerProxy{
         this.serverCommunicator = serverCommunicator;
     }
 
-
-    @Override
-    public User login(String username, String password) {
-        return this.serverCommunicator.login(username, password);
-    }
-
-    @Override
-    public boolean registerUser(User user) {
-        return this.serverCommunicator.registerUser(user);
-    }
-
     @Override
     public boolean followFriend(User user, String followUsername) {
         List<User> allUsers = this.serverCommunicator.getUsers();
@@ -52,19 +41,13 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public List<Book> searchBook(String searchTerm) {
-        return this.serverCommunicator.searchForBook(searchTerm);
+    public void searchBook(String searchTerm) {
+        this.serverCommunicator.searchBookByTitle(searchTerm);
     }
 
     @Override
     public boolean recommendBook(User user, String bookId) {
-        boolean success = true;
-        //for(User friend : user.getFollowing()){
-        for(String friendId : user.getFollowing()){
-            Book book = this.serverCommunicator.getBookById(bookId);
-            success = this.serverCommunicator.addRecommendation(friendId, book);
-        }
-        return success;
+        return false;
     }
 
     @Override
@@ -80,9 +63,8 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public Book getBookById(String bookId)
-    {
-        return this.serverCommunicator.getBookById(bookId);
+    public void getBookById(String bookId) {
+        this.serverCommunicator.getBookById(bookId);
     }
 
     @Override
