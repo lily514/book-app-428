@@ -314,7 +314,7 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(List<Book> books) {
-
+            Model.getSINGLETON().setBookSearchResults(books);
         }
     }
 

@@ -2,6 +2,7 @@ package com.cs428.app.bookapp.model;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,6 +14,9 @@ public class Model extends Observable {
     private static final Model SINGLETON = new Model();
     protected User currentUser = null;
     protected CognitoUserPool userPool;
+
+    private List<Book> bookSearchResults;
+    private List<User> userSearchResults;
 
     private Model() {}
 
@@ -35,4 +39,19 @@ public class Model extends Observable {
         return this.userPool;
     }
 
+    public List<User> getUserSearchResults() {
+        return userSearchResults;
+    }
+
+    public void setUserSearchResults(List<User> userSearchResults) {
+        this.userSearchResults = userSearchResults;
+    }
+
+    public List<Book> getBookSearchResults() {
+        return bookSearchResults;
+    }
+
+    public void setBookSearchResults(List<Book> bookSearchResults) {
+        this.bookSearchResults = bookSearchResults;
+    }
 }
