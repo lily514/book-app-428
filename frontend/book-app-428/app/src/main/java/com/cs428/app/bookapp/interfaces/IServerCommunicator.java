@@ -16,15 +16,15 @@ public interface IServerCommunicator {
 
     void getFriends(String id);
 
-    void getUsersFriendsReadingList(String id);
+    void getUsersFriendsReadingList();
 
     void updateUser(String username);
 
-    void addRecommendation(String id, Book book);
+    void addRecommendation(Book book);
 
-    void addToReadingList(String id, Book book);
+    void addToReadingList(Book book);
 
-    void followUser(String myId, String otherId);
+    void followUser(String otherUsername);
 
     void searchForBook(String searchString);
 

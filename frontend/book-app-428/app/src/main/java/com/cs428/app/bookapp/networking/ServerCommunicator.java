@@ -60,40 +60,36 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
     /** Method to return user's friend's reading list.
-     * @param id id of user with friend list to search.
      * @return list of books read by all the given user's friends.
      */
     @Override
-    public void getUsersFriendsReadingList(String id) {
+    public void getUsersFriendsReadingList() {
     }
 
     /** Method to add a book to a given user's recommendation list
-     * @param id the id of the user recommending the book.
      * @param book the book to be added to the recommendation list
      * @return boolean indicating success.
      */
     @Override
-    public void addRecommendation(String id, Book book) {
+    public void addRecommendation(Book book) {
         //TODO: create and call an addReccommendation async task
     }
 
     /** Method to add a book to a given user's reading list
-     * @param id the id of the user associated with the reading list.
      * @param book the book to be added to the reading list.
      * @return boolean indicating success
      */
     @Override
-    public void addToReadingList(String id, Book book) {
+    public void addToReadingList(Book book) {
         //TODO: create and call an addToReadingList async task
     }
 
     /** Method to add another user to a certain user's friend's list.
-     * @param myId the id of the person who is adding the friend
      * @param otherId the id of the friend that they will be adding.
      * @return boolean indicating success
      */
     @Override
-    public void followUser(String myId, String otherId) {
+    public void followUser(String otherId) {
         //TODO: Create and call a follow user async task
     }
 
