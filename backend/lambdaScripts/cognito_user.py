@@ -19,7 +19,7 @@ def lambda_handler(event, context):
             "recommendations": ["34066800", "31693108", "124753", "27239161", "10880867"],
             "users_following": [],
             "username": event['userName'],
-            "bio": "",
+            "bio": "I love cats and books. I have a large variety of both and frequently get more of each. I can recommendation the best cat books that exist.",
             "image_url": BASE_URL.format(BUCKET_NAME, FOLDER_NAME, "cat{}.png".format(photo_number))
         }
         table.put_item(Item=user)
