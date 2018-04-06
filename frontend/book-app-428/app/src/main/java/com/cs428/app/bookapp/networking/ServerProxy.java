@@ -30,7 +30,8 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public void followFriend(User user, String followUsername) {
+    public boolean followFriend(User user, String followUsername) {
+        return false;
     }
 
     @Override
@@ -39,22 +40,25 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public void recommendBook(User user, String bookId) {
+    public boolean recommendBook(User user, String bookId) {
+        return false;
     }
 
     @Override
-    public void rateBook(User user, String bookID, int rating) {
+    public boolean rateBook(User user, String bookID, int rating) {
         //TODO: implement rateBook
+        return false;
     }
 
     @Override
-    public void getRecommendationFor(User user) {
+    public List<Book> getRecommendationFor(User user) {
         //TODO: Will a user have a list of recommendations? What is the api endpoint for that??
+        return null;
     }
 
     @Override
-    public void getBookById(String bookId) {
-        this.serverCommunicator.getBookById(bookId);
+    public Book getBookById(String bookId) {
+        return this.serverCommunicator.getBookById(bookId);
     }
 
     @Override

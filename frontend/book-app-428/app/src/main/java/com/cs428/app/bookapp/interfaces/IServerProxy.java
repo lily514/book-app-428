@@ -18,7 +18,7 @@ public interface IServerProxy {
      * @param followUsername username of friend to be added to user's friend's list
      * @return a boolean indicating success
      */
-    public void followFriend(User user, String followUsername);
+    public boolean followFriend(User user, String followUsername);
 
     /**
      * Method to search for a book by a given search term
@@ -32,7 +32,7 @@ public interface IServerProxy {
      * @param bookId the book being recommended
      * @return a boolean indicating success
      */
-    public void recommendBook(User user, String bookId);
+    public boolean recommendBook(User user, String bookId);
 
     /**
      * Method to submit a rating for a given book by a given user
@@ -44,21 +44,21 @@ public interface IServerProxy {
      * @param rating the rating to be submitted
      * @return a boolean indicating success
      */
-    public void rateBook(User user, String bookID, int rating);
+    public boolean rateBook(User user, String bookID, int rating);
 
     /**
      * Mehtod to get the recommendations for a given user
      * @param user the user for which the recommendations are for
      * @return a list of books recommended for that user
      */
-    public void getRecommendationFor(User user);
+    public List<Book> getRecommendationFor(User user);
 
     /**
      * Method to get a book object by the bookID
      * @param bookId the id of the book in the database
      * @return a book object
      */
-    public void getBookById(String bookId);
+    public Book getBookById(String bookId);
 
     /**
      * Method called when app first loads. Leads to call to servercommunicator to get information from backend

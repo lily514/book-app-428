@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Model;
+import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
 import com.cs428.clientsdk.model.Empty;
@@ -38,7 +39,8 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return the list of all users. Null if no users exist
      */
     @Override
-    public void getUsers(){
+    public List<User> getUsers(){
+        return null;
     }
 
     /** Method to return user info for a specific user given an id.
@@ -56,7 +58,8 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return the list of friends for a given user, null if does not exist.
      */
     @Override
-    public void getFriends(String id) {
+    public List<User> getFriends(String id) {
+        return null;
     }
 
     /** Method to return user's friend's reading list.
@@ -64,7 +67,8 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return list of books read by all the given user's friends.
      */
     @Override
-    public void getUsersFriendsReadingList(String id) {
+    public List<Book> getUsersFriendsReadingList(String id) {
+        return null;
     }
 
     /** Method to add a book to a given user's recommendation list
@@ -73,8 +77,9 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return boolean indicating success.
      */
     @Override
-    public void addRecommendation(String id, Book book) {
+    public boolean addRecommendation(String id, Book book) {
         //TODO: create and call an addReccommendation async task
+        return false;
     }
 
     /** Method to add a book to a given user's reading list
@@ -83,8 +88,9 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return boolean indicating success
      */
     @Override
-    public void addToReadingList(String id, Book book) {
+    public boolean addToReadingList(String id, Book book) {
         //TODO: create and call an addToReadingList async task
+        return false;
     }
 
     /** Method to add another user to a certain user's friend's list.
@@ -93,8 +99,9 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return boolean indicating success
      */
     @Override
-    public void followUser(String myId, String otherId) {
+    public boolean followUser(String myId, String otherId) {
         //TODO: Create and call a follow user async task
+        return false;
     }
 
 
@@ -103,7 +110,8 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return a list of books (or ids) associated with the search term. Null if none exist.
      */
     @Override
-    public void searchForBook(String searchString) {
+    public List<Book> searchForBook(String searchString) {
+        return null;
     }
 
     /** Method to get a book by id NOT ISBN. Fetches single book
@@ -111,10 +119,11 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return the book associated with the input id. Null if none found.
      */
     @Override
-    public void getBookById(String id) {
+    public Book getBookById(String id) {
         String bookUrl = "/book/" + id + "/";
         String response;
         new GetBookTask().execute(bookUrl);
+        return null; // TODO: Return book asynchronously
     }
 
     /**
@@ -123,10 +132,11 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return
      */
     @Override
-    public void searchBookByTitle(String title) {
+    public Book searchBookByTitle(String title) {
         String bookUrl = "/books/" + title + "/";
         String response;
         new SearchBooksTask().execute(bookUrl);
+        return null; // TODO: Return book asynchronously
     }
 
     /**
@@ -137,7 +147,8 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return a value indicating success.
      */
     @Override
-    public void rateBook(String userId, String bookId, int rating) {
+    public boolean rateBook(String userId, String bookId, int rating) {
+        return false;
     }
 
     @Override

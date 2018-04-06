@@ -16,7 +16,7 @@ import java.util.Observer;
  * Created by Lily on 3/21/18.
  */
 
-public class MainPresenter implements IHomePresenter, IProfilePresenter, Observer {
+public class MainPresenter implements IProfilePresenter, Observer {
 
     private IClientFacade modelFacade;
     private Person person = null;

@@ -54,10 +54,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         setActionBarClickListeners();
-        fragmentDrawer = (FragmentDrawer)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        fragmentDrawer.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-        fragmentDrawer.setDrawerListener(this);
 
         /******* This is for passing the correct user information to AWS Cognito and initilizing the model *********/
 
