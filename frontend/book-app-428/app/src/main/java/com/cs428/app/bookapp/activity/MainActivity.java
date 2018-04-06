@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.os.Bundle;
 import android.view.View;
@@ -131,8 +132,10 @@ public class MainActivity extends AppCompatActivity {
         // the following code is for testing purposes, will be changed
         Context context = getApplicationContext();
         Toast.makeText(context, "Profile clicked", Toast.LENGTH_SHORT).show();
-        Fragment profileFragment = ProfileFragment.newInstance(presenter);
-        transitionFragment(profileFragment, "Profile");
+        // TODO: We have to connect to the API before this fragment will load -- until then the app
+        //  just crashes because there's no User to fill the data fields
+//        Fragment profileFragment = ProfileFragment.newInstance(presenter);
+//        transitionFragment(profileFragment, "Profile");
     }
 
     public void doHomeNavButtonAction() {
@@ -153,9 +156,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container_body, newFragment).commit();
 
-        toolbar = (Toolbar) findViewById(R.id.banner);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(fragmentTitle);
+//        toolbar = (Toolbar) findViewById(R.id.banner);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle(fragmentTitle);
+    }
+
+    public void setBannerTitle(String title) {
+        getSupportActionBar().setTitle(title);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_up);
     }
 }

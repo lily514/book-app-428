@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cs428.app.bookapp.R;
+import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.Person;
@@ -51,6 +52,12 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         presenter = (IProfilePresenter) getArguments().getSerializable(
                 "PRESENTER");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        ((MainActivity)getActivity()).setBannerTitle("Profile");
     }
 
     @Override
