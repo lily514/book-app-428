@@ -1,6 +1,5 @@
 package com.cs428.app.bookapp.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,7 @@ import android.widget.Toast;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.model.Book;
-import com.cs428.app.bookapp.interfaces.IClientFacade;
-import com.cs428.app.bookapp.model.ClientFacade;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +39,7 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Book book = book_ids.get(position);
-        holder.bookTitle.setText(book.getName());
+        holder.bookTitle.setText(book.getTitle());
         holder.bookDescription.setText(book.getSummary());
         holder.bookCover.setImageBitmap(book.getCover());
 

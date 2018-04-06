@@ -1,6 +1,7 @@
 package com.cs428.app.bookapp.networking.customSerializers;
 
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.BookReview;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,11 +45,16 @@ public class BookDeserializer extends StdDeserializer<Book> {
 
         ObjectMapper mapper = new ObjectMapper();
         List<String> reviews = mapper.readValue(node.get("reviews").textValue(), new TypeReference<List<String>>(){});
+        List<BookReview> bookReviews = new ArrayList<>();
+
+        for (int i = 0; i < reviews.size(); ++i) {
+            bookReviews.add(new BookReview(reviews.get(i)));
+        }
 
         Book book = new Book(title, author, isbn, coverUrl);
         book.setRating(upvotes);
         book.setSummary(description);
-        book.setReviews(reviews);
+        book.setReviews(bookReviews);
 
         return book;
     }

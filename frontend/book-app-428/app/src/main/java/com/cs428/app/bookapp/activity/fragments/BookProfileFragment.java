@@ -1,46 +1,42 @@
 package com.cs428.app.bookapp.activity.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
-import com.cs428.app.bookapp.adapter.BookSummaryListAdapter;
-import com.cs428.app.bookapp.model.Book;
-
-import java.io.Serializable;
-
-
-/**
- * Created by emilyprigmore on 3/11/18.
- */
+import com.cs428.app.bookapp.adapter.BookReviewsListAdapter;
+import com.cs428.app.bookapp.interfaces.IBookPresenter;
+import com.cs428.app.bookapp.interfaces.Serializable;
 
 public class BookProfileFragment extends Fragment {
-
-    private Book book;
-
+    private IBookPresenter bookPresenter;
     private ImageView bookCover;
-    private TextView title;
-    private TextView author;
-    private TextView metadata;
-    private RatingBar ratingBar;
-    private TextView summary;
+    private TextView bookTitle;
+    private TextView bookAuthor;
+    private TextView bookMeta;
+    private TextView bookSummary;
+    private RecyclerView bookReviews;
+    private Button rateButton;
+    private Button reviewButton;
+    private Button recommendButton;
 
-    private RecyclerView.LayoutManager layoutManager;
-    private RecyclerView bookSummaryList;
-    private RecyclerView.Adapter bookSummaryListAdapter;
-
+    public BookProfileFragment() {}
+  
     public static BookProfileFragment newInstance(Serializable book) {
         BookProfileFragment fragment = new BookProfileFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("BOOK", book);
+        bundle.putSerializable("PRESENTER", book);
+        //bundle.putSerializable("BOOK", book);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -49,46 +45,63 @@ public class BookProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        book = (Book) getArguments().getSerializable(
-                "BOOK");
+        bookPresenter = (IBookPresenter) getArguments().getSerializable("PRESENTER");
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.book_page_layout, container, false);
+    public void attachLayoutElements(View v){
+        bookCover = (ImageView) v.findViewById(R.id.book_cover);
+        bookTitle = (TextView) v.findViewById(R.id.book_title);
+        bookAuthor = (TextView) v.findViewById(R.id.book_author);
+        bookMeta = (TextView) v.findViewById(R.id.book_meta);
+        bookSummary = (TextView) v.findViewById(R.id.book_summary);
+        bookReviews = (RecyclerView) v.findViewById(R.id.book_reviews);
+        rateButton = (Button) v.findViewById(R.id.rate_button);
+        reviewButton = (Button) v.findViewById(R.id.review_button);
+        recommendButton = (Button) v.findViewById(R.id.recommend_button);
 
-        layoutManager = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.HORIZONTAL,
-                false);
+        bookCover.setImageBitmap(bookPresenter.getCover());
+        bookTitle.setText(bookPresenter.getTitle());
+        bookAuthor.setText(bookPresenter.getAuthor());
+        bookMeta.setText(bookPresenter.getMeta());
+        bookSummary.setText(bookPresenter.getSummary());
 
-        View coverView = rootView.findViewById(R.layout.book_cover_view);
-        bookCover = (ImageView) coverView.findViewById(R.id.book_cover);
+        BookReviewsListAdapter adapter = new BookReviewsListAdapter(bookPresenter.getReviews());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        bookReviews.setLayoutManager(layoutManager);
+        bookReviews.setAdapter(adapter);
 
-        title = (TextView) rootView.findViewById(R.id.book_title);
-        author = (TextView) rootView.findViewById(R.id.book_author);
-        metadata = (TextView) rootView.findViewById(R.id.book_meta);
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: route to new fragment
+            }
+        });
 
-        ratingBar = (RatingBar) rootView.findViewById(R.id.book_rating_bar);
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: route to new fragment
+            }
+        });
 
-        summary = (TextView) rootView.findViewById(R.id.book_summary);
-
-        bookSummaryList = (RecyclerView) rootView.findViewById(R.id.book_reviews);
-        bookSummaryListAdapter = new BookSummaryListAdapter(book.getReviews());
-        bookSummaryList.setLayoutManager(layoutManager);
-        bookSummaryList.setAdapter(bookSummaryListAdapter);
-
-        initializeBookInfo();
-
-        return rootView;
+        recommendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: route to new fragment
+            }
+        });
     }
 
-    private void initializeBookInfo() {
-        title.setText(book.getName());
-        author.setText(book.getAuthor());
-        author.setText(book.getAuthor());
-        String isbn = book.getIsbn();
-        String publishDate = book.getDate();
-        metadata.setText(publishDate + "|" + isbn);
-        ratingBar.setRating(book.getRating());
-        bookCover.setImageBitmap(book.getCover());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.book_page_layout, container, false);
+
+        attachLayoutElements(v);
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.banner);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
+
+        return v;
     }
 }
