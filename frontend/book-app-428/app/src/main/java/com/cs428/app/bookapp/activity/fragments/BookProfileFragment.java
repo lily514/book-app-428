@@ -18,10 +18,6 @@ import com.cs428.app.bookapp.adapter.BookReviewsListAdapter;
 import com.cs428.app.bookapp.interfaces.IBookPresenter;
 import com.cs428.app.bookapp.interfaces.Serializable;
 
-/**
- * Created by chees on 3/31/2018.
- */
-
 public class BookProfileFragment extends Fragment {
     private IBookPresenter bookPresenter;
     private ImageView bookCover;
@@ -35,11 +31,12 @@ public class BookProfileFragment extends Fragment {
     private Button recommendButton;
 
     public BookProfileFragment() {}
-
+  
     public static BookProfileFragment newInstance(Serializable book) {
         BookProfileFragment fragment = new BookProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("PRESENTER", book);
+        //bundle.putSerializable("BOOK", book);
         fragment.setArguments(bundle);
 
         return fragment;

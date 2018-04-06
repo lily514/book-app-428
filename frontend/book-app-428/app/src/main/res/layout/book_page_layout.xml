@@ -10,63 +10,86 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingEnd="20dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:layout_width="115dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            layout="@layout/book_cover_view"/>
-
-        <TextView
-            android:id="@+id/book_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="10pt"
-            android:text="Title"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/book_author"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textStyle="italic"
-            android:textSize="8pt"
-            android:text="Author"/>
+            <include
+                layout="@layout/book_cover_view"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_weight="1" />
 
-        <TextView
-            android:id="@+id/book_meta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="6pt"
-            android:text="Publish Date | ISBN"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/book_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Title"
+                    android:textSize="10pt" />
+
+                <TextView
+                    android:id="@+id/book_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Author"
+                    android:textSize="8pt"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/book_meta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Publish Date | ISBN"
+                    android:textSize="6pt" />
+
+                <include
+                    layout="@layout/goodreads_rating_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/horizontal_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:src="@color/secondaryTextColor"
             android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp" />
+            android:layout_marginTop="3dp"
+            android:src="@color/secondaryTextColor" />
 
         <TextView
             android:id="@+id/book_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Summary"/>
+            android:text="Summary" />
 
         <ImageView
             android:id="@id/horizontal_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:src="@color/secondaryTextColor"
             android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp" />
+            android:layout_marginTop="3dp"
+            android:src="@color/secondaryTextColor" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/book_reviews"
@@ -76,32 +99,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/rate_button"
+                style="?buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/rate"
-                style="?buttonBarButtonStyle"/>
+                android:text="@string/rate" />
 
             <Button
                 android:id="@+id/review_button"
+                style="?buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/review"
-                style="?buttonBarButtonStyle"/>
+                android:text="@string/review" />
 
             <Button
                 android:id="@+id/recommend_button"
+                style="?buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/recommend"
-                style="?buttonBarButtonStyle"/>
+                android:text="@string/recommend" />
         </LinearLayout>
 
     </LinearLayout>

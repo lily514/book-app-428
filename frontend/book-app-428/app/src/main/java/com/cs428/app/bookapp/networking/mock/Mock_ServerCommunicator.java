@@ -25,11 +25,9 @@ public class Mock_ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
-    public User getUser(String id) {
-        return null;
+    public void loadUser(String name) {
+
     }
-
-
 
     @Override
     public List<User> getFriends(String id) {
@@ -52,13 +50,8 @@ public class Mock_ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
-    public User login(String username, String password) {
-        return new User(username, username);
-    }
+    public void updateUser(String username) {
 
-    @Override
-    public boolean registerUser(User user) {
-        return true;
     }
 
     @Override
@@ -92,7 +85,22 @@ public class Mock_ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
+    public Book searchBookByTitle(String title) {
+        return null;
+    }
+
+    @Override
     public boolean rateBook(String userId, String bookId, int rating) {
         return true;
+    }
+
+    @Override
+    public void setUserToken(String token) {
+
+    }
+
+    @Override
+    public String getUserToken() {
+        return null;
     }
 }
