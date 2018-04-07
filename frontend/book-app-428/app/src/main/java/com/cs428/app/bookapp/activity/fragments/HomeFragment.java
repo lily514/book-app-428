@@ -46,6 +46,12 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        ((MainActivity)getActivity()).setBannerTitle("Home");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);

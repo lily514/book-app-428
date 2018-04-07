@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
+import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.adapter.BookReviewsListAdapter;
 import com.cs428.app.bookapp.interfaces.IBookPresenter;
 import com.cs428.app.bookapp.interfaces.Serializable;
@@ -36,7 +37,6 @@ public class BookProfileFragment extends Fragment {
         BookProfileFragment fragment = new BookProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("PRESENTER", book);
-        //bundle.putSerializable("BOOK", book);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -46,6 +46,12 @@ public class BookProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bookPresenter = (IBookPresenter) getArguments().getSerializable("PRESENTER");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        ((MainActivity)getActivity()).setBannerTitle("Book");
     }
 
     public void attachLayoutElements(View v){
