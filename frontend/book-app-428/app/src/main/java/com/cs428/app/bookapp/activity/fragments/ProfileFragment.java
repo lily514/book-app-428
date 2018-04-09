@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.MainActivity;
@@ -19,6 +21,10 @@ import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
 
+import junit.framework.Test;
+
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +34,7 @@ import java.util.List;
  */
 
 public class ProfileFragment extends Fragment implements OnReadingBooksTaskComplete, OnReviewedBooksTaskComplete {
+
     private RecyclerView readingListRecyclerView;
     private RecyclerView reviewedListRecyclerView;
     private RecyclerView.Adapter readingListAdapter;
@@ -35,7 +42,9 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
     private RecyclerView.LayoutManager readingLayoutManager;
     private RecyclerView.LayoutManager reviewedLayoutManager;
     private Button actionButton;
+    private TextView nameText;
     private IProfilePresenter presenter;
+    private Person person;
 
     private List<Book> readingList;
     private List<Book> reviewList;
@@ -52,18 +61,14 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
         return fragment;
     }
 
-    public void setPerson(Person person){
-           presenter.setPerson(person);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = (IProfilePresenter) getArguments().getSerializable(
                 "PRESENTER");
-
-        reviewList = new ArrayList<Book> ();
-        readingList = new ArrayList<Book>();
+        person = presenter.getPerson();
+//        reviewList = new ArrayList<Book> ();
+//        readingList = new ArrayList<Book>();
     }
 
     @Override
@@ -92,6 +97,9 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
 
         actionButton = (Button) v.findViewById(R.id.person_action);
 
+        nameText = (TextView) v.findViewById(R.id.person_name);
+        nameText.setText(presenter.getPerson().getName());
+
         // You can't follow yourself, silly!
         if (presenter.getPerson() != null && presenter.getPerson().isUser()) {
             actionButton.setVisibility(View.INVISIBLE);
@@ -114,7 +122,11 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
 
     @Override
     public void onReadingBooksTaskComplete(List<Book> books) {
-        readingList = books;
+        if (books == null){
+            Log.d("DEBUG LISTENERS", "onReadingBooksTaskComplete: list of books was null");
+            return;
+        }
+        readingList = new ArrayList<Book>(books);
         readingListAdapter = new BookCardListAdapter(reviewList);
         readingListRecyclerView.setLayoutManager(readingLayoutManager);
         readingListRecyclerView.setAdapter(readingListAdapter);
@@ -123,6 +135,13 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
 
     @Override
     public void addReadingBook(Book book) {
+        if (book == null){
+            Log.d("DEBUG LISTENERS", "addReadingBook: book was null");
+            return;
+        }
+        if (readingList == null){
+            readingList = new ArrayList<Book>();
+        }
         readingList.add(book);
         readingListAdapter = new BookCardListAdapter(readingList);
         readingListRecyclerView.setLayoutManager(readingLayoutManager);
@@ -131,7 +150,11 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
 
     @Override
     public void onReviewedBooksTaskComplete(List<Book> books) {
-        reviewList = books;
+        if (books == null){
+            Log.d("DEBUG LISTENERS", "onReviewedBooksTaskComplete: list of books was null");
+            return;
+        }
+        reviewList = new ArrayList<Book>(books);
         reviewedListAdapter = new BookCardListAdapter(reviewList);
         reviewedListRecyclerView.setLayoutManager(reviewedLayoutManager);
         reviewedListRecyclerView.setAdapter(reviewedListAdapter);
@@ -139,6 +162,13 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
 
     @Override
     public void addReviewedBook(Book book) {
+        if (book == null){
+            Log.d("DEBUG LISTENERS", "addReadingBook: book was null");
+            return;
+        }
+        if (reviewList == null){
+            reviewList = new ArrayList<Book>();
+        }
         reviewList.add(book);
         reviewedListAdapter = new BookCardListAdapter(reviewList);
         reviewedListRecyclerView.setLayoutManager(reviewedLayoutManager);

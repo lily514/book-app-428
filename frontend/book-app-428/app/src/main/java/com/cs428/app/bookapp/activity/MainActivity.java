@@ -121,12 +121,6 @@ public class MainActivity extends AppCompatActivity {
     /** search methods **/
     public void setSearchViewListener(SearchView searchView) {
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doSearchButtonAction();
-            }
-        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -141,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: on text changed listeners, etc.
     }
 
     public OnSearchTaskComplete doSearchButtonAction() {
@@ -164,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(context, "Profile clicked", Toast.LENGTH_SHORT).show();
         Fragment profileFragment = ProfileFragment.newInstance(presenter);
         transitionFragment(profileFragment, "Profile");
+
     }
 
     public void doHomeNavButtonAction() {

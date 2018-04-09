@@ -339,6 +339,7 @@ public class ServerCommunicator implements IServerCommunicator {
         protected List<Book> doInBackground(String... strings) {
             try {
                 URL url = new URL(BASE_URL + strings[0]);
+                Log.d("DEBUG", "doInBackground: Search Books URL "+url.toString());
 
                 // Make http connections and requests.
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -347,8 +348,10 @@ public class ServerCommunicator implements IServerCommunicator {
                 int responseCode = connection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     String response = readResponse(connection);
+                    Log.d("DEBUG", "doInBackground: Search Books Task OK");
                     return serializer.deserializeListOfBooks(response);
                 } else {
+                    Log.d("DEBUG", "doInBackground: Search Books Task NOT OK " + responseCode);
                     return null;
                 }
             } catch (IOException e) {

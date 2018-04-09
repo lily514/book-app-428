@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,11 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
 
     @Override
     public void onHomeBooksTaskComplete(List<Book> books) {
-        homePageBooks = books;
+        if (books == null){
+                Log.d("DEBUG LISTENERS", "onHomeBooksTaskComplete: list of books was null");
+                return;
+        }
+        homePageBooks = new ArrayList<>(books);
         adapter = new BookCardListAdapter(books);
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);
@@ -84,6 +89,13 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
 
     @Override
     public void addHomeBook(Book book) {
+        if (book == null){
+            Log.d("DEBUG LISTENERS", "addHomeBook: book was null");
+            return;
+        }
+        if (homePageBooks == null){
+            homePageBooks = new ArrayList<Book>();
+        }
         homePageBooks.add(book);
         adapter = new BookCardListAdapter(homePageBooks);
         recommendedList.setLayoutManager(layoutManager);

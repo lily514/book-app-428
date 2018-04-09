@@ -42,6 +42,8 @@ public class MainPresenter implements IProfilePresenter, ISearchPresenter, IHome
 
     @Override
     public User getCurrentUser() {
+        currentUser = modelFacade.getCurrentUser();
+        setPerson(currentUser);
         return modelFacade.getCurrentUser();
     }
 
@@ -73,6 +75,7 @@ public class MainPresenter implements IProfilePresenter, ISearchPresenter, IHome
         if(arg instanceof User)
         {
             currentUser  = (User)arg;
+            setPerson(currentUser);
         }
     }
 
