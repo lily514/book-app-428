@@ -13,18 +13,19 @@ import java.util.List;
 public interface IServerProxy {
 
     /**
+     * Method called when app first loads. Leads to call to servercommunicator to get information from backend
+     * for the current cognito user. This will then set the correct info in the model which should trigger
+     * the observers.
+     */
+    public void initialize();
+
+    /**
      * Method for a given user to follow another user
      * @param user the user who is adding the friend
      * @param followUsername username of friend to be added to user's friend's list
      * @return a boolean indicating success
      */
     public boolean followFriend(User user, String followUsername);
-
-    /**
-     * Method to search for a book by a given search term
-     * @param searchTerm the term to search for a book by
-     */
-    public void searchBook(String searchTerm);
 
     /**
      * Method for a user to recommend a book.
@@ -46,24 +47,16 @@ public interface IServerProxy {
      */
     public boolean rateBook(User user, String bookID, int rating);
 
-    /**
-     * Mehtod to get the recommendations for a given user
-     * @param user the user for which the recommendations are for
-     * @return a list of books recommended for that user
-     */
-    public List<Book> getRecommendationFor(User user);
 
-    /**
-     * Method to get a book object by the bookID
-     * @param bookId the id of the book in the database
-     * @return a book object
-     */
-    public Book getBookById(String bookId);
 
-    /**
-     * Method called when app first loads. Leads to call to servercommunicator to get information from backend
-     * for the current cognito user. This will then set the correct info in the model which should trigger
-     * the observers.
-     */
-    public void initialize();
+
+    public void getRecommendationFor(User user, OnHomeBooksTaskComplete listener);
+
+    public void searchBook(String searchTerm, OnSearchTaskComplete listener);
+
+    void searchUser(String searchString, OnSearchTaskComplete listener);
+
+    void getReadingBookById(String book_id, OnReadingBooksTaskComplete listener);
+
+    void getReviewedBookById(String book_id, OnReviewedBooksTaskComplete listener);
 }

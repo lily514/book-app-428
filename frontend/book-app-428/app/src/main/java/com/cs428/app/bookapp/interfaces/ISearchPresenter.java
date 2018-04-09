@@ -11,7 +11,6 @@ import java.util.List;
  */
 
 public interface ISearchPresenter extends Serializable {
-    void doSearch(String searchString);
-    List<Book> getBookSearchResults();
-    List<User> getUserSearchResults();
+    boolean doSearch(String searchString, OnSearchTaskComplete listener);
+
 }

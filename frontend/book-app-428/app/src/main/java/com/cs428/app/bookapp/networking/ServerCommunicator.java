@@ -1,23 +1,21 @@
 package com.cs428.app.bookapp.networking;
 
-import android.media.midi.MidiOutputPort;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
+import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Model;
-import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
-import com.cs428.clientsdk.model.Empty;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -51,6 +49,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public void loadUser(String name) {
+
         new GetCurrentUserTask().execute("/users/" + name + "/");
     }
 
@@ -106,38 +105,26 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
 
-    /** Method to search for a book with a given search term.
-     * @param searchString
-     * @return a list of books (or ids) associated with the search term. Null if none exist.
-     */
-    @Override
-    public List<Book> searchForBook(String searchString) {
-        return null;
-    }
 
-    /** Method to get a book by id NOT ISBN. Fetches single book
-     * @param id id of book to be fetched
-     * @return the book associated with the input id. Null if none found.
-     */
     @Override
-    public Book getBookById(String id) {
+    public void getReviewedBookById(String id, OnReviewedBooksTaskComplete listener) {
         String bookUrl = "/book/" + id + "/";
         String response;
-        new GetBookTask().execute(bookUrl);
-        return null; // TODO: Return book asynchronously
+        new GetReviewedBookTask(listener).execute(bookUrl);
+
     }
 
     /**
      *  Method to get a book by title (i.e. search for books by title). Fetches list of books
      * @param title the title of the book to be fetched.
+     * @param listener
      * @return
      */
     @Override
-    public Book searchBookByTitle(String title) {
+    public void searchBookByTitle(String title, OnSearchTaskComplete listener) {
         String bookUrl = "/books/" + title + "/";
         String response;
-        new SearchBooksTask().execute(bookUrl);
-        return null; // TODO: Return book asynchronously
+        new SearchBooksTask(listener).execute(bookUrl);
     }
 
     /**
@@ -160,6 +147,27 @@ public class ServerCommunicator implements IServerCommunicator {
     @Override
     public String getUserToken() {
         return userToken;
+    }
+
+    @Override
+    public void searchBookByAuthor(String searchTerm, OnSearchTaskComplete listener) {
+        //TODO
+    }
+
+    @Override
+    public void searchUserByName(String searchTerm, OnSearchTaskComplete listener) {
+        //TODO
+    }
+
+    @Override
+    public void getRecommendations(String id, OnHomeBooksTaskComplete listener) {
+        //TODO
+    }
+
+
+    @Override
+    public void getReadingBookById(String book_id, OnReadingBooksTaskComplete listener) {
+        //TODO
     }
 
     @Override
@@ -198,6 +206,7 @@ public class ServerCommunicator implements IServerCommunicator {
 
         return builder.toString();
     }
+
 
     /**************************     Start AsyncTask Classes     *********************************/
 
@@ -275,12 +284,17 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(List<User> users){
-            Model.getSINGLETON().setUserSearchResults(users);
+            //TODO
+            //Model.getSINGLETON().setUserSearchResults(users);
         }
     }
 
-    private class GetBookTask extends AsyncTask<String, Void, Book> {
+    private class GetReviewedBookTask extends AsyncTask<String, Void, Book> {
+        private OnReviewedBooksTaskComplete listener;
 
+        public GetReviewedBookTask(OnReviewedBooksTaskComplete listener){
+            this.listener = listener;
+        }
         @Override
         protected Book doInBackground(String... strings) {
             try {
@@ -310,11 +324,16 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(Book book) {
-            Model.getSINGLETON().setFetchedBook(book);
+            listener.addReviewedBook(book);
         }
     }
 
     private class SearchBooksTask extends AsyncTask<String, Void, List<Book>> {
+        OnSearchTaskComplete listener;
+
+        public SearchBooksTask(OnSearchTaskComplete listener) {
+            this.listener = listener;
+        }
 
         @Override
         protected List<Book> doInBackground(String... strings) {
@@ -340,7 +359,7 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(List<Book> books) {
-            Model.getSINGLETON().setBookSearchResults(books);
+            this.listener.addBooks(books);
         }
     }
 

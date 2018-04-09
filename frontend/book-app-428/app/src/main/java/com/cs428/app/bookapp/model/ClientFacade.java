@@ -2,12 +2,14 @@ package com.cs428.app.bookapp.model;
 
 import com.cs428.app.bookapp.interfaces.IClientFacade;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
-import com.cs428.app.bookapp.interfaces.IServerProxy;
+import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.networking.Serializer;
 import com.cs428.app.bookapp.networking.ServerCommunicator;
 import com.cs428.app.bookapp.networking.ServerProxy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
@@ -15,7 +17,7 @@ import java.util.Observer;
  * Created by rredd on 3/15/2018.
  */
 
-public class ClientFacade implements IClientFacade {
+public class ClientFacade implements IClientFacade{
 
     private Model model = Model.getSINGLETON();
     IServerCommunicator serverCom = new ServerCommunicator(new Serializer());
@@ -24,25 +26,23 @@ public class ClientFacade implements IClientFacade {
 
     public User getCurrentUser(){ return model.currentUser;}
 
-    public List<Book> getHomePageBooks(){
+    /** PATTERN : every get request should ask the serverProxy for the latest data,
+     * but should return whatever is currently in the model.
+     * The observer pattern will return the latest data after the async tasks complete
+     * @param person
+     * @param listener*/
+
+
+    @Override
+    public void getHomePageBooks(Person person, OnHomeBooksTaskComplete listener){
         if(model.currentUser != null) {
-            return serverProxy.getRecommendationFor(model.currentUser);
+            serverProxy.getRecommendationFor(model.currentUser, listener);
         }
-        else
-        {return null;}
     }
 
-    public List<Book> searchBooks(String searchString){
-        //return serverProxy.searchBook(searchString);
-        return null;
-    }
-
-    public Book getBook(String bookId){
-        //return serverProxy.getBookById(bookId);
-        return null;
-    }
-
-    public boolean rateBook(String book_id, int rating){return serverProxy.rateBook(model.currentUser, book_id, rating);}
+    //TODO: how does this work
+    public boolean rateBook(String book_id, int rating){
+        return serverProxy.rateBook(model.currentUser, book_id, rating);}
 
     public boolean recommendBook(String book_id){
         model.currentUser.addToReviewedBooks(book_id);
@@ -50,33 +50,33 @@ public class ClientFacade implements IClientFacade {
     }
 
 
-    public List<Book>getPersonsReadingList(Person person){
-        /*
+    public void getPersonsReadingList(Person person, OnReadingBooksTaskComplete listener){
+
         List<String> bookIds = person.getReadingList();
-        List<Book> books = new ArrayList<>();
         for (int i = 0; i < bookIds.size(); i++)
         {
-           Book book = serverProxy.getBookById(bookIds.get(i));
-           books.add(book);
+           serverProxy.getReadingBookById(bookIds.get(i), listener);
         }
-        return books;
-        */
-        return null;
     }
 
-    public List<Book> getPersonsReviewedList(Person person){
-        /*
+    public void getPersonsReviewedList(Person person, OnReviewedBooksTaskComplete listener){
+
         List<String> bookIds = person.getReviewedBooks();
-        List<Book> books = new ArrayList<>();
         for (int i = 0; i < bookIds.size(); i++)
         {
-            Book book = serverProxy.getBookById(bookIds.get(i));
-            books.add(book);
+            serverProxy.getReviewedBookById(bookIds.get(i), listener);
         }
-        return books;
-        */
-        return null;
+
+        //return null;
     }
+
+    @Override
+    public void doSearch(String searchString, OnSearchTaskComplete listener) {
+        serverProxy.searchBook(searchString, listener);
+        serverProxy.searchUser(searchString, listener);
+    }
+
+
     public void ObserveModel(Observer o) {
         model.addObserver(o);
     }

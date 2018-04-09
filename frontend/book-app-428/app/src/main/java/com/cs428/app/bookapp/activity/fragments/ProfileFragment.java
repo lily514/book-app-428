@@ -12,25 +12,33 @@ import android.widget.Button;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
+import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
+import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Trevor on 2/10/2018.
  */
 
-public class ProfileFragment extends Fragment {
-    private RecyclerView readingList;
-    private RecyclerView reviewedList;
+public class ProfileFragment extends Fragment implements OnReadingBooksTaskComplete, OnReviewedBooksTaskComplete {
+    private RecyclerView readingListRecyclerView;
+    private RecyclerView reviewedListRecyclerView;
     private RecyclerView.Adapter readingListAdapter;
     private RecyclerView.Adapter reviewedListAdapter;
     private RecyclerView.LayoutManager readingLayoutManager;
     private RecyclerView.LayoutManager reviewedLayoutManager;
     private Button actionButton;
     private IProfilePresenter presenter;
+
+    private List<Book> readingList;
+    private List<Book> reviewList;
 
     // Necessary empty constructor
     public ProfileFragment() {}
@@ -53,6 +61,9 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         presenter = (IProfilePresenter) getArguments().getSerializable(
                 "PRESENTER");
+
+        reviewList = new ArrayList<Book> ();
+        readingList = new ArrayList<Book>();
     }
 
     @Override
@@ -67,17 +78,17 @@ public class ProfileFragment extends Fragment {
         readingLayoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
         reviewedLayoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        readingList = (RecyclerView) v.findViewById(R.id.reading_list);
-        reviewedList = (RecyclerView) v.findViewById(R.id.reviewed_list);
+        readingListRecyclerView = (RecyclerView) v.findViewById(R.id.reading_list);
+        reviewedListRecyclerView = (RecyclerView) v.findViewById(R.id.reviewed_list);
 
-        readingListAdapter = new BookCardListAdapter(presenter.getPersonsReadingList());
-        reviewedListAdapter = new BookCardListAdapter(presenter.getPersonsReadingList());
+        readingListAdapter = new BookCardListAdapter(readingList);
+        reviewedListAdapter = new BookCardListAdapter(reviewList);
 
-        readingList.setLayoutManager(readingLayoutManager);
-        readingList.setAdapter(readingListAdapter);
+        readingListRecyclerView.setLayoutManager(readingLayoutManager);
+        readingListRecyclerView.setAdapter(readingListAdapter);
 
-        reviewedList.setLayoutManager(reviewedLayoutManager);
-        reviewedList.setAdapter(reviewedListAdapter);
+        reviewedListRecyclerView.setLayoutManager(reviewedLayoutManager);
+        reviewedListRecyclerView.setAdapter(reviewedListAdapter);
 
         actionButton = (Button) v.findViewById(R.id.person_action);
 
@@ -101,4 +112,36 @@ public class ProfileFragment extends Fragment {
     }
 
 
+    @Override
+    public void onReadingBooksTaskComplete(List<Book> books) {
+        readingList = books;
+        readingListAdapter = new BookCardListAdapter(reviewList);
+        readingListRecyclerView.setLayoutManager(readingLayoutManager);
+        readingListRecyclerView.setAdapter(readingListAdapter);
+
+    }
+
+    @Override
+    public void addReadingBook(Book book) {
+        readingList.add(book);
+        readingListAdapter = new BookCardListAdapter(readingList);
+        readingListRecyclerView.setLayoutManager(readingLayoutManager);
+        readingListRecyclerView.setAdapter(readingListAdapter);
+    }
+
+    @Override
+    public void onReviewedBooksTaskComplete(List<Book> books) {
+        reviewList = books;
+        reviewedListAdapter = new BookCardListAdapter(reviewList);
+        reviewedListRecyclerView.setLayoutManager(reviewedLayoutManager);
+        reviewedListRecyclerView.setAdapter(reviewedListAdapter);
+    }
+
+    @Override
+    public void addReviewedBook(Book book) {
+        reviewList.add(book);
+        reviewedListAdapter = new BookCardListAdapter(reviewList);
+        reviewedListRecyclerView.setLayoutManager(reviewedLayoutManager);
+        reviewedListRecyclerView.setAdapter(reviewedListAdapter);
+    }
 }

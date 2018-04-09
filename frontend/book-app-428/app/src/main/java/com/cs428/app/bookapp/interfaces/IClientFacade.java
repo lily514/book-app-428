@@ -12,21 +12,20 @@ import java.util.Observer;
  */
 
 public interface IClientFacade {
-
-
     /*homepage view*/
     User getCurrentUser();
-    List<Book> getHomePageBooks();
-    List<Book> searchBooks(String searchString);
+    void getHomePageBooks(Person person, OnHomeBooksTaskComplete listener);
 
     /*book page*/
-    Book getBook(String bookId);
     boolean rateBook(String book_id, int rating);
     boolean recommendBook(String book_id);
 
     /*profile page*/
-    List<Book> getPersonsReadingList(Person person);
-    List<Book> getPersonsReviewedList(Person person);
+    void getPersonsReadingList(Person person, OnReadingBooksTaskComplete listener);
+    void getPersonsReviewedList(Person person, OnReviewedBooksTaskComplete listener);
+
+    /* search page */
+    void doSearch(String searchString, OnSearchTaskComplete listener);
 
     void ObserveModel (Observer observer);
 }

@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +16,19 @@ import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
 import com.cs428.app.bookapp.adapter.UserCardListAdapter;
 import com.cs428.app.bookapp.interfaces.ISearchPresenter;
+import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by emilyprigmore on 3/17/18.
  */
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements OnSearchTaskComplete {
 
     private ISearchPresenter presenter;
 
@@ -36,6 +39,11 @@ public class SearchFragment extends Fragment {
     private RecyclerView.LayoutManager userLayoutManager;
     private RecyclerView searchedUsersRecyclerView;
     private UserCardListAdapter userCardListAdapter;
+
+    private List<Book> bookList;
+    private List<User> userList;
+
+
 
     public static SearchFragment newInstance(Serializable presenter) {
         SearchFragment fragment = new SearchFragment();
@@ -51,6 +59,8 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         presenter = (ISearchPresenter) getArguments().getSerializable(
                 "PRESENTER");
+
+
     }
 
     @Override
@@ -71,25 +81,68 @@ public class SearchFragment extends Fragment {
         searchedBooksRecyclerView = (RecyclerView) rootView.findViewById(R.id.book_search_results);
         searchedUsersRecyclerView = (RecyclerView) rootView.findViewById(R.id.user_search_results);
 
-        bookCardListAdapter = new BookCardListAdapter(presenter.getBookSearchResults());
-        userCardListAdapter = new UserCardListAdapter(presenter.getUserSearchResults());
+        bookCardListAdapter = new BookCardListAdapter(bookList);
+        userCardListAdapter = new UserCardListAdapter(userList);
 
         searchedUsersRecyclerView.setLayoutManager(userLayoutManager);
         searchedUsersRecyclerView.setAdapter(userCardListAdapter);
 
         searchedBooksRecyclerView.setLayoutManager(booksLayoutManager);
         searchedBooksRecyclerView.setAdapter(bookCardListAdapter);
+
+        bookList = new ArrayList<Book>();
+        userList = new ArrayList<User>();
 
         return rootView;
     }
 
-    private void updateSearchedBooks() {
-        bookCardListAdapter = new BookCardListAdapter(presenter.getBookSearchResults());
+    @Override
+    public void onSearchTaskComplete(List<Book> book_results, List<User> user_results) {
+        bookList = book_results;
+        userList = user_results;
+
+        bookCardListAdapter = new BookCardListAdapter(book_results);
         searchedBooksRecyclerView.setLayoutManager(booksLayoutManager);
         searchedBooksRecyclerView.setAdapter(bookCardListAdapter);
 
-        userCardListAdapter = new UserCardListAdapter(presenter.getUserSearchResults());
+        userCardListAdapter = new UserCardListAdapter(user_results);
         searchedUsersRecyclerView.setLayoutManager(userLayoutManager);
         searchedUsersRecyclerView.setAdapter(userCardListAdapter);
+    }
+
+    @Override
+    public void addBook(Book book) {
+        bookList.add(book);
+        bookCardListAdapter = new BookCardListAdapter(bookList);
+        searchedBooksRecyclerView.setLayoutManager(booksLayoutManager);
+        searchedBooksRecyclerView.setAdapter(bookCardListAdapter);
+    }
+
+    @Override
+    public void addUser(User user) {
+        userList.add(user);
+
+        userCardListAdapter = new UserCardListAdapter(userList);
+        searchedUsersRecyclerView.setLayoutManager(userLayoutManager);
+        searchedUsersRecyclerView.setAdapter(userCardListAdapter);
+    }
+
+    @Override
+    public void addBooks(List<Book> books) {
+        if (books == null){
+            Log.d("DEBUG LISTENERS", "addBooks: list of books was null");
+            return;
+        }
+        if (bookList != null){
+            bookList.addAll(books);
+        }
+        else {
+            bookList = new ArrayList<Book>();
+            bookList.addAll(books);
+        }
+        bookCardListAdapter = new BookCardListAdapter(bookList);
+        searchedBooksRecyclerView.setLayoutManager(booksLayoutManager);
+        searchedBooksRecyclerView.setAdapter(bookCardListAdapter);
+
     }
 }

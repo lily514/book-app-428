@@ -26,15 +26,21 @@ public interface IServerCommunicator {
 
     boolean followUser(String myId, String otherId);
 
-    List<Book> searchForBook(String searchString);
-
-    Book getBookById(String id);
-
-    Book searchBookByTitle(String title);
-
     boolean rateBook(String userId, String bookId, int rating);
 
     void setUserToken(String token);
 
     String getUserToken();
+
+    void searchBookByAuthor(String searchTerm, OnSearchTaskComplete listener);
+
+    void searchBookByTitle(String searchTerm, OnSearchTaskComplete listener);
+
+    void searchUserByName(String searchTerm, OnSearchTaskComplete listener);
+
+    void getRecommendations(String id, OnHomeBooksTaskComplete listener);
+
+    void getReviewedBookById(String book_id, OnReviewedBooksTaskComplete listener);
+
+    void getReadingBookById(String book_id, OnReadingBooksTaskComplete listener);
 }

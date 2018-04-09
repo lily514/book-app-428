@@ -34,6 +34,7 @@ import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SearchFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
 import com.cs428.app.bookapp.interfaces.IClientFacade;
+import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.networking.Serializer;
 import com.cs428.app.bookapp.networking.ServerCommunicator;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         searchView = (SearchView) findViewById(R.id.search_text_view);
         setSearchViewListener(searchView);
+        searchView.setSubmitButtonEnabled(true);
 
         transitionFragment(HomeFragment.newInstance(presenter), "Home");
 
@@ -118,18 +120,34 @@ public class MainActivity extends AppCompatActivity {
 
     /** search methods **/
     public void setSearchViewListener(SearchView searchView) {
+
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doSearchButtonAction();
             }
         });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                OnSearchTaskComplete onSearchTaskComplete = doSearchButtonAction();
+                return presenter.doSearch(query, onSearchTaskComplete);
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                OnSearchTaskComplete onSearchTaskComplete = doSearchButtonAction();
+                return presenter.doSearch(newText, onSearchTaskComplete);
+            }
+        });
+
         //TODO: on text changed listeners, etc.
     }
 
-    public void doSearchButtonAction() {
+    public OnSearchTaskComplete doSearchButtonAction() {
         Fragment searchFragment = SearchFragment.newInstance(presenter);
         transitionFragment(searchFragment, "Home");
+        return (OnSearchTaskComplete) searchFragment;
     }
 
 
