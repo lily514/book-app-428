@@ -9,8 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private MainPresenter presenter;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +57,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        setActionBarClickListeners();
+        searchView = (SearchView) findViewById(R.id.search_text_view);
+        setSearchViewListener(searchView);
+
 
         /******* This is for passing the correct user information to AWS Cognito and initilizing the model *********/
 
         // Pass this info to server communicator, login, update model with the user, let observer update ui.
-        setActionBarClickListeners();
         CognitoUserPool pool = new CognitoUserPool(this, new AWSConfiguration(this));
         Model.getSINGLETON().setUserPool(pool);
         new ServerProxy(new ServerCommunicator(new Serializer())).initialize();
@@ -95,37 +99,38 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                doHomeNavButtonAction();
+                return true;
+            case R.id.action_profile:
+                doProfileNavButtonAction();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void showSnackbarMessage(View view, String msg) {
         Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
 
-    private void setActionBarClickListeners() {
-        View actionBar = findViewById(R.id.action_bar);
-
-        ImageButton friendsButton = (ImageButton) actionBar.findViewById(R.id.profile_nav_button);
-        friendsButton.setOnClickListener(new View.OnClickListener() {
+    public void setSearchViewListener(SearchView searchView) {
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                doProfileNavButtonAction();
+            public void onClick(View v) {
+                doSearchButtonAction();
             }
         });
+    }
 
-        ImageButton homeButton = (ImageButton) actionBar.findViewById(R.id.home_nav_button);
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doHomeNavButtonAction();
-            }
-        });
-
-        ImageButton booksButton = (ImageButton) actionBar.findViewById(R.id.books_nav_button);
-        booksButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doBooksNavButtonAction();
-            }
-        });
+    public void doSearchButtonAction() {
+        Fragment searchFragment = SearchFragment.newInstance(presenter);
+        transitionFragment(searchFragment, "Home");
     }
 
     public void doProfileNavButtonAction() {
@@ -144,11 +149,6 @@ public class MainActivity extends AppCompatActivity {
         transitionFragment(homeFragment, "Home");
     }
 
-    public void doBooksNavButtonAction() {
-        // the following code is for testing purposes, will be changed
-        Context context = getApplicationContext();
-        Toast.makeText(context, "Books clicked", Toast.LENGTH_SHORT).show();
-    }
 
     public void transitionFragment(Fragment newFragment, String fragmentTitle) {
         getSupportFragmentManager().beginTransaction()

@@ -5,10 +5,17 @@
     tools:context=".activity.MainActivity">
 
     <item
-        android:id="@+id/action_search"
-        android:title="@string/action_search"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_search"
+        android:id="@+id/action_home"
+        android:title="@string/title_home"
+        android:icon="@drawable/ic_home"
+        app:showAsAction="always"
+        >
+    </item>
 
-        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_profile"
+        android:title="@string/title_profile"
+        android:icon="@drawable/ic_person"
+        app:showAsAction="always">
+    </item>
 </menu>

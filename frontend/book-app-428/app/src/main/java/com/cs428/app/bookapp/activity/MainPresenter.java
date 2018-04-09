@@ -2,6 +2,7 @@ package com.cs428.app.bookapp.activity;
 
 import com.cs428.app.bookapp.interfaces.IClientFacade;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
+import com.cs428.app.bookapp.interfaces.ISearchPresenter;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.ClientFacade;
 import com.cs428.app.bookapp.model.Person;
@@ -17,7 +18,7 @@ import java.util.Observer;
 
 
 
-public class MainPresenter implements IProfilePresenter, Observer {
+public class MainPresenter implements IProfilePresenter, ISearchPresenter, Observer {
 
     private IClientFacade modelFacade;
     private Person person = null;
