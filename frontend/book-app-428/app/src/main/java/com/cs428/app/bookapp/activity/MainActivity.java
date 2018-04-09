@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_fragment);
 
-        presenter = new MainPresenter();
+        presenter = new MainPresenter(this);
 
         toolbar = (Toolbar) findViewById(R.id.banner);
         setSupportActionBar(toolbar);
@@ -132,10 +132,8 @@ public class MainActivity extends AppCompatActivity {
         // the following code is for testing purposes, will be changed
         Context context = getApplicationContext();
         Toast.makeText(context, "Profile clicked", Toast.LENGTH_SHORT).show();
-        // TODO: We have to connect to the API before this fragment will load -- until then the app
-        //  just crashes because there's no User to fill the data fields
-//        Fragment profileFragment = ProfileFragment.newInstance(presenter);
-//        transitionFragment(profileFragment, "Profile");
+        Fragment profileFragment = ProfileFragment.newInstance(presenter);
+        transitionFragment(profileFragment, "Profile");
     }
 
     public void doHomeNavButtonAction() {

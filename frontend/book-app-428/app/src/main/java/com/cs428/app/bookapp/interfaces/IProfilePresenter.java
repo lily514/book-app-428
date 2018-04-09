@@ -17,4 +17,5 @@ public interface IProfilePresenter extends Serializable {
     List<Book> getPersonsReviewedList();
     Person getPerson();
     void setPerson(Person person);
+
 }

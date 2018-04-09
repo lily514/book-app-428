@@ -1,7 +1,6 @@
 package com.cs428.app.bookapp.activity;
 
 import com.cs428.app.bookapp.interfaces.IClientFacade;
-import com.cs428.app.bookapp.interfaces.Serializable;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.ClientFacade;
@@ -16,16 +15,21 @@ import java.util.Observer;
  * Created by Lily on 3/21/18.
  */
 
+
+
 public class MainPresenter implements IProfilePresenter, Observer {
 
     private IClientFacade modelFacade;
     private Person person = null;
     private User currentUser = null;
+    private MainActivity mainActivity;
 
-    public MainPresenter() {
+
+    public MainPresenter(MainActivity mainActivity) {
 
         this.modelFacade = new ClientFacade();
         this.modelFacade.ObserveModel(this);
+        this.mainActivity = mainActivity;
     }
 
     /*home page*/
@@ -68,6 +72,8 @@ public class MainPresenter implements IProfilePresenter, Observer {
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof User)
-        {currentUser  = (User)arg;}
+        {
+            currentUser  = (User)arg;
+        }
     }
 }

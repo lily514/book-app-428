@@ -27,7 +27,8 @@ public class ProfileFragment extends Fragment {
     private RecyclerView reviewedList;
     private RecyclerView.Adapter readingListAdapter;
     private RecyclerView.Adapter reviewedListAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.LayoutManager readingLayoutManager;
+    private RecyclerView.LayoutManager reviewedLayoutManager;
     private Button actionButton;
     private IProfilePresenter presenter;
 
@@ -63,7 +64,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.profile_page_layout, container, false);
-        layoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        readingLayoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        reviewedLayoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
         readingList = (RecyclerView) v.findViewById(R.id.reading_list);
         reviewedList = (RecyclerView) v.findViewById(R.id.reviewed_list);
@@ -71,10 +73,10 @@ public class ProfileFragment extends Fragment {
         readingListAdapter = new BookCardListAdapter(presenter.getPersonsReadingList());
         reviewedListAdapter = new BookCardListAdapter(presenter.getPersonsReadingList());
 
-        readingList.setLayoutManager(layoutManager);
+        readingList.setLayoutManager(readingLayoutManager);
         readingList.setAdapter(readingListAdapter);
 
-        reviewedList.setLayoutManager(layoutManager);
+        reviewedList.setLayoutManager(reviewedLayoutManager);
         reviewedList.setAdapter(reviewedListAdapter);
 
         actionButton = (Button) v.findViewById(R.id.person_action);

@@ -2,6 +2,7 @@ package com.cs428.app.bookapp.networking;
 
 import android.media.midi.MidiOutputPort;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
 import com.cs428.app.bookapp.model.Book;
@@ -241,6 +242,7 @@ public class ServerCommunicator implements IServerCommunicator {
          */
         @Override
         protected void onPostExecute(User result) {
+            Log.d("DEBUG_COMMS", "onPostExecute: got user result");
             Model.getSINGLETON().setCurrentUser(result);
         }
     }
