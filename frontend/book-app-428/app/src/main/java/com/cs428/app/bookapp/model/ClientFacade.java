@@ -19,10 +19,16 @@ import java.util.Observer;
 
 public class ClientFacade implements IClientFacade{
 
-    private Model model = Model.getSINGLETON();
-    IServerCommunicator serverCom = new ServerCommunicator(new Serializer());
-    private ServerProxy serverProxy = new ServerProxy(serverCom);
+    private Model model;
+    private ServerProxy serverProxy = null;
 
+    public ClientFacade(){
+        model = Model.getSINGLETON();
+    }
+
+    public void setServerProxy(){
+        this.serverProxy = model.getServerProxy();
+    }
 
     public User getCurrentUser(){ return model.currentUser;}
 
@@ -73,11 +79,13 @@ public class ClientFacade implements IClientFacade{
     @Override
     public void doSearch(String searchString, OnSearchTaskComplete listener) {
         serverProxy.searchBook(searchString, listener);
-        serverProxy.searchUser(searchString, listener);
+        serverProxy.searchPerson(searchString, listener);
     }
 
 
     public void ObserveModel(Observer o) {
         model.addObserver(o);
     }
+
+
 }

@@ -76,6 +76,8 @@ public class MainPresenter implements IProfilePresenter, ISearchPresenter, IHome
         {
             currentUser  = (User)arg;
             setPerson(currentUser);
+            modelFacade.setServerProxy();
+
         }
     }
 

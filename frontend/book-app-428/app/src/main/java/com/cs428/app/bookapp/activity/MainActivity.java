@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         // Pass this info to server communicator, login, update model with the user, let observer update ui.
         CognitoUserPool pool = new CognitoUserPool(this, new AWSConfiguration(this));
         Model.getSINGLETON().setUserPool(pool);
-        new ServerProxy(new ServerCommunicator(new Serializer())).initialize();
+        Model.getSINGLETON().initializeServer();
 
         /**************************************** END **************************************************************/
     }

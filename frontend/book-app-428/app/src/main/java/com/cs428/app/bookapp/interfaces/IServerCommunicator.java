@@ -1,6 +1,7 @@
 package com.cs428.app.bookapp.interfaces;
 
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
 
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.List;
  */
 
 public interface IServerCommunicator {
-    List<User> getUsers();
+    List<Person> getUsers();
 
     void loadUser(String name);
 
-    List<User> getFriends(String id);
+    List<Person> getFriends(String id);
 
     List<Book> getUsersFriendsReadingList(String id);
 
@@ -36,7 +37,7 @@ public interface IServerCommunicator {
 
     void searchBookByTitle(String searchTerm, OnSearchTaskComplete listener);
 
-    void searchUserByName(String searchTerm, OnSearchTaskComplete listener);
+    void searchPersonByName(String searchTerm, OnSearchTaskComplete listener);
 
     void getRecommendations(String id, OnHomeBooksTaskComplete listener);
 

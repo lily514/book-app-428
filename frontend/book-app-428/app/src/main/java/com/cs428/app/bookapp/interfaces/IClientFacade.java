@@ -28,4 +28,6 @@ public interface IClientFacade {
     void doSearch(String searchString, OnSearchTaskComplete listener);
 
     void ObserveModel (Observer observer);
+
+    void setServerProxy();
 }

@@ -15,11 +15,8 @@ import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
-import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.User;
-
-import java.util.List;
 
 /**
  * Created by mgard on 3/2/2018.
@@ -98,8 +95,8 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public void searchUser(String searchString, OnSearchTaskComplete listener) {
-        this.serverCommunicator.searchUserByName(searchString, listener);
+    public void searchPerson(String searchString, OnSearchTaskComplete listener) {
+        this.serverCommunicator.searchPersonByName(searchString, listener);
     }
 
     @Override

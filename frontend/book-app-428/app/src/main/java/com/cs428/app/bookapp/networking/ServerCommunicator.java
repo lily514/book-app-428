@@ -9,6 +9,7 @@ import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Model;
+import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
 
@@ -38,27 +39,17 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return the list of all users. Null if no users exist
      */
     @Override
-    public List<User> getUsers(){
+    public List<Person> getUsers(){
         return null;
     }
 
-    /** Method to return user info for a specific user given an id.
-     * TODO: Change return type to User when model supports it.
-     * @param name the id of the user to be fetched
-     * @return the information for the given user, null if does not exist.
-     */
-    @Override
-    public void loadUser(String name) {
-
-        new GetCurrentUserTask().execute("/users/" + name + "/");
-    }
 
     /** Method to return the friends list of a given user.
      * @param id the id of the user associated with the desired friends list
      * @return the list of friends for a given user, null if does not exist.
      */
     @Override
-    public List<User> getFriends(String id) {
+    public List<Person> getFriends(String id) {
         return null;
     }
 
@@ -104,14 +95,27 @@ public class ServerCommunicator implements IServerCommunicator {
         return false;
     }
 
-
+    /** Method to return user info for a specific user given an id.
+     * @param name the id of the user to be fetched
+     * @return the information for the given user, null if does not exist.
+     */
+    @Override
+    public void loadUser(String name) {
+        new GetCurrentUserTask().execute("/users/" + name + "/");
+    }
 
     @Override
     public void getReviewedBookById(String id, OnReviewedBooksTaskComplete listener) {
         String bookUrl = "/book/" + id + "/";
-        String response;
         new GetReviewedBookTask(listener).execute(bookUrl);
 
+    }
+
+    @Override
+    public void getReadingBookById(String book_id, OnReadingBooksTaskComplete listener) {
+        //TODO
+        String bookUrl = "/book/" + book_id + "/";
+        new GetReadingBookTask(listener).execute(bookUrl);
     }
 
     /**
@@ -123,7 +127,6 @@ public class ServerCommunicator implements IServerCommunicator {
     @Override
     public void searchBookByTitle(String title, OnSearchTaskComplete listener) {
         String bookUrl = "/books/" + title + "/";
-        String response;
         new SearchBooksTask(listener).execute(bookUrl);
     }
 
@@ -145,7 +148,14 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
+    public void setUserToken(String userToken) {
+        Log.d("DEBUG", "setUserToken: " + userToken);
+        this.userToken = userToken;
+    }
+
+    @Override
     public String getUserToken() {
+
         return userToken;
     }
 
@@ -155,7 +165,7 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
-    public void searchUserByName(String searchTerm, OnSearchTaskComplete listener) {
+    public void searchPersonByName(String searchTerm, OnSearchTaskComplete listener) {
         //TODO
     }
 
@@ -165,15 +175,8 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
 
-    @Override
-    public void getReadingBookById(String book_id, OnReadingBooksTaskComplete listener) {
-        //TODO
-    }
 
-    @Override
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
-    }
+
 
     // Don't delete, need for reference when implementing post requests.
 
@@ -311,7 +314,7 @@ public class ServerCommunicator implements IServerCommunicator {
 
                 } else if(responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
                     // Book not found
-                    System.out.println("Book with that id could not be found.");
+                    Log.d("DEBUG", "doInBackground: Book with that id could not be found.");
                     return null;
                 } else {
                     return null;
@@ -364,6 +367,47 @@ public class ServerCommunicator implements IServerCommunicator {
         protected void onPostExecute(List<Book> books) {
             this.listener.addBooks(books);
         }
+    }
+
+    private class GetReadingBookTask extends AsyncTask<String, Void, Book>{
+        private OnReadingBooksTaskComplete listener;
+
+        public GetReadingBookTask(OnReadingBooksTaskComplete listener){
+            this.listener = listener;
+        }
+
+        @Override
+        protected Book doInBackground(String... strings) {
+            try {
+                URL url = new URL(BASE_URL + strings[0]);
+
+                // Make http connections and requests.
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", userToken);
+                int responseCode = connection.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK) {
+                    String response = readResponse(connection);
+                    return serializer.deserializeBook(response);
+
+                } else if(responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    // Book not found
+                    Log.d("DEBUG", "doInBackground: Book with that id could not be found.");
+                    return null;
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Book book) {
+            listener.addReadingBook(book);
+        }
+
     }
 
     /********************************************************************************************/

@@ -54,7 +54,7 @@ public interface IServerProxy {
 
     public void searchBook(String searchTerm, OnSearchTaskComplete listener);
 
-    void searchUser(String searchString, OnSearchTaskComplete listener);
+    void searchPerson(String searchString, OnSearchTaskComplete listener);
 
     void getReadingBookById(String book_id, OnReadingBooksTaskComplete listener);
 
