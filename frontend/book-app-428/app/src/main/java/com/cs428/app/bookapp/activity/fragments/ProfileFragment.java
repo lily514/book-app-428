@@ -67,6 +67,8 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
         presenter = (IProfilePresenter) getArguments().getSerializable(
                 "PRESENTER");
         person = presenter.getPerson();
+        presenter.getPersonsReadingList(this);
+        presenter.getPersonsReviewedList(this);
 //        reviewList = new ArrayList<Book> ();
 //        readingList = new ArrayList<Book>();
     }

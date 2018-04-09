@@ -49,17 +49,19 @@ public class Book implements IBookPresenter{
 
 
     public Bitmap getCover() {
-        try {
-            URL url = new URL(this.coverURL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap cover = BitmapFactory.decodeStream(input);
-            return cover;
-        } catch (IOException e) {
-            return null;
-        }
+        return null;
+//        try {
+//            //TODO: THIS HAS TO BE DONE IN AN ASYNC TASK
+//            URL url = new URL(this.coverURL);
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            connection.setDoInput(true);
+//            connection.connect();
+//            InputStream input = connection.getInputStream();
+//            Bitmap cover = BitmapFactory.decodeStream(input);
+//            return cover;
+//        } catch (IOException e) {
+//            return null;
+//        }
     }
 
 
