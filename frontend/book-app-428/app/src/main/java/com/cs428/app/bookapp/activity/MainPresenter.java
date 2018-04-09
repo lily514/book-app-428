@@ -41,13 +41,9 @@ public class MainPresenter implements IProfilePresenter, ISearchPresenter, Obser
 
     @Override
     public User getCurrentUser() {
-        return null;
+        return modelFacade.getCurrentUser();
     }
 
-    @Override
-    public List<Book> searchBooks(String searchString) {
-        return null;
-    }
 
     /*profile page*/
     @Override
@@ -76,5 +72,24 @@ public class MainPresenter implements IProfilePresenter, ISearchPresenter, Obser
         {
             currentUser  = (User)arg;
         }
+    }
+
+
+    /** search page **/
+    @Override
+    public void doSearch(String searchString) {
+        //TODO: do search
+    }
+
+    @Override
+    public List<Book> getBookSearchResults() {
+        //TODO: get search results (books)
+        return null;
+    }
+
+    @Override
+    public List<User> getUserSearchResults() {
+        //TODO: get search results (users)
+        return null;
     }
 }

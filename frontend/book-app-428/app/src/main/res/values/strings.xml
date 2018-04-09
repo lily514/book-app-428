@@ -36,4 +36,6 @@
     <string name="placeholder">Placeholder</string>
 
     <string name="hello_blank_fragment">This is a blank fragment</string>
+    <string name="book_results">Book Results</string>
+    <string name="user_search_title">User Results</string>
 </resources>

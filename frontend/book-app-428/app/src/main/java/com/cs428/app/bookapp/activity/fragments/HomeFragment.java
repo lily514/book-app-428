@@ -1,20 +1,13 @@
 package com.cs428.app.bookapp.activity.fragments;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.MainActivity;
@@ -52,13 +45,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        ((MainActivity)getActivity()).setBannerTitle("Home");
+        ((MainActivity)getActivity()).setBannerTitle("Book App");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.home_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         recommendedList = (RecyclerView) rootView.findViewById(R.id.recommended_list);
 
         BookCardListAdapter adapter = new BookCardListAdapter(presenter.getHomePageBooks());
@@ -66,30 +59,8 @@ public class HomeFragment extends Fragment {
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);
 
-        Toolbar myToolbar = (Toolbar) rootView.findViewById(R.id.banner);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
-        setHasOptionsMenu(true);
-
-        SearchView searchView = (SearchView) rootView.findViewById(R.id.search_text_view);
-        setSearchViewListener(searchView);
 
         return rootView;
     }
-
-
-    public void setSearchViewListener(SearchView searchView) {
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doSearchButtonAction();
-            }
-        });
-    }
-
-    public void doSearchButtonAction() {
-        Fragment searchFragment = SearchFragment.newInstance(presenter);
-        ((MainActivity)getActivity()).transitionFragment(searchFragment, "Home");
-    }
-
 
 }

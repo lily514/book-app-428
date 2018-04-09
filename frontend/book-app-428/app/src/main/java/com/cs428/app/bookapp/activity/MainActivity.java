@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_fragment);
+        setContentView(R.layout.activity_main);
 
         presenter = new MainPresenter(this);
 
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         searchView = (SearchView) findViewById(R.id.search_text_view);
         setSearchViewListener(searchView);
 
+        transitionFragment(HomeFragment.newInstance(presenter), "Home");
 
         /******* This is for passing the correct user information to AWS Cognito and initilizing the model *********/
 
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("quit", true);
     }
 
+    /** Menu methods **/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,11 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showSnackbarMessage(View view, String msg) {
-        Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
-        snackbar.show();
-    }
-
+    /** search methods **/
     public void setSearchViewListener(SearchView searchView) {
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
@@ -126,11 +124,20 @@ public class MainActivity extends AppCompatActivity {
                 doSearchButtonAction();
             }
         });
+        //TODO: on text changed listeners, etc.
     }
 
     public void doSearchButtonAction() {
         Fragment searchFragment = SearchFragment.newInstance(presenter);
         transitionFragment(searchFragment, "Home");
+    }
+
+
+    /** action methods and fragment transitions **/
+
+    private void showSnackbarMessage(View view, String msg) {
+        Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     public void doProfileNavButtonAction() {
@@ -153,10 +160,6 @@ public class MainActivity extends AppCompatActivity {
     public void transitionFragment(Fragment newFragment, String fragmentTitle) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container_body, newFragment).commit();
-
-//        toolbar = (Toolbar) findViewById(R.id.banner);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle(fragmentTitle);
     }
 
     public void setBannerTitle(String title) {

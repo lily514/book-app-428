@@ -13,5 +13,6 @@ import java.util.List;
 public interface Serializable extends java.io.Serializable {
     List<Book> getHomePageBooks();
     User getCurrentUser();
-    List<Book> searchBooks(String searchString);
+    //TODO: serialize search methods
+//    List<Book> searchBooks(String searchString);
 }
