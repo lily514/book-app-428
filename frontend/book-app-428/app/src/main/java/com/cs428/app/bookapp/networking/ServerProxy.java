@@ -11,11 +11,12 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.tokens.CognitoIdToken;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
 import com.cs428.app.bookapp.interfaces.IServerProxy;
-import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.User;
-
-import java.util.List;
 
 /**
  * Created by mgard on 3/2/2018.
@@ -27,34 +28,6 @@ public class ServerProxy implements IServerProxy{
 
     public ServerProxy(IServerCommunicator serverCommunicator) {
         this.serverCommunicator = serverCommunicator;
-    }
-
-    @Override
-    public void followFriend(User user, String followUsername) {
-    }
-
-    @Override
-    public void searchBook(String searchTerm) {
-        this.serverCommunicator.searchBookByTitle(searchTerm);
-    }
-
-    @Override
-    public void recommendBook(User user, String bookId) {
-    }
-
-    @Override
-    public void rateBook(User user, String bookID, int rating) {
-        //TODO: implement rateBook
-    }
-
-    @Override
-    public void getRecommendationFor(User user) {
-        //TODO: Will a user have a list of recommendations? What is the api endpoint for that??
-    }
-
-    @Override
-    public void getBookById(String bookId) {
-        this.serverCommunicator.getBookById(bookId);
     }
 
     @Override
@@ -90,4 +63,50 @@ public class ServerProxy implements IServerProxy{
             }
         });
     }
+
+    @Override
+    public boolean followFriend(User user, String followUsername) {
+        return false;
+    }
+
+    @Override
+    public boolean recommendBook(User user, String bookId) {
+        //TODO: implement recommendBook
+        return false;
+    }
+
+    @Override
+    public boolean rateBook(User user, String bookID, int rating) {
+        //TODO: implement rateBook
+        return false;
+    }
+
+    @Override
+    public void getRecommendationFor(User user, OnHomeBooksTaskComplete listener) {
+        //TODO: Home books
+        this.serverCommunicator.getRecommendations(user.getId(), listener);
+    }
+
+    @Override
+    public void searchBook(String searchTerm, OnSearchTaskComplete listener) {
+        this.serverCommunicator.searchBookByTitle(searchTerm, listener);
+        this.serverCommunicator.searchBookByAuthor(searchTerm, listener);
+
+    }
+
+    @Override
+    public void searchPerson(String searchString, OnSearchTaskComplete listener) {
+        this.serverCommunicator.searchPersonByName(searchString, listener);
+    }
+
+    @Override
+    public void getReadingBookById(String book_id, OnReadingBooksTaskComplete listener) {
+        this.serverCommunicator.getReadingBookById(book_id, listener);
+    }
+
+    @Override
+    public void getReviewedBookById(String book_id, OnReviewedBooksTaskComplete listener) {
+        this.serverCommunicator.getReviewedBookById(book_id, listener);
+    }
+
 }

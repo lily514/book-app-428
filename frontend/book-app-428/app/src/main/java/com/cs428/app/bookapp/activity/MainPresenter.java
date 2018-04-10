@@ -1,10 +1,15 @@
 package com.cs428.app.bookapp.activity;
 
-import com.cs428.app.bookapp.interfaces.IBookPresenter;
+import android.util.Log;
+
 import com.cs428.app.bookapp.interfaces.IClientFacade;
-import com.cs428.app.bookapp.interfaces.ISearchPresenter;
-import com.cs428.app.bookapp.interfaces.Serializable;
+import com.cs428.app.bookapp.interfaces.IHomePresenter;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
+import com.cs428.app.bookapp.interfaces.ISearchPresenter;
+import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.BookReview;
 import com.cs428.app.bookapp.model.ClientFacade;
@@ -19,48 +24,41 @@ import java.util.Observer;
  * Created by Lily on 3/21/18.
  */
 
-// should this implement IHomePresenter
-public class MainPresenter implements IBookPresenter, IProfilePresenter, ISearchPresenter, Observer {
+
+
+public class MainPresenter implements IProfilePresenter, ISearchPresenter, IHomePresenter, Observer {
 
     private IClientFacade modelFacade;
     private Person person = null;
     private User currentUser = null;
+    private MainActivity mainActivity;
 
-    public MainPresenter() {
+
+    public MainPresenter(MainActivity mainActivity) {
 
         this.modelFacade = new ClientFacade();
         this.modelFacade.ObserveModel(this);
-    }
-
-    /*home page
-    @Override
-    public List<Book> getHomePageBooks() {
-        return modelFacade.getHomePageBooks();
+        this.mainActivity = mainActivity;
     }
 
     @Override
     public User getCurrentUser() {
-        return null;
-    }
-    */
-
-    @Override
-    public List<Book> searchBooks(String searchString) {
-        return null;
+        currentUser = modelFacade.getCurrentUser();
+        setPerson(currentUser);
+        return modelFacade.getCurrentUser();
     }
 
-    @Override
-    public List<BookReview> getReviews() { return null; }
 
     /*profile page*/
+
     @Override
-    public List<Book> getPersonsReadingList() {
-        return modelFacade.getPersonsReadingList(person);
+    public void getPersonsReadingList(OnReadingBooksTaskComplete listener) {
+        modelFacade.getPersonsReadingList(person, listener);
     }
 
     @Override
-    public List<Book> getPersonsReviewedList() {
-        return modelFacade.getPersonsReadingList(person);
+    public void getPersonsReviewedList(OnReviewedBooksTaskComplete listener) {
+        modelFacade.getPersonsReviewedList(person, listener);
     }
 
     @Override
@@ -76,6 +74,23 @@ public class MainPresenter implements IBookPresenter, IProfilePresenter, ISearch
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof User)
-        {currentUser  = (User)arg;}
+        {
+            currentUser  = (User)arg;
+            setPerson(currentUser);
+            modelFacade.setServerProxy();
+
+        }
+    }
+
+    @Override
+    public void getPersonsRecommendedList(OnHomeBooksTaskComplete listener) {
+        modelFacade.getHomePageBooks(person, listener);
+    }
+
+    /** search page **/
+    @Override
+    public boolean doSearch(String searchString, OnSearchTaskComplete listener) {
+        modelFacade.doSearch(searchString, listener);
+        return false;
     }
 }

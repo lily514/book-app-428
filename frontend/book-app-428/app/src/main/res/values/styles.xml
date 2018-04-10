@@ -8,7 +8,8 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
-        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/primaryTextColor</item>
+        <!--<item name="android:textColorSecondary">@color/white</item>-->
         <!--<item name="colorButtonPrimary">@color/primaryColor</item>-->
         <!--<item name="colorButtonDark">@color/primaryDarkColor</item>-->
         <!--<item name="colorButtonAccent">@color/secondaryColor</item>-->

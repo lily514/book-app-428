@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cs428.app.bookapp.R;
+import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.interfaces.Serializable;
 
 /**
@@ -35,6 +36,12 @@ public class SettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         presenter = (Serializable) getArguments().getSerializable(
                 "PRESENTER");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        ((MainActivity)getActivity()).setBannerTitle("Settings");
     }
 
     @Override

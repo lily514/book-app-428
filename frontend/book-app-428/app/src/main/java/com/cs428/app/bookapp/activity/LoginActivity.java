@@ -25,7 +25,7 @@ public class LoginActivity extends Activity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.home_fragment);
+        //setContentView(R.layout.fragment_home);
 
         AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
             @Override

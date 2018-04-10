@@ -6,10 +6,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
@@ -31,6 +34,7 @@ import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SearchFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
 import com.cs428.app.bookapp.interfaces.IClientFacade;
+import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.networking.Serializer;
 import com.cs428.app.bookapp.networking.ServerCommunicator;
@@ -40,32 +44,34 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private MainPresenter presenter;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_fragment);
+        setContentView(R.layout.activity_main);
 
-        presenter = new MainPresenter();
+        presenter = new MainPresenter(this);
 
         toolbar = (Toolbar) findViewById(R.id.banner);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        setActionBarClickListeners();
-        /*fragmentDrawer = (FragmentDrawer)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        fragmentDrawer.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-        fragmentDrawer.setDrawerListener(this);*/
+
+        searchView = (SearchView) findViewById(R.id.search_text_view);
+        setSearchViewListener(searchView);
+        searchView.setSubmitButtonEnabled(true);
+
+        transitionFragment(HomeFragment.newInstance(presenter), "Home");
+
 
         /******* This is for passing the correct user information to AWS Cognito and initilizing the model *********/
 
         // Pass this info to server communicator, login, update model with the user, let observer update ui.
-        setActionBarClickListeners();
         CognitoUserPool pool = new CognitoUserPool(this, new AWSConfiguration(this));
         Model.getSINGLETON().setUserPool(pool);
-        new ServerProxy(new ServerCommunicator(new Serializer())).initialize();
+        Model.getSINGLETON().initializeServer();
 
         /**************************************** END **************************************************************/
     }
@@ -90,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("quit", true);
     }
 
+    /** Menu methods **/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,37 +105,52 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                doHomeNavButtonAction();
+                return true;
+            case R.id.action_profile:
+                doProfileNavButtonAction();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /** search methods **/
+    public void setSearchViewListener(SearchView searchView) {
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                OnSearchTaskComplete onSearchTaskComplete = doSearchButtonAction();
+                return presenter.doSearch(query, onSearchTaskComplete);
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                OnSearchTaskComplete onSearchTaskComplete = doSearchButtonAction();
+                return presenter.doSearch(newText, onSearchTaskComplete);
+            }
+        });
+
+    }
+
+    public OnSearchTaskComplete doSearchButtonAction() {
+        Fragment searchFragment = SearchFragment.newInstance(presenter);
+        transitionFragment(searchFragment, "Home");
+        return (OnSearchTaskComplete) searchFragment;
+    }
+
+
+    /** action methods and fragment transitions **/
+
     private void showSnackbarMessage(View view, String msg) {
         Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
         snackbar.show();
-    }
-
-    private void setActionBarClickListeners() {
-        View actionBar = findViewById(R.id.action_bar);
-
-        ImageButton friendsButton = (ImageButton) actionBar.findViewById(R.id.profile_nav_button);
-        friendsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doProfileNavButtonAction();
-            }
-        });
-
-        ImageButton homeButton = (ImageButton) actionBar.findViewById(R.id.home_nav_button);
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doHomeNavButtonAction();
-            }
-        });
-
-        ImageButton booksButton = (ImageButton) actionBar.findViewById(R.id.books_nav_button);
-        booksButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doBooksNavButtonAction();
-            }
-        });
     }
 
     public void doProfileNavButtonAction() {
@@ -137,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(context, "Profile clicked", Toast.LENGTH_SHORT).show();
         Fragment profileFragment = ProfileFragment.newInstance(presenter);
         transitionFragment(profileFragment, "Profile");
+
     }
 
     public void doHomeNavButtonAction() {
@@ -147,19 +170,14 @@ public class MainActivity extends AppCompatActivity {
         //transitionFragment(homeFragment, "Home");
     }
 
-    public void doBooksNavButtonAction() {
-        // the following code is for testing purposes, will be changed
-        Context context = getApplicationContext();
-        Toast.makeText(context, "Books clicked", Toast.LENGTH_SHORT).show();
-    }
 
     public void transitionFragment(Fragment newFragment, String fragmentTitle) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container_body, newFragment).commit();
+    }
 
-        toolbar = (Toolbar) findViewById(R.id.banner);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(fragmentTitle);
+    public void setBannerTitle(String title) {
+        getSupportActionBar().setTitle(title);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_up);
     }
 }
