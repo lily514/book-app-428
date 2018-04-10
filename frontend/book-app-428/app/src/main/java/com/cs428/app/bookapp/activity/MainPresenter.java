@@ -1,9 +1,12 @@
 package com.cs428.app.bookapp.activity;
 
+import com.cs428.app.bookapp.interfaces.IBookPresenter;
 import com.cs428.app.bookapp.interfaces.IClientFacade;
+import com.cs428.app.bookapp.interfaces.ISearchPresenter;
 import com.cs428.app.bookapp.interfaces.Serializable;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.BookReview;
 import com.cs428.app.bookapp.model.ClientFacade;
 import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
@@ -16,7 +19,8 @@ import java.util.Observer;
  * Created by Lily on 3/21/18.
  */
 
-public class MainPresenter implements IHomePresenter, IProfilePresenter, Observer {
+// should this implement IHomePresenter
+public class MainPresenter implements IBookPresenter, IProfilePresenter, ISearchPresenter, Observer {
 
     private IClientFacade modelFacade;
     private Person person = null;
@@ -28,7 +32,7 @@ public class MainPresenter implements IHomePresenter, IProfilePresenter, Observe
         this.modelFacade.ObserveModel(this);
     }
 
-    /*home page*/
+    /*home page
     @Override
     public List<Book> getHomePageBooks() {
         return modelFacade.getHomePageBooks();
@@ -38,11 +42,15 @@ public class MainPresenter implements IHomePresenter, IProfilePresenter, Observe
     public User getCurrentUser() {
         return null;
     }
+    */
 
     @Override
     public List<Book> searchBooks(String searchString) {
         return null;
     }
+
+    @Override
+    public List<BookReview> getReviews() { return null; }
 
     /*profile page*/
     @Override

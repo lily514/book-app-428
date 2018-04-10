@@ -54,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         setActionBarClickListeners();
-        fragmentDrawer = (FragmentDrawer)
+        /*fragmentDrawer = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragmentDrawer.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-        fragmentDrawer.setDrawerListener(this);
+        fragmentDrawer.setDrawerListener(this);*/
 
         /******* This is for passing the correct user information to AWS Cognito and initilizing the model *********/
 
@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
         // the following code is for testing purposes, will be changed
         Context context = getApplicationContext();
         Toast.makeText(context, "Home clicked", Toast.LENGTH_SHORT).show();
-        Fragment homeFragment = HomeFragment.newInstance(presenter);
-        transitionFragment(homeFragment, "Home");
+        //Fragment homeFragment = HomeFragment.newInstance(presenter);
+        //transitionFragment(homeFragment, "Home");
     }
 
     public void doBooksNavButtonAction() {
