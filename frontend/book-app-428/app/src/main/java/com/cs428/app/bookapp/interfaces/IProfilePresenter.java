@@ -13,8 +13,8 @@ import java.util.List;
 public interface IProfilePresenter extends Serializable {
 
     /*profile page*/
-    List<Book> getPersonsReadingList();
-    List<Book> getPersonsReviewedList();
+    void getPersonsReadingList(OnReadingBooksTaskComplete listener);
+    void getPersonsReviewedList(OnReviewedBooksTaskComplete listener);
     Person getPerson();
     void setPerson(Person person);
 

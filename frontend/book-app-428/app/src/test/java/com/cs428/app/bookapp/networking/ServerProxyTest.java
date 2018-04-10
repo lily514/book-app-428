@@ -37,7 +37,7 @@ public class ServerProxyTest {
 
     @Test
     public void searchBook() throws Exception {
-        List<Book> results = proxy.searchBook("testTerm");
+        List<Book> results = proxy.searchBook("testTerm", listener);
 
         for(int i = 0; i < 20; i++) {
             Book b = results.get(i);

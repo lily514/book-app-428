@@ -1,23 +1,22 @@
 package com.cs428.app.bookapp.networking;
 
-import android.media.midi.MidiOutputPort;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
+import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
+import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
-import com.cs428.clientsdk.model.Empty;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -40,26 +39,17 @@ public class ServerCommunicator implements IServerCommunicator {
      * @return the list of all users. Null if no users exist
      */
     @Override
-    public List<User> getUsers(){
+    public List<Person> getUsers(){
         return null;
     }
 
-    /** Method to return user info for a specific user given an id.
-     * TODO: Change return type to User when model supports it.
-     * @param name the id of the user to be fetched
-     * @return the information for the given user, null if does not exist.
-     */
-    @Override
-    public void loadUser(String name) {
-        new GetCurrentUserTask().execute("/users/" + name + "/");
-    }
 
     /** Method to return the friends list of a given user.
      * @param id the id of the user associated with the desired friends list
      * @return the list of friends for a given user, null if does not exist.
      */
     @Override
-    public List<User> getFriends(String id) {
+    public List<Person> getFriends(String id) {
         return null;
     }
 
@@ -98,39 +88,39 @@ public class ServerCommunicator implements IServerCommunicator {
         //TODO: Create and call a follow user async task
     }
 
-
-    /** Method to search for a book with a given search term.
-     * @param searchString
-     * @return a list of books (or ids) associated with the search term. Null if none exist.
+    /** Method to return user info for a specific user given an id.
+     * @param name the id of the user to be fetched
+     * @return the information for the given user, null if does not exist.
      */
     @Override
-    public List<Book> searchForBook(String searchString) {
-        return null;
+    public void loadUser(String name) {
+        new GetCurrentUserTask().execute("/users/" + name + "/");
     }
 
-    /** Method to get a book by id NOT ISBN. Fetches single book
-     * @param id id of book to be fetched
-     * @return the book associated with the input id. Null if none found.
-     */
     @Override
-    public Book getBookById(String id) {
+    public void getReviewedBookById(String id, OnReviewedBooksTaskComplete listener) {
         String bookUrl = "/book/" + id + "/";
-        String response;
-        new GetBookTask().execute(bookUrl);
-        return null; // TODO: Return book asynchronously
+        new GetReviewedBookTask(listener).execute(bookUrl);
+
+    }
+
+    @Override
+    public void getReadingBookById(String book_id, OnReadingBooksTaskComplete listener) {
+        //TODO
+        String bookUrl = "/book/" + book_id + "/";
+        new GetReadingBookTask(listener).execute(bookUrl);
     }
 
     /**
      *  Method to get a book by title (i.e. search for books by title). Fetches list of books
      * @param title the title of the book to be fetched.
+     * @param listener
      * @return
      */
     @Override
-    public Book searchBookByTitle(String title) {
+    public void searchBookByTitle(String title, OnSearchTaskComplete listener) {
         String bookUrl = "/books/" + title + "/";
-        String response;
-        new SearchBooksTask().execute(bookUrl);
-        return null; // TODO: Return book asynchronously
+        new SearchBooksTask(listener).execute(bookUrl);
     }
 
     /**
@@ -151,14 +141,35 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
+    public void setUserToken(String userToken) {
+        Log.d("DEBUG", "setUserToken: " + userToken);
+        this.userToken = userToken;
+    }
+
+    @Override
     public String getUserToken() {
+
         return userToken;
     }
 
     @Override
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
+    public void searchBookByAuthor(String searchTerm, OnSearchTaskComplete listener) {
+        //TODO
     }
+
+    @Override
+    public void searchPersonByName(String searchTerm, OnSearchTaskComplete listener) {
+        //TODO
+    }
+
+    @Override
+    public void getRecommendations(String id, OnHomeBooksTaskComplete listener) {
+        //TODO
+    }
+
+
+
+
 
     // Don't delete, need for reference when implementing post requests.
 
@@ -191,6 +202,7 @@ public class ServerCommunicator implements IServerCommunicator {
 
         return builder.toString();
     }
+
 
     /**************************     Start AsyncTask Classes     *********************************/
 
@@ -268,11 +280,94 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(List<User> users){
-            Model.getSINGLETON().setUserSearchResults(users);
+            //TODO
+            //Model.getSINGLETON().setUserSearchResults(users);
         }
     }
 
-    private class GetBookTask extends AsyncTask<String, Void, Book> {
+    private class GetReviewedBookTask extends AsyncTask<String, Void, Book> {
+        private OnReviewedBooksTaskComplete listener;
+
+        public GetReviewedBookTask(OnReviewedBooksTaskComplete listener){
+            this.listener = listener;
+        }
+        @Override
+        protected Book doInBackground(String... strings) {
+            try {
+                URL url = new URL(BASE_URL + strings[0]);
+
+                // Make http connections and requests.
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", userToken);
+                int responseCode = connection.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK) {
+                    String response = readResponse(connection);
+                    return serializer.deserializeBook(response);
+
+                } else if(responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    // Book not found
+                    Log.d("DEBUG", "doInBackground: Book with that id could not be found.");
+                    return null;
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Book book) {
+            listener.addReviewedBook(book);
+        }
+    }
+
+    private class SearchBooksTask extends AsyncTask<String, Void, List<Book>> {
+        OnSearchTaskComplete listener;
+
+        public SearchBooksTask(OnSearchTaskComplete listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        protected List<Book> doInBackground(String... strings) {
+            try {
+                URL url = new URL(BASE_URL + strings[0]);
+                Log.d("DEBUG", "doInBackground: Search Books URL "+url.toString());
+
+                // Make http connections and requests.
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", userToken);
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    String response = readResponse(connection);
+                    Log.d("DEBUG", "doInBackground: Search Books Task OK");
+                    return serializer.deserializeListOfBooks(response);
+                } else {
+                    Log.d("DEBUG", "doInBackground: Search Books Task NOT OK " + responseCode);
+                    return null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Book> books) {
+            this.listener.addBooks(books);
+        }
+    }
+
+    private class GetReadingBookTask extends AsyncTask<String, Void, Book>{
+        private OnReadingBooksTaskComplete listener;
+
+        public GetReadingBookTask(OnReadingBooksTaskComplete listener){
+            this.listener = listener;
+        }
 
         @Override
         protected Book doInBackground(String... strings) {
@@ -290,7 +385,7 @@ public class ServerCommunicator implements IServerCommunicator {
 
                 } else if(responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
                     // Book not found
-                    System.out.println("Book with that id could not be found.");
+                    Log.d("DEBUG", "doInBackground: Book with that id could not be found.");
                     return null;
                 } else {
                     return null;
@@ -303,38 +398,9 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(Book book) {
-            Model.getSINGLETON().setFetchedBook(book);
-        }
-    }
-
-    private class SearchBooksTask extends AsyncTask<String, Void, List<Book>> {
-
-        @Override
-        protected List<Book> doInBackground(String... strings) {
-            try {
-                URL url = new URL(BASE_URL + strings[0]);
-
-                // Make http connections and requests.
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Authorization", userToken);
-                int responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    String response = readResponse(connection);
-                    return serializer.deserializeListOfBooks(response);
-                } else {
-                    return null;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+            listener.addReadingBook(book);
         }
 
-        @Override
-        protected void onPostExecute(List<Book> books) {
-            Model.getSINGLETON().setBookSearchResults(books);
-        }
     }
 
     /********************************************************************************************/

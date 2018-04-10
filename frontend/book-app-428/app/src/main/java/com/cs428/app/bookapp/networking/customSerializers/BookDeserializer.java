@@ -1,5 +1,7 @@
 package com.cs428.app.bookapp.networking.customSerializers;
 
+import android.util.Log;
+
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.BookReview;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -35,13 +37,14 @@ public class BookDeserializer extends StdDeserializer<Book> {
     @Override
     public Book deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         JsonNode node = jp.getCodec().readTree(jp);
-        int id = (Integer) ((IntNode) node.get("id")).numberValue();
+        Log.d("DESERIALIZE", "deserialize: " + node.toString());
+        int id = (Integer) node.get("id").asInt();
         String title = node.get("title").asText();
         String author = node.get("author").asText();
         String isbn = node.get("ISBN").asText();
         String description = node.get("description").asText();
-        String coverUrl = node.get("Cover_url").asText();
-        int upvotes = (Integer) ((IntNode) node.get("Upvotes")).numberValue();
+        String coverUrl = node.get("cover_url").asText();
+        /*int upvotes = (Integer) node.get("Upvotes").asInt();
 
         ObjectMapper mapper = new ObjectMapper();
         List<String> reviews = mapper.readValue(node.get("reviews").textValue(), new TypeReference<List<String>>(){});
@@ -50,11 +53,11 @@ public class BookDeserializer extends StdDeserializer<Book> {
         for (int i = 0; i < reviews.size(); ++i) {
             bookReviews.add(new BookReview(reviews.get(i)));
         }
-
+        */
         Book book = new Book(title, author, isbn, coverUrl);
-        book.setRating(upvotes);
+        //book.setRating(upvotes);
         book.setSummary(description);
-        book.setReviews(bookReviews);
+        //book.setReviews(bookReviews);
 
         return book;
     }
