@@ -5,15 +5,17 @@
     tools:context=".activity.MainActivity">
 
     <item
-        android:id="@+id/action_search"
-        android:title="@string/action_search"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_search"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/action_home"
+        android:title="@string/title_home"
+        android:icon="@drawable/ic_home"
+        app:showAsAction="always"
+        >
+    </item>
 
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+        android:id="@+id/action_profile"
+        android:title="@string/title_profile"
+        android:icon="@drawable/ic_person"
+        app:showAsAction="always">
+    </item>
 </menu>

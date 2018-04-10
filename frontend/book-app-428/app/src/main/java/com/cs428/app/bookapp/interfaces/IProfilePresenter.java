@@ -3,7 +3,6 @@ package com.cs428.app.bookapp.interfaces;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Person;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -18,4 +17,5 @@ public interface IProfilePresenter extends Serializable {
     List<Book> getPersonsReviewedList();
     Person getPerson();
     void setPerson(Person person);
+
 }

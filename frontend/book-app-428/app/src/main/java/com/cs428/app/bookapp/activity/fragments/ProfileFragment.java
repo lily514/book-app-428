@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cs428.app.bookapp.R;
-import com.cs428.app.bookapp.interfaces.IHomePresenter;
+import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.model.Person;
@@ -27,16 +27,16 @@ public class ProfileFragment extends Fragment {
     private RecyclerView reviewedList;
     private RecyclerView.Adapter readingListAdapter;
     private RecyclerView.Adapter reviewedListAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.LayoutManager readingLayoutManager;
+    private RecyclerView.LayoutManager reviewedLayoutManager;
     private Button actionButton;
-
     private IProfilePresenter presenter;
 
     // Necessary empty constructor
     public ProfileFragment() {}
 
-    public static HomeFragment newInstance(Serializable presenter) {
-        HomeFragment fragment = new HomeFragment();
+    public static ProfileFragment newInstance(Serializable presenter) {
+        ProfileFragment fragment = new ProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("PRESENTER", presenter);
         fragment.setArguments(bundle);
@@ -56,9 +56,16 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        ((MainActivity)getActivity()).setBannerTitle("Profile");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.profile_page_layout, container, false);
-        layoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        readingLayoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        reviewedLayoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
         readingList = (RecyclerView) v.findViewById(R.id.reading_list);
         reviewedList = (RecyclerView) v.findViewById(R.id.reviewed_list);
@@ -66,10 +73,10 @@ public class ProfileFragment extends Fragment {
         readingListAdapter = new BookCardListAdapter(presenter.getPersonsReadingList());
         reviewedListAdapter = new BookCardListAdapter(presenter.getPersonsReadingList());
 
-        readingList.setLayoutManager(layoutManager);
+        readingList.setLayoutManager(readingLayoutManager);
         readingList.setAdapter(readingListAdapter);
 
-        reviewedList.setLayoutManager(layoutManager);
+        reviewedList.setLayoutManager(reviewedLayoutManager);
         reviewedList.setAdapter(reviewedListAdapter);
 
         actionButton = (Button) v.findViewById(R.id.person_action);

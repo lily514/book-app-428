@@ -21,12 +21,11 @@ import com.cs428.app.bookapp.R;
 
 public class LoginActivity extends Activity  {
     private Toolbar toolbar;
-    private FragmentDrawer fragmentDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.home_fragment);
+        //setContentView(R.layout.fragment_home);
 
         AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
             @Override

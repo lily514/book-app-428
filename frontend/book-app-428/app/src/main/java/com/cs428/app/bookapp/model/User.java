@@ -7,7 +7,7 @@ import java.util.List;
  * Created by chees on 3/8/2018.
  */
 
-public class User extends Person {
+public class User extends Person{
     private List<String> following;
     private String email;
     private String password;

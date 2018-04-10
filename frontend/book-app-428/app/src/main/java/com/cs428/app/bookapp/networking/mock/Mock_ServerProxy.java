@@ -49,8 +49,9 @@ public class Mock_ServerProxy implements IServerProxy {
     }
 
     @Override
-    public void getBookById(String bookId) {
+    public Book getBookById(String bookId) {
         //todo: needs to be implemented
+        return null;
     }
 
     @Override

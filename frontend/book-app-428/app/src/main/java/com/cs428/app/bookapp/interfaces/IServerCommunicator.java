@@ -10,13 +10,11 @@ import java.util.List;
  */
 
 public interface IServerCommunicator {
-    void getUsers();
+    List<User> getUsers();
 
     void loadUser(String name);
 
-    void getFriends(String id);
-
-    void getUsersFriendsReadingList();
+    List<User> getFriends(String id);
 
     void updateUser(String username);
 
@@ -26,13 +24,15 @@ public interface IServerCommunicator {
 
     void followUser(String otherUsername);
 
-    void searchForBook(String searchString);
+    List<Book> getUsersFriendsReadingList(String id);
 
-    void getBookById(String id);
+    List<Book> searchForBook(String searchString);
 
-    void searchBookByTitle(String title);
+    Book getBookById(String id);
 
-    void rateBook(String userId, String bookId, int rating);
+    Book searchBookByTitle(String title);
+
+    boolean rateBook(String userId, String bookId, int rating);
 
     void setUserToken(String token);
 
