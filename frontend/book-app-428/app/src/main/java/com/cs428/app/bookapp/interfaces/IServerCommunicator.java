@@ -17,15 +17,15 @@ public interface IServerCommunicator {
 
     List<Person> getFriends(String id);
 
-    List<Book> getUsersFriendsReadingList(String id);
-
     void updateUser(String username);
 
-    boolean addRecommendation(String id, Book book);
+    void addRecommendation(Book book);
 
-    boolean addToReadingList(String id, Book book);
+    void addToReadingList(Book book);
 
-    boolean followUser(String myId, String otherId);
+    void followUser(String otherUsername);
+
+    List<Book> getUsersFriendsReadingList(String id);
 
     boolean rateBook(String userId, String bookId, int rating);
 
