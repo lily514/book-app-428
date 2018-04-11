@@ -13,6 +13,8 @@ import android.widget.SearchView;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
+import com.cs428.app.bookapp.interfaces.IHomePresenter;
+import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.Serializable;
 import com.cs428.app.bookapp.model.Book;
@@ -26,7 +28,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
     public RecyclerView recommendedList;
-    private Serializable presenter;
+    private IHomePresenter presenter;
     private BookCardListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -49,17 +51,20 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = (Serializable) getArguments().getSerializable(
+        presenter = (IHomePresenter) getArguments().getSerializable(
                 "PRESENTER");
 
-        homePageBooks = new ArrayList<Book>();
+
+
     }
 
     @Override
     public void onResume(){
         super.onResume();
         ((MainActivity)getActivity()).setBannerTitle("Book App");
+        presenter.getPersonsRecommendedList(this);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

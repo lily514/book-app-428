@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
         // the following code is for testing purposes, will be changed
         Context context = getApplicationContext();
         Toast.makeText(context, "Home clicked", Toast.LENGTH_SHORT).show();
-        //Fragment homeFragment = HomeFragment.newInstance(presenter);
-        //transitionFragment(homeFragment, "Home");
+        Fragment homeFragment = HomeFragment.newInstance(presenter);
+        transitionFragment(homeFragment, "Home");
     }
 
 

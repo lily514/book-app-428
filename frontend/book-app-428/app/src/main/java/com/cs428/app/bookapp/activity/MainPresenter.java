@@ -84,7 +84,7 @@ public class MainPresenter implements IProfilePresenter, ISearchPresenter, IHome
 
     @Override
     public void getPersonsRecommendedList(OnHomeBooksTaskComplete listener) {
-        modelFacade.getHomePageBooks(person, listener);
+        modelFacade.getHomePageBooks(getCurrentUser(), listener);
     }
 
     /** search page **/

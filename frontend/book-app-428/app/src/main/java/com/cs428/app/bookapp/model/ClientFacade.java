@@ -35,14 +35,17 @@ public class ClientFacade implements IClientFacade{
     /** PATTERN : every get request should ask the serverProxy for the latest data,
      * but should return whatever is currently in the model.
      * The observer pattern will return the latest data after the async tasks complete
-     * @param person
+     * @param user
      * @param listener*/
 
 
     @Override
-    public void getHomePageBooks(Person person, OnHomeBooksTaskComplete listener){
+    public void getHomePageBooks(User user, OnHomeBooksTaskComplete listener){
         if(model.currentUser != null) {
-            serverProxy.getRecommendationFor(model.currentUser, listener);
+            for (String bookid: user.getFollowing()){
+                serverProxy.getRecommendationFor(bookid, listener);
+            }
+
         }
     }
 

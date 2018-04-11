@@ -7,4 +7,5 @@ package com.cs428.app.bookapp.interfaces;
 public interface IHomePresenter {
 
     void getPersonsRecommendedList(OnHomeBooksTaskComplete listener);
+
 }

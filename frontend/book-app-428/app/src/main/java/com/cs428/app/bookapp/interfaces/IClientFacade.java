@@ -14,7 +14,7 @@ import java.util.Observer;
 public interface IClientFacade {
     /*homepage view*/
     User getCurrentUser();
-    void getHomePageBooks(Person person, OnHomeBooksTaskComplete listener);
+    void getHomePageBooks(User user, OnHomeBooksTaskComplete listener);
 
     /*book page*/
     boolean rateBook(String book_id, int rating);
