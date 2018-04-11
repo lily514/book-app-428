@@ -3,6 +3,8 @@ package com.cs428.app.bookapp.model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.cs428.app.bookapp.interfaces.IBookPresenter;
 
@@ -27,6 +29,7 @@ public class Book implements IBookPresenter{
     private String summary;
     private String date;
     private List<BookReview> reviews;
+    private Bitmap coverBitmap;
 
     public Book(String title, String author, String isbn, String coverURL) {
         this.title = title;
@@ -49,19 +52,12 @@ public class Book implements IBookPresenter{
 
 
     public Bitmap getCover() {
-        return null;
-//        try {
-//            //TODO: THIS HAS TO BE DONE IN AN ASYNC TASK
-//            URL url = new URL(this.coverURL);
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//            connection.setDoInput(true);
-//            connection.connect();
-//            InputStream input = connection.getInputStream();
-//            Bitmap cover = BitmapFactory.decodeStream(input);
-//            return cover;
-//        } catch (IOException e) {
-//            return null;
-//        }
+        // may return null if there is exception when fetching from given URL
+        if (coverBitmap == null) {
+            FetchCoverFromURL fetchCoverFromURL = new FetchCoverFromURL();
+            fetchCoverFromURL.execute(coverURL);
+        }
+        return coverBitmap;
     }
 
 
@@ -81,5 +77,27 @@ public class Book implements IBookPresenter{
     }
     public List<BookReview> getReviews() {
         return reviews;
+    }
+
+
+    public class FetchCoverFromURL extends AsyncTask<String, Void, Bitmap> {
+
+        protected Bitmap doInBackground(String... strings) {
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap cover = BitmapFactory.decodeStream(input);
+                return cover;
+            } catch (IOException e) {
+                return null;    // if exception occurs, return a null bitmap
+            }
+        }
+
+        protected void onPostExecute(Bitmap cover) {
+            coverBitmap = cover;
+        }
     }
 }

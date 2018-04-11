@@ -58,11 +58,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
         searchView = (SearchView) findViewById(R.id.search_text_view);
         setSearchViewListener(searchView);
         searchView.setSubmitButtonEnabled(true);
 
         transitionFragment(HomeFragment.newInstance(presenter), "Home");
+
 
         /******* This is for passing the correct user information to AWS Cognito and initilizing the model *********/
 
@@ -164,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
         // the following code is for testing purposes, will be changed
         Context context = getApplicationContext();
         Toast.makeText(context, "Home clicked", Toast.LENGTH_SHORT).show();
-        Fragment homeFragment = HomeFragment.newInstance(presenter);
-        transitionFragment(homeFragment, "Home");
+        //Fragment homeFragment = HomeFragment.newInstance(presenter);
+        //transitionFragment(homeFragment, "Home");
     }
 
 

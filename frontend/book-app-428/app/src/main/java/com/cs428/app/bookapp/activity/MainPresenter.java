@@ -11,6 +11,7 @@ import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.BookReview;
 import com.cs428.app.bookapp.model.ClientFacade;
 import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
