@@ -8,7 +8,8 @@ import java.util.List;
  */
 
 public class User extends Person{
-    private List<String> following;
+    private List<String> following; //strings of book ids
+
     private String email;
     private String password;
 

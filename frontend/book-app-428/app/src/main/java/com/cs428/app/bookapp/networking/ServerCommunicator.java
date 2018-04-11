@@ -163,8 +163,9 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
-    public void getRecommendations(String id, OnHomeBooksTaskComplete listener) {
-        //TODO
+    public void getRecommendations(String bookid, OnHomeBooksTaskComplete listener) {
+        String bookUrl = "/book/" + bookid + "/";
+        new GetRecommendedBookTask(listener).execute(bookUrl);
     }
 
 
@@ -399,6 +400,47 @@ public class ServerCommunicator implements IServerCommunicator {
         @Override
         protected void onPostExecute(Book book) {
             listener.addReadingBook(book);
+        }
+
+    }
+
+    private class GetRecommendedBookTask  extends AsyncTask<String, Void, Book>{
+        private OnHomeBooksTaskComplete listener;
+
+        public GetRecommendedBookTask(OnHomeBooksTaskComplete listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        protected Book doInBackground(String... strings) {
+            try {
+                URL url = new URL(BASE_URL + strings[0]);
+
+                // Make http connections and requests.
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", userToken);
+                int responseCode = connection.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK) {
+                    String response = readResponse(connection);
+                    return serializer.deserializeBook(response);
+
+                } else if(responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    // Book not found
+                    Log.d("DEBUG", "doInBackground: Book with that id could not be found.");
+                    return null;
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Book book) {
+            listener.addHomeBook(book);
         }
 
     }

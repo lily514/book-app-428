@@ -1,10 +1,8 @@
 package com.cs428.app.bookapp.interfaces;
 
-import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.User;
 //import com.cs428.app.bookapp.networking.ServerCommunicator;
 
-import java.util.List;
 
 /**
  * Created by mgard on 3/8/2018.
@@ -50,7 +48,7 @@ public interface IServerProxy {
 
 
 
-    public void getRecommendationFor(User user, OnHomeBooksTaskComplete listener);
+    public void getRecommendationFor(String bookid, OnHomeBooksTaskComplete listener);
 
     public void searchBook(String searchTerm, OnSearchTaskComplete listener);
 

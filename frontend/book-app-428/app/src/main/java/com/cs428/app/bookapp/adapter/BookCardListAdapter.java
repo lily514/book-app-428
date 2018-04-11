@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,33 +41,25 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Book book = book_ids.get(position);
         holder.bookTitle.setText(book.getTitle());
-        holder.bookDescription.setText(book.getSummary());
         holder.bookCover.setImageBitmap(book.getCover());
 
-        holder.rateButton.setOnClickListener(new View.OnClickListener() {
+        holder.upButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(parent.getContext(), "Rate clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parent.getContext(), "Up clicked", Toast.LENGTH_SHORT).show();
                 // TODO: go to rate page or pull up dialog rate box
 
             }
         });
 
-        holder.recommendButton.setOnClickListener(new View.OnClickListener() {
+        holder.downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(parent.getContext(), "Recommend clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parent.getContext(), "Down clicked", Toast.LENGTH_SHORT).show();
                 // TODO: bring up recommend page
             }
         });
 
-        holder.reviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(parent.getContext(), "Review clicked", Toast.LENGTH_SHORT).show();
-                // TODO: go to book review page
-            }
-        });
     }
 
     @Override
@@ -78,18 +71,16 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
-        public TextView bookDescription, bookTitle;
-        public Button rateButton, recommendButton, reviewButton;
+        public TextView bookTitle;
+        public ImageButton upButton, downButton;
         public ImageView bookCover;
 
         public CardViewHolder(View v) {
             super(v);
             bookCover = (ImageView) v.findViewById(R.id.book_cover);
             bookTitle = (TextView) v.findViewById(R.id.book_card_title);
-            bookDescription = (TextView) v.findViewById(R.id.book_description);
-            rateButton = (Button) v.findViewById(R.id.rate_button);
-            recommendButton = (Button) v.findViewById(R.id.recommend_button);
-            reviewButton = (Button) v.findViewById(R.id.review_button);
+            upButton = (ImageButton) v.findViewById(R.id.upvote_button);
+            downButton = (ImageButton) v.findViewById(R.id.downvote_button);
         }
     }
 
