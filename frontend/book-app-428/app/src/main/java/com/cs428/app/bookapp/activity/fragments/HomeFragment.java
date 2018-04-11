@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
         presenter = (IHomePresenter) getArguments().getSerializable(
                 "PRESENTER");
 
-        presenter.getPersonsRecommendedList(this);
+
 
     }
 
@@ -62,7 +62,9 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
     public void onResume(){
         super.onResume();
         ((MainActivity)getActivity()).setBannerTitle("Book App");
+        presenter.getPersonsRecommendedList(this);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
