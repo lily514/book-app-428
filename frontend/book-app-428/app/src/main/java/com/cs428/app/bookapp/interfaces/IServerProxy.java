@@ -38,14 +38,12 @@ public interface IServerProxy {
      * Note: This could be a binary 1/0 representing up/down vote or a scale (1-10 for example)
      *  depending on what we want to support in the application.
      *
-     * @param user the user submitting the rating
      * @param bookID the id of the book being rated
-     * @param rating the rating to be submitted
-     * @return a boolean indicating success
      */
-    public boolean rateBook(User user, String bookID, int rating);
+    public void upvoteBook(String bookID);
 
 
+    public void downvoteBook(String bookID);
 
 
     public void getRecommendationFor(String bookid, OnHomeBooksTaskComplete listener);

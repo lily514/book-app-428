@@ -14,9 +14,11 @@ import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -125,14 +127,22 @@ public class ServerCommunicator implements IServerCommunicator {
 
     /**
      * Method to rate a book
-     * @param userId the id of the user rating the book
      * @param bookId the id of the book being rated
-     * @param rating the rating given to the book
-     * @return a value indicating success.
      */
     @Override
-    public boolean rateBook(String userId, String bookId, int rating) {
-        return false;
+    public void upvoteBook(String bookId) {
+        String url = "/books/" +  bookId + "/upvote/";
+        new RateBookTask().execute(url);
+    }
+
+    /**
+     * Method to rate a book
+     * @param bookId the id of the book being rated
+     */
+    @Override
+    public void downvoteBook(String bookId) {
+        String url = "/books/" +  bookId + "/downvote/";
+        new RateBookTask().execute(url);
     }
 
     @Override
@@ -168,13 +178,9 @@ public class ServerCommunicator implements IServerCommunicator {
         new GetRecommendedBookTask(listener).execute(bookUrl);
     }
 
-
-
-
-
     // Don't delete, need for reference when implementing post requests.
 
-   /* private String sendPostRequest(String requestBody, String uri) throws IOException {
+   private String sendPostRequest(String requestBody, String uri) throws IOException {
         URL url = new URL(BASE_URL + uri);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -191,7 +197,7 @@ public class ServerCommunicator implements IServerCommunicator {
         } else {
             return null;
         }
-    } */
+    }
 
     private String readResponse(HttpURLConnection connection) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -404,7 +410,38 @@ public class ServerCommunicator implements IServerCommunicator {
 
     }
 
-    private class GetRecommendedBookTask  extends AsyncTask<String, Void, Book>{
+    private class RateBookTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            URL url = null;
+            try {
+                url = new URL(BASE_URL + strings[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+
+                // Below code is for reference when writing to post request
+                /*connection.setDoOutput(true);
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                out.writeBytes(requestBody);
+                out.flush();
+                out.close();
+                */
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    //TODO:
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private class GetRecommendedBookTask  extends AsyncTask<String, Void, Book> {
         private OnHomeBooksTaskComplete listener;
 
         public GetRecommendedBookTask(OnHomeBooksTaskComplete listener) {
@@ -421,11 +458,11 @@ public class ServerCommunicator implements IServerCommunicator {
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Authorization", userToken);
                 int responseCode = connection.getResponseCode();
-                if(responseCode == HttpURLConnection.HTTP_OK) {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
                     String response = readResponse(connection);
                     return serializer.deserializeBook(response);
 
-                } else if(responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
                     // Book not found
                     Log.d("DEBUG", "doInBackground: Book with that id could not be found.");
                     return null;
@@ -442,7 +479,6 @@ public class ServerCommunicator implements IServerCommunicator {
         protected void onPostExecute(Book book) {
             listener.addHomeBook(book);
         }
-
     }
 
     /********************************************************************************************/

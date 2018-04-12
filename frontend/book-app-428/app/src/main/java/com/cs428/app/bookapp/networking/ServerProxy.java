@@ -76,9 +76,13 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public boolean rateBook(User user, String bookID, int rating) {
-        //TODO: implement rateBook
-        return false;
+    public void upvoteBook(String bookID) {
+        this.serverCommunicator.upvoteBook(bookID);
+    }
+
+    @Override
+    public void downvoteBook(String bookID) {
+        this.serverCommunicator.downvoteBook(bookID);
     }
 
     @Override

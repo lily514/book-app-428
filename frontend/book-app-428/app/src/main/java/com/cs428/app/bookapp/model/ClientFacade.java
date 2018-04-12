@@ -50,8 +50,10 @@ public class ClientFacade implements IClientFacade{
     }
 
     //TODO: how does this work
-    public boolean rateBook(String book_id, int rating){
-        return serverProxy.rateBook(model.currentUser, book_id, rating);}
+    public boolean rateBook(String book_id, int rating) {
+        //return serverProxy.rateBook(model.currentUser, book_id, rating);}
+        return false;
+    }
 
     public boolean recommendBook(String book_id){
         model.currentUser.addToReviewedBooks(book_id);

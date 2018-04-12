@@ -27,7 +27,9 @@ public interface IServerCommunicator {
 
     List<Book> getUsersFriendsReadingList(String id);
 
-    boolean rateBook(String userId, String bookId, int rating);
+    void upvoteBook(String bookId);
+
+    void downvoteBook(String bookId);
 
     void setUserToken(String token);
 
