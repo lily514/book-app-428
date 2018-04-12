@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public interface IBookPresenter extends Serializable {
-    Bitmap getCover();
+    Bitmap getCover(OnBitmapComplete listener);
     String getTitle();
     String getAuthor();
     String getMeta();

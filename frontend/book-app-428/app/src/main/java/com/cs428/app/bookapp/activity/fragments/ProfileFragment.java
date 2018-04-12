@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
+import com.cs428.app.bookapp.interfaces.OnBitmapComplete;
 import com.cs428.app.bookapp.interfaces.OnReadingBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.OnReviewedBooksTaskComplete;
 import com.cs428.app.bookapp.model.Book;
@@ -33,7 +34,7 @@ import java.util.List;
  * Created by Trevor on 2/10/2018.
  */
 
-public class ProfileFragment extends Fragment implements OnReadingBooksTaskComplete, OnReviewedBooksTaskComplete {
+public class ProfileFragment extends Fragment implements OnReadingBooksTaskComplete, OnReviewedBooksTaskComplete, OnBitmapComplete {
 
     private RecyclerView readingListRecyclerView;
     private RecyclerView reviewedListRecyclerView;
@@ -88,8 +89,8 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
         readingListRecyclerView = (RecyclerView) v.findViewById(R.id.reading_list);
         reviewedListRecyclerView = (RecyclerView) v.findViewById(R.id.reviewed_list);
 
-        readingListAdapter = new BookCardListAdapter(readingList);
-        reviewedListAdapter = new BookCardListAdapter(reviewList);
+        readingListAdapter = new BookCardListAdapter(readingList, this);
+        reviewedListAdapter = new BookCardListAdapter(reviewList, this);
 
         readingListRecyclerView.setLayoutManager(readingLayoutManager);
         readingListRecyclerView.setAdapter(readingListAdapter);
@@ -129,7 +130,7 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
             return;
         }
         readingList = new ArrayList<Book>(books);
-        readingListAdapter = new BookCardListAdapter(reviewList);
+        readingListAdapter = new BookCardListAdapter(reviewList, this);
         readingListRecyclerView.setLayoutManager(readingLayoutManager);
         readingListRecyclerView.setAdapter(readingListAdapter);
 
@@ -145,7 +146,7 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
             readingList = new ArrayList<Book>();
         }
         readingList.add(book);
-        readingListAdapter = new BookCardListAdapter(readingList);
+        readingListAdapter = new BookCardListAdapter(readingList, this);
         readingListRecyclerView.setLayoutManager(readingLayoutManager);
         readingListRecyclerView.setAdapter(readingListAdapter);
     }
@@ -157,7 +158,7 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
             return;
         }
         reviewList = new ArrayList<Book>(books);
-        reviewedListAdapter = new BookCardListAdapter(reviewList);
+        reviewedListAdapter = new BookCardListAdapter(reviewList, this);
         reviewedListRecyclerView.setLayoutManager(reviewedLayoutManager);
         reviewedListRecyclerView.setAdapter(reviewedListAdapter);
     }
@@ -172,8 +173,14 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
             reviewList = new ArrayList<Book>();
         }
         reviewList.add(book);
-        reviewedListAdapter = new BookCardListAdapter(reviewList);
+        reviewedListAdapter = new BookCardListAdapter(reviewList, this);
         reviewedListRecyclerView.setLayoutManager(reviewedLayoutManager);
         reviewedListRecyclerView.setAdapter(reviewedListAdapter);
+    }
+
+    @Override
+    public void updateImages() {
+        this.readingListAdapter.notifyDataSetChanged();
+        this.reviewedListAdapter.notifyDataSetChanged();
     }
 }

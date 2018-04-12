@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.cs428.app.bookapp.interfaces.IBookPresenter;
+import com.cs428.app.bookapp.interfaces.OnBitmapComplete;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,10 +52,10 @@ public class Book implements IBookPresenter{
     public String getMeta() {return isbn;}
 
 
-    public Bitmap getCover() {
+    public Bitmap getCover(OnBitmapComplete listener) {
         // may return null if there is exception when fetching from given URL
         if (coverBitmap == null) {
-            FetchCoverFromURL fetchCoverFromURL = new FetchCoverFromURL();
+            FetchCoverFromURL fetchCoverFromURL = new FetchCoverFromURL(listener);
             fetchCoverFromURL.execute(coverURL);
         }
         return coverBitmap;
@@ -81,6 +82,10 @@ public class Book implements IBookPresenter{
 
 
     public class FetchCoverFromURL extends AsyncTask<String, Void, Bitmap> {
+        OnBitmapComplete listener;
+        public FetchCoverFromURL(OnBitmapComplete listener){
+            this.listener = listener;
+        }
 
         protected Bitmap doInBackground(String... strings) {
             try {
@@ -97,7 +102,10 @@ public class Book implements IBookPresenter{
         }
 
         protected void onPostExecute(Bitmap cover) {
+
             coverBitmap = cover;
+            listener.updateImages();
+
         }
     }
 }

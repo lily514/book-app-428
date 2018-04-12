@@ -4,13 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs428.app.bookapp.R;
+import com.cs428.app.bookapp.interfaces.OnBitmapComplete;
 import com.cs428.app.bookapp.model.Book;
 
 import java.util.List;
@@ -23,9 +23,10 @@ import java.util.List;
 public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapter.CardViewHolder> {
     private List<Book> book_ids;
     private ViewGroup parent;
+    private OnBitmapComplete listener;
 
-    public BookCardListAdapter(List<Book> recommendedBooks) {
-
+    public BookCardListAdapter(List<Book> recommendedBooks, OnBitmapComplete fragmentParent) {
+        this.listener = fragmentParent;
         this.book_ids = recommendedBooks;
     }
 
@@ -41,7 +42,7 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Book book = book_ids.get(position);
         holder.bookTitle.setText(book.getTitle());
-        holder.bookCover.setImageBitmap(book.getCover());
+        holder.bookCover.setImageBitmap(book.getCover(listener));
 
         holder.upButton.setOnClickListener(new View.OnClickListener() {
             @Override

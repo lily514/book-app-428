@@ -14,6 +14,7 @@ import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
 import com.cs428.app.bookapp.adapter.PersonCardListAdapter;
 import com.cs428.app.bookapp.interfaces.ISearchPresenter;
+import com.cs428.app.bookapp.interfaces.OnBitmapComplete;
 import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Book;
 import com.cs428.app.bookapp.model.Person;
@@ -26,7 +27,7 @@ import java.util.List;
  * Created by emilyprigmore on 3/17/18.
  */
 
-public class SearchFragment extends Fragment implements OnSearchTaskComplete {
+public class SearchFragment extends Fragment implements OnSearchTaskComplete, OnBitmapComplete {
 
     private ISearchPresenter presenter;
 
@@ -79,7 +80,7 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete {
         searchedBooksRecyclerView = (RecyclerView) rootView.findViewById(R.id.book_search_results);
         searchedPersonsRecyclerView = (RecyclerView) rootView.findViewById(R.id.user_search_results);
 
-        bookCardListAdapter = new BookCardListAdapter(bookList);
+        bookCardListAdapter = new BookCardListAdapter(bookList, this);
         personCardListAdapter = new PersonCardListAdapter(personList);
 
         searchedPersonsRecyclerView.setLayoutManager(personLayoutManager);
@@ -99,7 +100,7 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete {
         bookList = book_results;
         personList = person_results;
 
-        bookCardListAdapter = new BookCardListAdapter(book_results);
+        bookCardListAdapter = new BookCardListAdapter(book_results, this);
         searchedBooksRecyclerView.setLayoutManager(booksLayoutManager);
         searchedBooksRecyclerView.setAdapter(bookCardListAdapter);
 
@@ -115,7 +116,7 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete {
             return;
         }
         bookList.add(book);
-        bookCardListAdapter = new BookCardListAdapter(bookList);
+        bookCardListAdapter = new BookCardListAdapter(bookList, this);
         searchedBooksRecyclerView.setLayoutManager(booksLayoutManager);
         searchedBooksRecyclerView.setAdapter(bookCardListAdapter);
     }
@@ -142,9 +143,14 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete {
             bookList = new ArrayList<Book>();
         }
         bookList.addAll(books);
-        bookCardListAdapter = new BookCardListAdapter(bookList);
+        bookCardListAdapter = new BookCardListAdapter(bookList, this);
         searchedBooksRecyclerView.setLayoutManager(booksLayoutManager);
         searchedBooksRecyclerView.setAdapter(bookCardListAdapter);
 
+    }
+
+    @Override
+    public void updateImages() {
+        bookCardListAdapter.notifyDataSetChanged();
     }
 }

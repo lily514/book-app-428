@@ -17,6 +17,7 @@ import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.adapter.BookReviewsListAdapter;
 import com.cs428.app.bookapp.interfaces.IBookPresenter;
+import com.cs428.app.bookapp.interfaces.OnBitmapComplete;
 import com.cs428.app.bookapp.interfaces.Serializable;
 
 public class BookProfileFragment extends Fragment {
@@ -65,7 +66,7 @@ public class BookProfileFragment extends Fragment {
         reviewButton = (Button) v.findViewById(R.id.review_button);
         recommendButton = (Button) v.findViewById(R.id.recommend_button);
 
-        bookCover.setImageBitmap(bookPresenter.getCover());
+        bookCover.setImageBitmap(bookPresenter.getCover((OnBitmapComplete) this));
         bookTitle.setText(bookPresenter.getTitle());
         bookAuthor.setText(bookPresenter.getAuthor());
         bookMeta.setText(bookPresenter.getMeta());

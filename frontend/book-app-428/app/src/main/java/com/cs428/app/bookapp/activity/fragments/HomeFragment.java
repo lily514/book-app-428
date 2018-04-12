@@ -15,6 +15,7 @@ import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
 import com.cs428.app.bookapp.interfaces.IHomePresenter;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
+import com.cs428.app.bookapp.interfaces.OnBitmapComplete;
 import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.Serializable;
 import com.cs428.app.bookapp.model.Book;
@@ -26,7 +27,7 @@ import java.util.List;
  * Created by Trevor on 2/10/2018.
  */
 
-public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
+public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete, OnBitmapComplete {
     public RecyclerView recommendedList;
     private IHomePresenter presenter;
     private BookCardListAdapter adapter;
@@ -72,7 +73,7 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         recommendedList = (RecyclerView) rootView.findViewById(R.id.recommended_list);
 
-        adapter = new BookCardListAdapter(homePageBooks);
+        adapter = new BookCardListAdapter(homePageBooks, this);
         layoutManager = new LinearLayoutManager(getContext());
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);
@@ -87,7 +88,7 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
                 return;
         }
         homePageBooks = new ArrayList<>(books);
-        adapter = new BookCardListAdapter(books);
+        adapter = new BookCardListAdapter(books, this);
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);
     }
@@ -102,8 +103,13 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete {
             homePageBooks = new ArrayList<Book>();
         }
         homePageBooks.add(book);
-        adapter = new BookCardListAdapter(homePageBooks);
+        adapter = new BookCardListAdapter(homePageBooks, this);
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);
+    }
+
+    @Override
+    public void updateImages() {
+        adapter.notifyDataSetChanged();
     }
 }
