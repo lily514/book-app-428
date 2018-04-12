@@ -57,6 +57,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/upvote_button"
                 android:background="@android:drawable/arrow_up_float"
+                android:scaleType="fitCenter"
                 android:layout_weight="1"/>
 
             <ImageButton

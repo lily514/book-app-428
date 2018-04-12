@@ -8,9 +8,13 @@
     android:paddingBottom="0dp"
     android:orientation="vertical">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recommended_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+        </ScrollView>
 
 </LinearLayout>
