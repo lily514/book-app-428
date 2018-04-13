@@ -1,5 +1,7 @@
 package com.cs428.app.bookapp.networking.customSerializers;
 
+import android.util.Log;
+
 import com.cs428.app.bookapp.model.User;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,9 +37,14 @@ public class UserDeserializer extends StdDeserializer<User> {
         JsonNode node = jp.getCodec().readTree(jp);
         String username = node.get("username").textValue();
         String email = node.get("email").textValue();
+        Log.d("DEBUG", "deserialize user: " + node.toString());
+        String url = node.get("image_url").textValue();
+        String bio = node.get("bio").textValue();
 
         User user = new User(username, username);
         user.setEmail(email);
+        user.setURL(url);
+        user.setBio(bio);
 
         List<String> follows = new ArrayList<>();
         JsonNode followsNode = node.path("users_following");

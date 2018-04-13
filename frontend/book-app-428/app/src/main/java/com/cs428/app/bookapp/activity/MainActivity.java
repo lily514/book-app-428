@@ -2,6 +2,9 @@ package com.cs428.app.bookapp.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private MainPresenter presenter;
     private SearchView searchView;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the banner if it is present.
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -179,6 +184,12 @@ public class MainActivity extends AppCompatActivity {
     public void setBannerTitle(String title) {
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_up);
+    }
+
+    public void setProfileIcon(Bitmap icon) {
+        //Drawable d = new BitmapDrawable(getResources(), icon);
+        //menu.getItem(R.id.action_profile).setIcon(d);
+
     }
 }
 

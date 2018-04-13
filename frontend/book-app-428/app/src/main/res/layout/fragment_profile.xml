@@ -31,6 +31,13 @@
             android:textSize="10pt"
             android:text="Name"/>
 
+        <TextView
+            android:id="@+id/person_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Bio"/>
+
         <Button
             android:id="@+id/person_action"
             android:layout_width="wrap_content"

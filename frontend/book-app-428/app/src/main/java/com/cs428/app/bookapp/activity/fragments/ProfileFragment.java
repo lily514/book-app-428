@@ -1,6 +1,7 @@
 package com.cs428.app.bookapp.activity.fragments;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs428.app.bookapp.R;
@@ -44,8 +46,10 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
     private RecyclerView.LayoutManager reviewedLayoutManager;
     private Button actionButton;
     private TextView nameText;
+    private TextView bioText;
     private IProfilePresenter presenter;
     private Person person;
+    private ImageView personPicture;
 
     private List<Book> readingList;
     private List<Book> reviewList;
@@ -102,6 +106,11 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
 
         nameText = (TextView) v.findViewById(R.id.person_name);
         nameText.setText(presenter.getPerson().getName());
+
+        bioText = (TextView) v.findViewById(R.id.person_bio);
+        bioText.setText(presenter.getPerson().getBio());
+
+        personPicture = (ImageView) v.findViewById(R.id.person_picture);
 
         // You can't follow yourself, silly!
         if (presenter.getPerson() != null && presenter.getPerson().isUser()) {
@@ -182,5 +191,7 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
     public void updateImages() {
         this.readingListAdapter.notifyDataSetChanged();
         this.reviewedListAdapter.notifyDataSetChanged();
+        personPicture.setImageBitmap(presenter.getCurrentUser().getCover(this));
+        ((MainActivity)getActivity()).setProfileIcon(presenter.getCurrentUser().getCover(this));
     }
 }

@@ -1,5 +1,7 @@
 package com.cs428.app.bookapp.networking.customSerializers;
 
+import android.util.Log;
+
 import com.cs428.app.bookapp.model.Person;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,6 +33,8 @@ public class PersonDeserializer extends StdDeserializer<Person> {
         JsonNode node = jp.getCodec().readTree(jp);
         String name = node.get("name").asText();
         String id = node.get("id").asText();
+        String url = node.get("url").asText();
+        Log.d("debug person url", "deserialize: " + node.toString());
 
         // TODO: Check node.path for the correct node name in the json
         List<String> readingList = new ArrayList<>();
@@ -53,6 +57,7 @@ public class PersonDeserializer extends StdDeserializer<Person> {
         Person person = new Person(name, id);
         person.setReadingList(readingList);
         person.setReviewedBooks(reviewedBooks);
+        person.setURL(url);
 
         return person;
     }

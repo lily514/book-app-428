@@ -1,5 +1,7 @@
 package com.cs428.app.bookapp.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
