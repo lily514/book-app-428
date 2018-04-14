@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setProfileIcon(Bitmap icon) {
+        //TODO: change menu icon to be profile photo
         //Drawable d = new BitmapDrawable(getResources(), icon);
         //menu.getItem(R.id.action_profile).setIcon(d);
 

@@ -53,6 +53,7 @@ public class UserDeserializer extends StdDeserializer<User> {
             JsonNode val = els.next();
             follows.add(val.asText());
         }
+        user.setFollows(follows);
 
         List<String> recommends = new ArrayList<>();
         JsonNode recNode = node.path("recommendations");
@@ -71,6 +72,7 @@ public class UserDeserializer extends StdDeserializer<User> {
             readingList.add(val.asText());
         }
         user.setReadingList(readingList);
+
 
         return user;
     }

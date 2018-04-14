@@ -86,9 +86,9 @@ public class ServerProxy implements IServerProxy{
     }
 
     @Override
-    public void getRecommendationFor(String bookid, OnHomeBooksTaskComplete listener) {
+    public void getRecommendationFor(String userID, OnHomeBooksTaskComplete listener) {
         //TODO: Home books
-        this.serverCommunicator.getRecommendations(bookid, listener);
+        this.serverCommunicator.getRecommendations(userID, listener);
     }
 
     @Override

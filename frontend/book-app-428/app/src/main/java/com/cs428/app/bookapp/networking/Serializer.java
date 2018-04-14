@@ -1,9 +1,15 @@
 package com.cs428.app.bookapp.networking;
 
+import android.util.Log;
+
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.User;
 import com.cs428.app.bookapp.networking.customSerializers.BookDeserializer;
+import com.cs428.app.bookapp.networking.customSerializers.PersonDeserializer;
 import com.cs428.app.bookapp.networking.customSerializers.UserDeserializer;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -23,6 +29,20 @@ public class Serializer {
 
     public String serializeUser(User user) {
         return null;
+    }
+
+    public Person deserializePerson(String jsonPerson) {
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(Person.class, new PersonDeserializer());
+        mapper.registerModule(module);
+        Log.d("DEBUG PERSON DESERLZ", "deserializePerson: "+ jsonPerson);
+        try {
+            return mapper.readValue(jsonPerson, Person.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public User deserializeUser(String jsonUser) {
@@ -73,9 +93,11 @@ public class Serializer {
     public List<User> deserializeListOfUsers(String jsonList) {
         List<User> users = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
+
         try {
             JsonNode root = mapper.readTree(jsonList);
             Iterator<JsonNode> els = root.elements();
+
             while(els.hasNext()) {
                 JsonNode next = els.next();
                 users.add(deserializeUser(next.asText()));
@@ -88,5 +110,35 @@ public class Serializer {
     }
 
 
+    public List<Person> deserializeListOfPersons(String jsonList) {
+        List<Person> people = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
 
+
+        mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
+        try {
+
+//            List<Person> personList =
+//                    mapper.readValue(jsonList, new TypeReference<List<Person>>() {});
+
+
+            JsonNode root = mapper.readTree(jsonList);
+            JsonNode list = root.path("users");
+            Log.d("DEBUG", "deserializeListOfPersons: "+ list.asText());
+            people = mapper.readValue(list.asText(), new TypeReference<List<Person>>(){});
+            for (Person p : people){
+                Log.d("DEBUG PERSON DESERIALIZE", "name person: " + p.getName());
+            }
+//            Log.d("DEBUG PERSON DESERIALIZE", "deserializeListOfUsers: "+ list);
+//            while(els.hasNext()) {
+//                JsonNode next = els.next();
+//                Log.d("DEBUG", "deserializeListOfPersons: "+ next.asText());
+//                people.add(deserializePerson(next.asText()));
+//            }
+            return people;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -18,7 +18,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -121,7 +120,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public void searchBookByTitle(String title, OnSearchTaskComplete listener) {
-        String bookUrl = "/books/" + title + "/";
+        String bookUrl = "/book/" + title + "/";
         new SearchBooksTask(listener).execute(bookUrl);
     }
 
@@ -131,7 +130,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public void upvoteBook(String bookId) {
-        String url = "/books/" +  bookId + "/upvote/";
+        String url = "/book/" +  bookId + "/upvote/";
         new RateBookTask().execute(url);
     }
 
@@ -141,7 +140,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public void downvoteBook(String bookId) {
-        String url = "/books/" +  bookId + "/downvote/";
+        String url = "/book/" +  bookId + "/downvote/";
         new RateBookTask().execute(url);
     }
 
@@ -173,9 +172,10 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
     @Override
-    public void getRecommendations(String bookid, OnHomeBooksTaskComplete listener) {
-        String bookUrl = "/book/" + bookid + "/";
-        new GetRecommendedBookTask(listener).execute(bookUrl);
+    public void getRecommendations(String userid, OnHomeBooksTaskComplete listener) {
+        String userUrl = "/book/" + userid + "/";
+        new GetFollowing(listener).execute(userUrl);
+        //new GetFollowing(listener).execute(userUrl);
     }
 
     // Don't delete, need for reference when implementing post requests.
@@ -259,10 +259,15 @@ public class ServerCommunicator implements IServerCommunicator {
         }
     }
 
-    private class GetAllUsersTask extends AsyncTask<String, Void, List<User>> {
+    private class GetAllUsersTask extends AsyncTask<String, Void, List<Person>> {
+        private OnHomeBooksTaskComplete listener;
+
+        public GetAllUsersTask(OnHomeBooksTaskComplete listener) {
+            this.listener = listener;
+        }
 
         @Override
-        protected List<User> doInBackground(String... strings) {
+        protected List<Person> doInBackground(String... strings) {
             try {
                 // Get the correct url by joining base url with the parameter passed to object on execute call.
                 URL url = new URL(BASE_URL + "/users/");
@@ -275,7 +280,8 @@ public class ServerCommunicator implements IServerCommunicator {
                 // Ensure successful connection with backend
                 if(responseCode == HttpURLConnection.HTTP_OK) {
                     String response = readResponse(connection);
-                    return serializer.deserializeListOfUsers(response);
+                    Log.d("get all users", "doInBackground: "+response);
+                    return serializer.deserializeListOfPersons(response);
                 } else {
                     //Error
                 }
@@ -286,7 +292,7 @@ public class ServerCommunicator implements IServerCommunicator {
         }
 
         @Override
-        protected void onPostExecute(List<User> users){
+        protected void onPostExecute(List<Person> persons){
             //TODO
             //Model.getSINGLETON().setUserSearchResults(users);
         }
@@ -441,10 +447,10 @@ public class ServerCommunicator implements IServerCommunicator {
         }
     }
 
-    private class GetRecommendedBookTask  extends AsyncTask<String, Void, Book> {
+    private class GetFollowing extends AsyncTask<String, Void,Book> {
         private OnHomeBooksTaskComplete listener;
 
-        public GetRecommendedBookTask(OnHomeBooksTaskComplete listener) {
+        public GetFollowing(OnHomeBooksTaskComplete listener) {
             this.listener = listener;
         }
 
@@ -458,8 +464,10 @@ public class ServerCommunicator implements IServerCommunicator {
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Authorization", userToken);
                 int responseCode = connection.getResponseCode();
+                Log.d("GET FOLLOWING", "doInBackground: " + responseCode);
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     String response = readResponse(connection);
+                    Log.d("GET FOLLOWING", "doInBackground: "+ response);
                     return serializer.deserializeBook(response);
 
                 } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
@@ -477,6 +485,7 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(Book book) {
+            Log.d("DEBUG", "onPostExecute: "+ book.getTitle());
             listener.addHomeBook(book);
         }
     }

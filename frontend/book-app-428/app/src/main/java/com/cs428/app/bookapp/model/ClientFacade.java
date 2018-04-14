@@ -1,5 +1,7 @@
 package com.cs428.app.bookapp.model;
 
+import android.util.Log;
+
 import com.cs428.app.bookapp.interfaces.IClientFacade;
 import com.cs428.app.bookapp.interfaces.IServerCommunicator;
 import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
@@ -42,8 +44,10 @@ public class ClientFacade implements IClientFacade{
     @Override
     public void getHomePageBooks(User user, OnHomeBooksTaskComplete listener){
         if(model.currentUser != null) {
-            for (String bookid: user.getFollowing()){
-                serverProxy.getRecommendationFor(bookid, listener);
+            Log.d("DEBUG", "getHomePageBooks: ");
+            for (String userID: user.getFollowing()){
+                Log.d("Following", "getHomePageBooks: "+ userID);
+                serverProxy.getRecommendationFor(userID, listener);
             }
 
         }

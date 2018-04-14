@@ -81,7 +81,7 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete, On
         searchedPersonsRecyclerView = (RecyclerView) rootView.findViewById(R.id.user_search_results);
 
         bookCardListAdapter = new BookCardListAdapter(bookList, this);
-        personCardListAdapter = new PersonCardListAdapter(personList);
+        personCardListAdapter = new PersonCardListAdapter(personList, this);
 
         searchedPersonsRecyclerView.setLayoutManager(personLayoutManager);
         searchedPersonsRecyclerView.setAdapter(personCardListAdapter);
@@ -104,7 +104,7 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete, On
         searchedBooksRecyclerView.setLayoutManager(booksLayoutManager);
         searchedBooksRecyclerView.setAdapter(bookCardListAdapter);
 
-        personCardListAdapter = new PersonCardListAdapter(person_results);
+        personCardListAdapter = new PersonCardListAdapter(person_results, this);
         searchedPersonsRecyclerView.setLayoutManager(personLayoutManager);
         searchedPersonsRecyclerView.setAdapter(personCardListAdapter);
     }
@@ -128,7 +128,7 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete, On
             return;
         }
         personList.add(person);
-        personCardListAdapter = new PersonCardListAdapter(personList);
+        personCardListAdapter = new PersonCardListAdapter(personList, this);
         searchedPersonsRecyclerView.setLayoutManager(personLayoutManager);
         searchedPersonsRecyclerView.setAdapter(personCardListAdapter);
     }

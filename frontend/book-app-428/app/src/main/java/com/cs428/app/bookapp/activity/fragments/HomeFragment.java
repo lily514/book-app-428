@@ -13,12 +13,15 @@ import android.widget.SearchView;
 import com.cs428.app.bookapp.R;
 import com.cs428.app.bookapp.activity.MainActivity;
 import com.cs428.app.bookapp.adapter.BookCardListAdapter;
+import com.cs428.app.bookapp.adapter.BookCardListAdapterDetailed;
+import com.cs428.app.bookapp.adapter.PersonCardListAdapter;
 import com.cs428.app.bookapp.interfaces.IHomePresenter;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
 import com.cs428.app.bookapp.interfaces.OnBitmapComplete;
 import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.Serializable;
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.Person;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +33,10 @@ import java.util.List;
 public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete, OnBitmapComplete {
     public RecyclerView recommendedList;
     private IHomePresenter presenter;
-    private BookCardListAdapter adapter;
+    private BookCardListAdapterDetailed adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private List<Book> homePageBooks;
+    private ArrayList<Book> homePageBooks;
 
 
     public HomeFragment() {
@@ -73,24 +76,12 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete, O
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         recommendedList = (RecyclerView) rootView.findViewById(R.id.recommended_list);
 
-        adapter = new BookCardListAdapter(homePageBooks, this);
+        adapter = new BookCardListAdapterDetailed(homePageBooks, this);
         layoutManager = new LinearLayoutManager(getContext());
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);
 
         return rootView;
-    }
-
-    @Override
-    public void onHomeBooksTaskComplete(List<Book> books) {
-        if (books == null){
-                Log.d("DEBUG LISTENERS", "onHomeBooksTaskComplete: list of books was null");
-                return;
-        }
-        homePageBooks = new ArrayList<>(books);
-        adapter = new BookCardListAdapter(books, this);
-        recommendedList.setLayoutManager(layoutManager);
-        recommendedList.setAdapter(adapter);
     }
 
     @Override
@@ -103,7 +94,7 @@ public class HomeFragment extends Fragment implements OnHomeBooksTaskComplete, O
             homePageBooks = new ArrayList<Book>();
         }
         homePageBooks.add(book);
-        adapter = new BookCardListAdapter(homePageBooks, this);
+        adapter = new BookCardListAdapterDetailed(homePageBooks, this);
         recommendedList.setLayoutManager(layoutManager);
         recommendedList.setAdapter(adapter);
     }

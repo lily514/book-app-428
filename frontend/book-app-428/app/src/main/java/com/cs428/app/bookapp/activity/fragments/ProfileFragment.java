@@ -192,6 +192,6 @@ public class ProfileFragment extends Fragment implements OnReadingBooksTaskCompl
         this.readingListAdapter.notifyDataSetChanged();
         this.reviewedListAdapter.notifyDataSetChanged();
         personPicture.setImageBitmap(presenter.getCurrentUser().getCover(this));
-        ((MainActivity)getActivity()).setProfileIcon(presenter.getCurrentUser().getCover(this));
+        //((MainActivity)getActivity()).setProfileIcon(presenter.getCurrentUser().getCover(this));
     }
 }

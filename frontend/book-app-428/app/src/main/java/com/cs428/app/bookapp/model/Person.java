@@ -29,6 +29,9 @@ public class Person {
     protected Bitmap photoBitmap;
     protected String bio;
 
+    public Person(){
+    }
+
     public Person(String name, String id) {
         this.name = name;
         this.id = id;

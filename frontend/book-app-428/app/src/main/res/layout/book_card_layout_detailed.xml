@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="8dp"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/book_card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:text="Title" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="5dp">
+
+            <include
+                android:layout_width="150dp"
+                android:layout_height="250dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/book"
+                android:layout_marginEnd="5dp"
+                layout="@layout/book_cover_view"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/book_card_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:maxLines="4"
+            android:text="Description" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/upvote_button"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:drawable/arrow_up_float"
+                    android:backgroundTint="@android:color/holo_green_dark"
+                    android:scaleType="fitCenter"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/downvote_button"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:background="@android:drawable/arrow_down_float"/>
+
+            </FrameLayout>
+
+
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

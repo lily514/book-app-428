@@ -1,6 +1,7 @@
 package com.cs428.app.bookapp.interfaces;
 
 import com.cs428.app.bookapp.model.Book;
+import com.cs428.app.bookapp.model.Person;
 
 import java.util.List;
 
@@ -9,7 +10,6 @@ import java.util.List;
  */
 
 public interface OnHomeBooksTaskComplete {
-
-    void onHomeBooksTaskComplete(List<Book> books);
     void addHomeBook(Book book);
+
 }

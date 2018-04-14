@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs428.app.bookapp.R;
+import com.cs428.app.bookapp.interfaces.OnBitmapComplete;
 import com.cs428.app.bookapp.model.Person;
 import com.cs428.app.bookapp.model.Person;
 
@@ -25,16 +26,16 @@ public class PersonCardListAdapter extends RecyclerView.Adapter<PersonCardListAd
     private List<Person> person_ids;
     private ViewGroup parent;
 
-    public PersonCardListAdapter(List<Person> personResults) {
+    public PersonCardListAdapter(List<Person> personResults, OnBitmapComplete listener) {
         this.person_ids = personResults;
     }
 
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
-        View bookCardView = LayoutInflater.from(parent.getContext())
+        View personCardView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_layout, parent, false);
-        return new CardViewHolder(bookCardView);
+        return new CardViewHolder(personCardView);
     }
 
     @Override

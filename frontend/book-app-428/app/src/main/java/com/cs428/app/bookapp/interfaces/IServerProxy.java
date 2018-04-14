@@ -46,7 +46,7 @@ public interface IServerProxy {
     public void downvoteBook(String bookID);
 
 
-    public void getRecommendationFor(String bookid, OnHomeBooksTaskComplete listener);
+    public void getRecommendationFor(String userID, OnHomeBooksTaskComplete listener);
 
     public void searchBook(String searchTerm, OnSearchTaskComplete listener);
 

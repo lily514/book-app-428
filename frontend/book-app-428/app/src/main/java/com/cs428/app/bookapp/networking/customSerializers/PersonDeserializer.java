@@ -31,33 +31,39 @@ public class PersonDeserializer extends StdDeserializer<Person> {
     @Override
     public Person deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         JsonNode node = jp.getCodec().readTree(jp);
-        String name = node.get("name").asText();
-        String id = node.get("id").asText();
-        String url = node.get("url").asText();
-        Log.d("debug person url", "deserialize: " + node.toString());
+        String name = node.get("username").asText();
+        String bio = node.get("bio").asText();
+        String url = node.get("image_url").asText();
+        String TAG = "PERSON DESERIALIZING";
+        Log.d(TAG, "deserialize: name" + name);
+        Log.d(TAG, "deserialize: bio" + bio);
+        Log.d(TAG, "deserialize: url" + url);
 
         // TODO: Check node.path for the correct node name in the json
         List<String> readingList = new ArrayList<>();
-        JsonNode readingNode = node.path("reading");
+        JsonNode readingNode = node.path("reading_list");
         Iterator<JsonNode> els = readingNode.elements();
         while(els.hasNext()) {
             JsonNode val = els.next();
             readingList.add(val.asText());
         }
+        Log.d(TAG, "deserialize: readinglist" + readingList.size());
 
         // TODO: Check node.path for the correct node name in the json
         List<String> reviewedBooks = new ArrayList<>();
-        JsonNode reviewNode = node.path("reviewed");
+        JsonNode reviewNode = node.path("recommendations");
         els = reviewNode.elements();
         while(els.hasNext()) {
             JsonNode val = els.next();
             reviewedBooks.add(val.asText());
         }
+        Log.d(TAG, "deserialize: reviewList" + reviewedBooks.size());
 
-        Person person = new Person(name, id);
-        person.setReadingList(readingList);
-        person.setReviewedBooks(reviewedBooks);
+        Person person = new Person(name, name);
         person.setURL(url);
+        person.setBio(bio);
+        person.setReadingList(readingList);
+        person.setReviewedBooks(readingList);
 
         return person;
     }
