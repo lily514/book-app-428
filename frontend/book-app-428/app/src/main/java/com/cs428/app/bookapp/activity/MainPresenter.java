@@ -2,6 +2,7 @@ package com.cs428.app.bookapp.activity;
 
 import android.util.Log;
 
+import com.cs428.app.bookapp.activity.fragments.HomeFragment;
 import com.cs428.app.bookapp.interfaces.IClientFacade;
 import com.cs428.app.bookapp.interfaces.IHomePresenter;
 import com.cs428.app.bookapp.interfaces.IProfilePresenter;
@@ -78,6 +79,9 @@ public class MainPresenter implements IProfilePresenter, ISearchPresenter, IHome
             currentUser  = (User)arg;
             setPerson(currentUser);
             modelFacade.setServerProxy();
+
+            this.getPersonsRecommendedList((OnHomeBooksTaskComplete) mainActivity.getCurrentFragment());
+
 
         }
     }

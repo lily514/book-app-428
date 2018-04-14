@@ -37,6 +37,7 @@ import com.cs428.app.bookapp.activity.fragments.ProfileFragment;
 import com.cs428.app.bookapp.activity.fragments.SearchFragment;
 import com.cs428.app.bookapp.activity.fragments.SettingsFragment;
 import com.cs428.app.bookapp.interfaces.IClientFacade;
+import com.cs428.app.bookapp.interfaces.OnHomeBooksTaskComplete;
 import com.cs428.app.bookapp.interfaces.OnSearchTaskComplete;
 import com.cs428.app.bookapp.model.Model;
 import com.cs428.app.bookapp.networking.Serializer;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private MainPresenter presenter;
     private SearchView searchView;
     private Menu menu;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,8 +177,12 @@ public class MainActivity extends AppCompatActivity {
         transitionFragment(homeFragment, "Home");
     }
 
+    public Fragment getCurrentFragment(){
+        return currentFragment;
+    }
 
     public void transitionFragment(Fragment newFragment, String fragmentTitle) {
+        this.currentFragment = newFragment;
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container_body, newFragment).commit();
     }
@@ -192,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
         //menu.getItem(R.id.action_profile).setIcon(d);
 
     }
+
 }
 
 /*
