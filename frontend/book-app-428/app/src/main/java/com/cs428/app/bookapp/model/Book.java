@@ -32,10 +32,9 @@ public class Book implements IBookPresenter{
     private List<BookReview> reviews;
     private Bitmap coverBitmap;
 
-    public Book(String title, String author, String isbn, String coverURL) {
+    public Book(String title, String author, String coverURL) {
         this.title = title;
         this.author = author;
-        this.isbn = isbn;
         this.coverURL = coverURL;
     }
 

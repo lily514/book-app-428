@@ -76,12 +76,16 @@ public class Serializer {
     public List<Book> deserializeListOfBooks(String jsonList) {
         List<Book> books = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
+        Log.d("DSZ books", "deserializeListOfBooks: " + jsonList);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+
         try {
-            JsonNode root = mapper.readTree(jsonList);
-            Iterator<JsonNode> els = root.elements();
-            while(els.hasNext()) {
-                JsonNode next = els.next();
-                books.add(deserializeBook(next.asText()));
+            final JsonNode arrNode = mapper.readTree(jsonList).get("books");
+            if (arrNode.isArray()) {
+                for (final JsonNode objNode : arrNode) {
+                    Log.d("DEBUG", "deserializeListOfBooks: "+ objNode);
+                    books.add(deserializeBook(objNode.toString()));
+                }
             }
             return books;
         } catch (IOException e) {

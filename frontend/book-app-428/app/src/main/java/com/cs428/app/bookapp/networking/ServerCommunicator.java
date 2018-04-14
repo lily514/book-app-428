@@ -120,7 +120,7 @@ public class ServerCommunicator implements IServerCommunicator {
      */
     @Override
     public void searchBookByTitle(String title, OnSearchTaskComplete listener) {
-        String bookUrl = "/book/" + title + "/";
+        String bookUrl = "/books/" + title + "/";
         new SearchBooksTask(listener).execute(bookUrl);
     }
 
