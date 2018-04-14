@@ -42,7 +42,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="5dp">>
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -71,6 +72,21 @@
                     android:layout_gravity="center"
                     android:backgroundTint="@android:color/holo_red_dark"
                     android:background="@android:drawable/arrow_down_float"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/bookmark_button"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/primaryColor"
+                    android:background="@drawable/ic_bookmark"/>
 
             </FrameLayout>
 

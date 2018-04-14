@@ -62,6 +62,14 @@ public class BookCardListAdapterDetailed extends RecyclerView.Adapter<BookCardLi
             }
         });
 
+        holder.saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(parent.getContext(), "Save clicked", Toast.LENGTH_SHORT).show();
+                // TODO: bring up recommend page
+            }
+        });
+
     }
 
     @Override
@@ -74,7 +82,7 @@ public class BookCardListAdapterDetailed extends RecyclerView.Adapter<BookCardLi
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
         public TextView bookTitle, bookDescription;
-        public ImageButton upButton, downButton;
+        public ImageButton upButton, downButton, saveButton;
         public ImageView bookCover;
 
         public CardViewHolder(View v) {
@@ -83,6 +91,7 @@ public class BookCardListAdapterDetailed extends RecyclerView.Adapter<BookCardLi
             bookTitle = (TextView) v.findViewById(R.id.book_card_title);
             upButton = (ImageButton) v.findViewById(R.id.upvote_button);
             downButton = (ImageButton) v.findViewById(R.id.downvote_button);
+            saveButton = (ImageButton) v.findViewById(R.id.bookmark_button);
             bookDescription = (TextView) v.findViewById(R.id.book_card_description);
         }
     }

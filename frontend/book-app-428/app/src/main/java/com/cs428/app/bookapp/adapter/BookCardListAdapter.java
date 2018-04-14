@@ -61,6 +61,13 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
             }
         });
 
+        holder.saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(parent.getContext(), "Save clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
@@ -73,7 +80,7 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
         public TextView bookTitle;
-        public ImageButton upButton, downButton;
+        public ImageButton upButton, downButton, saveButton;
         public ImageView bookCover;
 
         public CardViewHolder(View v) {
@@ -82,6 +89,7 @@ public class BookCardListAdapter extends RecyclerView.Adapter<BookCardListAdapte
             bookTitle = (TextView) v.findViewById(R.id.book_card_title);
             upButton = (ImageButton) v.findViewById(R.id.upvote_button);
             downButton = (ImageButton) v.findViewById(R.id.downvote_button);
+            saveButton = (ImageButton) v.findViewById(R.id.bookmark_button);
         }
     }
 

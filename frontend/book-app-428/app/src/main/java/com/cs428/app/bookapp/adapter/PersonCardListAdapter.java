@@ -48,7 +48,7 @@ public class PersonCardListAdapter extends RecyclerView.Adapter<PersonCardListAd
         Log.d("DEBUG", "onBindViewHolder: " + person.getName() + "url");
         holder.personName.setText(person.getName());
 
-        //holder.personPicture.setImageBitmap(person.getCover(listener));
+        holder.personPicture.setImageBitmap(person.getCover(listener));
 
         holder.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +79,7 @@ public class PersonCardListAdapter extends RecyclerView.Adapter<PersonCardListAd
 
             personName = (TextView) v.findViewById(R.id.user_card_title);
             followButton = (Button) v.findViewById(R.id.follow_button);
-            personPicture = (ImageView) v. findViewById(R.id.person_picture);
+            personPicture = (ImageView) v. findViewById(R.id.user_card_photo);
 
         }
     }
