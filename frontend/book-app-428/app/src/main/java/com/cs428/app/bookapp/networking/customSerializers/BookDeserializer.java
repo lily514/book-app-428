@@ -41,7 +41,7 @@ public class BookDeserializer extends StdDeserializer<Book> {
         int id = (Integer) node.get("id").asInt();
         String title = node.get("title").asText();
         String author = node.get("author").asText();
-        //String isbn = node.get("ISBN").asText();
+        String isbn = node.get("ISBN").asText();
         String description = node.get("description").asText();
         String coverUrl = node.get("cover_url").asText();
         /*int upvotes = (Integer) node.get("Upvotes").asInt();
@@ -57,6 +57,7 @@ public class BookDeserializer extends StdDeserializer<Book> {
         Book book = new Book(title, author, coverUrl);
         //book.setRating(upvotes);
         book.setSummary(description);
+        book.setId(id);
         //book.setReviews(bookReviews);
 
         return book;

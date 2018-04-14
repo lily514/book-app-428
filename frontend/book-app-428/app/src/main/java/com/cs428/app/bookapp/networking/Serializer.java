@@ -9,7 +9,9 @@ import com.cs428.app.bookapp.networking.customSerializers.BookDeserializer;
 import com.cs428.app.bookapp.networking.customSerializers.PersonDeserializer;
 import com.cs428.app.bookapp.networking.customSerializers.UserDeserializer;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -73,6 +75,20 @@ public class Serializer {
         }
     }
 
+    public Book deserializeSearchResult(String jsonBook) throws IOException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(jsonBook);
+        Log.d("DESERIALIZE", "deserialize: " + node.toString());
+        int id = (Integer) node.get("id").asInt();
+        String title = node.get("title").asText();
+        String author = node.get("author").asText();
+        String coverUrl = node.get("cover_url").asText();
+
+        Book book = new Book(title, author, coverUrl);
+        book.setId(id);
+        return book;
+    }
+
     public List<Book> deserializeListOfBooks(String jsonList) {
         List<Book> books = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
@@ -84,7 +100,7 @@ public class Serializer {
             if (arrNode.isArray()) {
                 for (final JsonNode objNode : arrNode) {
                     Log.d("DEBUG", "deserializeListOfBooks: "+ objNode);
-                    books.add(deserializeBook(objNode.toString()));
+                    books.add(deserializeSearchResult(objNode.toString()));
                 }
             }
             return books;

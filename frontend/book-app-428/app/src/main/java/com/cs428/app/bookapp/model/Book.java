@@ -25,6 +25,7 @@ public class Book implements IBookPresenter{
     private String title;
     private String author;
     private String isbn;
+    private int id;
     private String coverURL;
     private float rating;
     private String summary;
@@ -77,6 +78,11 @@ public class Book implements IBookPresenter{
     }
     public List<BookReview> getReviews() {
         return reviews;
+    }
+
+    public int getId(){ return id;}
+    public void setId(int id) {
+        this.id = id;
     }
 
 
