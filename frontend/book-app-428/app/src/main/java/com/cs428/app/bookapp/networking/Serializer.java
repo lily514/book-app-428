@@ -92,14 +92,12 @@ public class Serializer {
     public List<Book> deserializeListOfBooks(String jsonList) {
         List<Book> books = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
-        Log.d("DSZ books", "deserializeListOfBooks: " + jsonList);
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 
         try {
             final JsonNode arrNode = mapper.readTree(jsonList).get("books");
             if (arrNode.isArray()) {
                 for (final JsonNode objNode : arrNode) {
-                    Log.d("DEBUG", "deserializeListOfBooks: "+ objNode);
                     books.add(deserializeSearchResult(objNode.toString()));
                 }
             }
@@ -134,27 +132,15 @@ public class Serializer {
         List<Person> people = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
 
-
         mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
         try {
-
-//            List<Person> personList =
-//                    mapper.readValue(jsonList, new TypeReference<List<Person>>() {});
-
-
-            JsonNode root = mapper.readTree(jsonList);
-            JsonNode list = root.path("users");
-            Log.d("DEBUG", "deserializeListOfPersons: "+ list.asText());
-            people = mapper.readValue(list.asText(), new TypeReference<List<Person>>(){});
-            for (Person p : people){
-                Log.d("DEBUG PERSON DESERIALIZE", "name person: " + p.getName());
+            final JsonNode arrNode = mapper.readTree(jsonList).get("users");
+            if (arrNode.isArray()) {
+                for (final JsonNode objNode : arrNode) {
+                    Log.d("DEBUG", "deserializeListOfPersons: "+ objNode);
+                    people.add(deserializePerson(objNode.toString()));
+                }
             }
-//            Log.d("DEBUG PERSON DESERIALIZE", "deserializeListOfUsers: "+ list);
-//            while(els.hasNext()) {
-//                JsonNode next = els.next();
-//                Log.d("DEBUG", "deserializeListOfPersons: "+ next.asText());
-//                people.add(deserializePerson(next.asText()));
-//            }
             return people;
         } catch (IOException e) {
             e.printStackTrace();

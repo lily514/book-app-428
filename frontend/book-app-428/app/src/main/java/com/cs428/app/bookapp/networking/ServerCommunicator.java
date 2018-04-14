@@ -168,14 +168,14 @@ public class ServerCommunicator implements IServerCommunicator {
 
     @Override
     public void searchPersonByName(String searchTerm, OnSearchTaskComplete listener) {
-        //TODO
+        String url = "/users/";
+        new GetAllUsersTask(listener, searchTerm).execute(url);
     }
 
     @Override
     public void getRecommendations(String userid, OnHomeBooksTaskComplete listener) {
         String userUrl = "/book/" + userid + "/";
         new GetFollowing(listener).execute(userUrl);
-        //new GetFollowing(listener).execute(userUrl);
     }
 
     // Don't delete, need for reference when implementing post requests.
@@ -260,17 +260,19 @@ public class ServerCommunicator implements IServerCommunicator {
     }
 
     private class GetAllUsersTask extends AsyncTask<String, Void, List<Person>> {
-        private OnHomeBooksTaskComplete listener;
+        private String searchTerm;
+        private OnSearchTaskComplete listener;
 
-        public GetAllUsersTask(OnHomeBooksTaskComplete listener) {
+        public GetAllUsersTask(OnSearchTaskComplete listener, String searchTerm) {
             this.listener = listener;
+            this.searchTerm = searchTerm;
         }
 
         @Override
         protected List<Person> doInBackground(String... strings) {
             try {
                 // Get the correct url by joining base url with the parameter passed to object on execute call.
-                URL url = new URL(BASE_URL + "/users/");
+                URL url = new URL(BASE_URL + strings[0]);
 
                 // Make http connections and requests.
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -280,10 +282,11 @@ public class ServerCommunicator implements IServerCommunicator {
                 // Ensure successful connection with backend
                 if(responseCode == HttpURLConnection.HTTP_OK) {
                     String response = readResponse(connection);
-                    Log.d("get all users", "doInBackground: "+response);
+                    Log.d("DEBUG", "get all users OK: "+response);
                     return serializer.deserializeListOfPersons(response);
                 } else {
                     //Error
+                    Log.d("DEBUG", "get all users NOT OK: " + responseCode);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -293,7 +296,16 @@ public class ServerCommunicator implements IServerCommunicator {
 
         @Override
         protected void onPostExecute(List<Person> persons){
-            //TODO
+            for (Person p : persons){
+                Log.d("DEBUG", "onPostExecute: get all users checking for searchterm " + searchTerm + " user " + p.getName());
+                if (p.getName().contains(searchTerm) ){
+                    Log.d("DEBUG", "onPostExecute: current username"+ Model.getSINGLETON().getCurrentUser().getName());
+                    if (! Model.getSINGLETON().getCurrentUser().getName().equals(p.getName())){
+                        listener.addPerson(p);
+                    }
+
+                }
+            }
             //Model.getSINGLETON().setUserSearchResults(users);
         }
     }

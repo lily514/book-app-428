@@ -104,7 +104,8 @@ public class Person {
                 Bitmap cover = BitmapFactory.decodeStream(input);
                 return cover;
             } catch (IOException e) {
-                return null;    // if exception occurs, return a null bitmap
+                return BitmapFactory.decodeResource(Resources.getSystem(),
+                        R.drawable.profile_pic_frame);    // if exception occurs, return a null bitmap
             }
         }
 

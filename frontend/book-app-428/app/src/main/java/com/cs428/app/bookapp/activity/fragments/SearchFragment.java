@@ -127,6 +127,10 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete, On
             Log.d("DEBUG LISTENERS", "addPersons: person was null");
             return;
         }
+        Log.d("DEBUG", "addPerson: " + person.getName());
+        if (personList == null){
+            personList = new ArrayList<Person>();
+        }
         personList.add(person);
         personCardListAdapter = new PersonCardListAdapter(personList, this);
         searchedPersonsRecyclerView.setLayoutManager(personLayoutManager);
@@ -152,5 +156,6 @@ public class SearchFragment extends Fragment implements OnSearchTaskComplete, On
     @Override
     public void updateImages() {
         bookCardListAdapter.notifyDataSetChanged();
+        personCardListAdapter.notifyDataSetChanged();
     }
 }
